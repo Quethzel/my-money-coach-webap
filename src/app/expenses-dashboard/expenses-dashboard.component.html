@@ -1,1 +1,80 @@
-<p>expenses-dashboard works!</p>
+<main class="mt-5 pt-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Dashboard</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <h2 class="card-title">$175,000</h2>
+            <p>Annual Total Expenses</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-dark">
+          <div class="card-body">
+            <div>
+              <h2 class="card-title kpi-title">$60,000/</h2>
+              <h5 class="kpi-title">March</h5>
+            </div>
+            <p>Most Expensive Month</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white">
+          <div class="card-body">
+            <div>
+              <h2 class="card-title kpi-title">$12,000/</h2>
+              <h5 class="kpi-title">10 Days Left</h5>
+            </div>
+            <p>Remaining Monthly Budget</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header">
+            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+            Annual Variable Expenses By Month
+          </div>
+          <div class="card-body">            
+            <canvas baseChart class="chart" [data]="barChartData" [options]="barChartOptions" [type]="'bar'"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header">
+            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+            Area Chart Example
+          </div>
+          <div class="card-body">
+            <canvas class="chart" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <div class="card">
+          <div class="card-header">
+            <span><i class="bi bi-table me-2"></i></span> Data Table
+          </div>
+          <div class="card-body">
+            <p>more data here...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
