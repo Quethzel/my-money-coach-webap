@@ -6,35 +6,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3 mb-3">
-        <div class="card bg-primary text-white">
-          <div class="card-body">
-            <h2 class="card-title">$175,000</h2>
-            <p>Annual Total Expenses</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <div class="card bg-warning text-dark">
-          <div class="card-body">
-            <div>
-              <h2 class="card-title kpi-title">$60,000/</h2>
-              <h5 class="kpi-title">March</h5>
-            </div>
-            <p>Most Expensive Month</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <div class="card bg-success text-white">
-          <div class="card-body">
-            <div>
-              <h2 class="card-title kpi-title">$12,000/</h2>
-              <h5 class="kpi-title">10 Days Left</h5>
-            </div>
-            <p>Remaining Monthly Budget</p>
-          </div>
-        </div>
+      <div class="col-md-3 mb-3" *ngFor="let kpi of kpis;">
+        <app-kpi [kpi]="kpi"></app-kpi>
       </div>
     </div>
 

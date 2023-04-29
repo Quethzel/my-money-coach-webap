@@ -1,13 +1,16 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { KPI } from '../models/kpi';
+import { ExpensesService } from '../services/expenses.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-expenses-dashboard',
   templateUrl: './expenses-dashboard.component.html',
   styleUrls: ['./expenses-dashboard.component.scss']
 })
-export class ExpensesDashboardComponent {
+export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   
   public barChartLegend = true;
   public barChartPlugins = [];
@@ -26,7 +29,21 @@ export class ExpensesDashboardComponent {
     responsive: true,
   };
 
-  constructor() {}
+  subKPIs: Subscription = new Subscription;
+  kpis: KPI[] = []; 
+
+  constructor(private exService: ExpensesService) { }
+  
+  ngOnInit(): void {
+    this.subKPIs = this.exService.getKPIs().subscribe(kpis => {
+      this.kpis = kpis;
+    });
+  }
+
+
+  ngOnDestroy(): void {
+    this.subKPIs.unsubscribe();
+  }
 
   // events
   chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {

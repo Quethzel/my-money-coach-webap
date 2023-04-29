@@ -9,6 +9,12 @@ import { SidebarComponent } from './home/sidebar/sidebar.component';
 import { FooterComponent } from './home/footer/footer.component';
 import { HeaderComponent } from './home/header/header.component';
 import { NgChartsModule } from 'ng2-charts';
+import { KpiComponent } from './components/kpi/kpi.component';
+import { ChartComponent } from './components/chart/chart.component';
+import localeMX from '@angular/common/locales/es-MX';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeMX);
 
 @NgModule({
   declarations: [
@@ -16,7 +22,9 @@ import { NgChartsModule } from 'ng2-charts';
     ExpensesDashboardComponent,
     SidebarComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    KpiComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,

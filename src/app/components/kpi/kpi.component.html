@@ -1,0 +1,9 @@
+<div class="card" [ngClass]="kpi.cssClass">
+    <div class="card-body">
+        <div>
+            <h2 class="card-title kpi-title">{{kpi.value}}</h2>
+            <h5 *ngIf="kpi.text" class="kpi-title">{{kpi.text}}</h5>
+        </div>
+        <p>{{kpi.title}}</p>
+    </div>
+</div>
