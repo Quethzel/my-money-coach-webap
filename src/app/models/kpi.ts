@@ -8,16 +8,15 @@ export class KPI {
 
     constructor(title: string, value: number, cssClass: string, text?: string) {
         this.title = title;
-        this.value = this.parseValue(value, text);
         this.cssClass = cssClass;
+        this.value = this.formatValue(value, text);
+        if (text) {
+            this.text = text
+        }
     }
 
-    private parseValue(value: number, text?: string) {
+    private formatValue(value: number, text?: string) {
         const ftValue = formatNumber(value, 'es-MX', '1.0-3');
-        console.log(ftValue);
-
-        return text
-            ? `$${ftValue}/${text}`
-            : `$${ftValue}`
+        return text ? `$${ftValue}/` : `$${ftValue}`
     }
 }

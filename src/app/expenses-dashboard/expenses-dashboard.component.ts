@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChartEvent } from 'chart.js';
 import { KPI } from '../models/kpi';
 import { ExpensesService } from '../services/expenses.service';
 import { Subscription } from 'rxjs';
+import { CustomDataChart } from '../models/custom-data-chart';
+
 
 @Component({
   selector: 'app-expenses-dashboard',
@@ -12,25 +13,11 @@ import { Subscription } from 'rxjs';
 })
 export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   
-  public barChartLegend = true;
-  public barChartPlugins = [];
-
-  public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-    datasets: [
-      { 
-        data: [ 65000, 59000, 80000, 81000, 56000, 55000, 40000, 66000, 77000, 120000, 33000, 30000 ], 
-        label: 'Expenses By Month'
-      },
-    ]
-  };
-
-  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
-    responsive: true,
-  };
-
   subKPIs: Subscription = new Subscription;
   kpis: KPI[] = []; 
+
+  annualChart!: CustomDataChart<number>;
+  cityChart!: CustomDataChart<number>;
 
   constructor(private exService: ExpensesService) { }
   
@@ -38,7 +25,19 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.subKPIs = this.exService.getKPIs().subscribe(kpis => {
       this.kpis = kpis;
     });
+  
+    this.getAnnualExpensesChart();
+    this.getCityChart();
   }
+
+  async getAnnualExpensesChart() {
+    this.annualChart = await this.exService.getAnnualExpensesAsChart();
+  }
+
+  async getCityChart() {
+    this.cityChart = await this.exService.getAnnualExpensesByCityAsChart();
+  }
+  
 
 
   ngOnDestroy(): void {
