@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { KPI } from '../models/kpi';
 import { CustomDataChart, IDataset } from '../models/custom-data-chart';
+import { ChartConfiguration } from 'chart.js';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,38 @@ export class ExpensesService {
     ];
 
     return new CustomDataChart(labels, datasets);
+  }
+
+  async getCategoryExpensesAsChart() {
+    const options: ChartConfiguration['options'] = {
+      responsive: true,
+      indexAxis: 'y'
+    }
+    const labels = [ 'Car', 'Home', 'Undertake', 'Health Care' ];
+    const datasets = [
+      { 
+        data: [ 21000, 13000, 9000, 5500 ], 
+        label: 'Expenses By Category'
+      },
+    ];
+
+    return new CustomDataChart(labels, datasets, options);
+  }
+
+  async getSubcategoryExpensesAsChart() {
+    const options: ChartConfiguration['options'] = {
+      responsive: true,
+      indexAxis: 'y'
+    }
+    const labels = [ 'Restaurant', 'Books', 'Coffee', 'Appointments', 'Food' ];
+    const datasets = [
+      { 
+        data: [ 7500, 5121, 4200, 1900, 1100 ], 
+        label: 'Expenses By Subcategory'
+      },
+    ];
+
+    return new CustomDataChart(labels, datasets, options);
   }
 
   getAnnualExpensesByCategory() { }

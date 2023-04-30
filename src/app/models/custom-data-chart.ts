@@ -17,10 +17,14 @@ export class DataChart<T> {
 export class CustomDataChart<T> {
     data!: DataChart<T>;
     options: ChartConfiguration['options'] = {
-        responsive: true
+        responsive: true,
     };
 
-    constructor(labels: string[], datasets: IDataset<T>[]) {
+    constructor(labels: string[], datasets: IDataset<T>[], options?: ChartConfiguration['options']) {
         this.data = new DataChart<T>(labels, datasets);
+
+        if (options) {
+            this.options = options;
+        }
     };
 }

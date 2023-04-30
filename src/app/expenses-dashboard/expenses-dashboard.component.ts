@@ -18,6 +18,8 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
 
   annualChart!: CustomDataChart<number>;
   cityChart!: CustomDataChart<number>;
+  categoryChart!: CustomDataChart<number>;
+  subcategoryChart!: CustomDataChart<number>;
 
   constructor(private exService: ExpensesService) { }
   
@@ -28,6 +30,8 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   
     this.getAnnualExpensesChart();
     this.getCityChart();
+    this.getCategoryChart();
+    this.getSubcategoryChart();
   }
 
   async getAnnualExpensesChart() {
@@ -38,6 +42,13 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.cityChart = await this.exService.getAnnualExpensesByCityAsChart();
   }
   
+  async getCategoryChart() {
+    this.categoryChart = await this.exService.getCategoryExpensesAsChart();
+  }
+
+  async getSubcategoryChart() {
+    this.subcategoryChart = await this.exService.getSubcategoryExpensesAsChart();
+  }
 
 
   ngOnDestroy(): void {
