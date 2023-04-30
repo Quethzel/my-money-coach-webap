@@ -40,41 +40,58 @@ export class ExpensesService {
     ];
   }
 
-  async getAnnualExpensesAsChart() {    
+  async getAnnualExpensesAsChart() {
+    const options: ChartConfiguration['options'] = {
+      responsive: true,
+      plugins: { 
+        legend: { display: false }
+      }
+    };
     const labels = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const datasets = [
       { 
-        data: [ 65000, 59000, 80000, 81000, 56000, 55000, 40000, 66000, 77000, 120000, 33000, 30000 ],
-        label: 'Expenses By Month'
-      } as IDataset<number>
-    ];
-
-    return new CustomDataChart(labels, datasets);
-  }
-
-  async getAnnualExpensesByCityAsChart() {
-    const labels = [ 'Mty', 'Oax', 'Xal', 'CDMX' ];
-    const datasets = [
+        data: [ 19000, 29000, 40000, 41000, 36000, 35000, 20000, 21000, 19750, 12000, 33000, 30000 ],
+        label: 'Expenses By Month', type: 'bar'
+      },
       {
-        data: [ 23000, 10000, 3500, 8000 ],
-        label: 'Expenses By City'
+        data: [ 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000 ], 
+        label: 'Budget', type: 'line' 
       }
     ];
 
-    return new CustomDataChart(labels, datasets);
+    return new CustomDataChart(labels, datasets, options);
+  }
+
+  async getAnnualExpensesByCityAsChart() {
+    const options: ChartConfiguration['options'] = {
+      responsive: true,
+      plugins: { 
+        legend: { display: false }
+      }
+    };
+    const labels = [ 'Mty', 'CDMX', 'Oax', 'Xal' ];
+    const datasets = [
+      { data: [ 23000, 10000, 3500, 8000 ], label: 'Expenses By City' }
+    ];
+
+    return new CustomDataChart(labels, datasets, options);
   }
 
   async getCategoryExpensesAsChart() {
     const options: ChartConfiguration['options'] = {
       responsive: true,
-      indexAxis: 'y'
+      indexAxis: 'y',
+      plugins: { 
+        legend: { display: false }
+      }
     }
     const labels = [ 'Car', 'Home', 'Undertake', 'Health Care' ];
     const datasets = [
-      { 
-        data: [ 21000, 13000, 9000, 5500 ], 
-        label: 'Expenses By Category'
-      },
+      { data: [ 21000, 13000, 9000, 5500 ], label: 'Expenses By Category' },
+      // { data: [ 21000 ], label: 'Car' },
+      // { data: [ 13000 ], label: 'Home' },
+      // { data: [ 9000 ], label: 'Undertake' },
+      // { data: [ 5500 ], label: 'Health Care' },
     ];
 
     return new CustomDataChart(labels, datasets, options);
@@ -83,7 +100,10 @@ export class ExpensesService {
   async getSubcategoryExpensesAsChart() {
     const options: ChartConfiguration['options'] = {
       responsive: true,
-      indexAxis: 'y'
+      indexAxis: 'y',
+      plugins: { 
+        legend: { display: false }
+      }
     }
     const labels = [ 'Restaurant', 'Books', 'Coffee', 'Appointments', 'Food' ];
     const datasets = [
