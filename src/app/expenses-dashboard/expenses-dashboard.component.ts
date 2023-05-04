@@ -27,6 +27,10 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.subKPIs = this.exService.getKPIs().subscribe(kpis => {
       this.kpis = kpis;
     });
+
+    this.exService.getExpensesByMonth().subscribe(data => {
+      console.log(data);
+    });
   
     this.getAnnualExpensesChart();
     this.getCityChart();

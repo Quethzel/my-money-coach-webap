@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { KPI } from '../models/kpi';
-import { CustomDataChart, IDataset } from '../models/custom-data-chart';
+import { CustomDataChart } from '../models/custom-data-chart';
 import { ChartConfiguration } from 'chart.js';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesService {
-
-  constructor() { }
+  private apiURL = `${environment.mcApi}/expenses`;
+  constructor(private http: HttpClient) { }
 
   getKPIs(): Observable<KPI[]> {
     const KPIs = [
@@ -22,6 +24,10 @@ export class ExpensesService {
     return of(KPIs);
   }
 
+  // Get the sum of the annual expenses grouped by month
+  getExpensesByMonth(): Observable<any> {
+    return this.http.get(`${this.apiURL}/costByMonth/2023`);
+  }
 
   getAnnualExpenses() {      
     return [

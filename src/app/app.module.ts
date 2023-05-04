@@ -11,6 +11,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { KpiComponent } from './components/kpi/kpi.component';
 import localeMX from '@angular/common/locales/es-MX';
 import { registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(localeMX);
 
@@ -27,7 +28,8 @@ registerLocaleData(localeMX);
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgChartsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
