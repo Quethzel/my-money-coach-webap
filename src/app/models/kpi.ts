@@ -20,3 +20,4 @@ export class KPI {
         return text ? `$${ftValue}/` : `$${ftValue}`
     }
 }
+

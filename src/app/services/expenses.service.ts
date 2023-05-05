@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of, zip } from 'rxjs';
 import { KPI } from '../models/kpi';
 import { CustomDataChart } from '../models/custom-data-chart';
 import { ChartConfiguration } from 'chart.js';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { IKPITotalExpenses } from '../models/interfaces/IKPI';
 
 @Injectable({
   providedIn: 'root'
@@ -25,28 +26,22 @@ export class ExpensesService {
   }
 
   // Get the sum of the annual expenses grouped by month
-  getExpensesByMonth(): Observable<any> {
+  getExpensesByMonth():Observable<any>  {
     return this.http.get(`${this.apiURL}/costByMonth/2023`);
   }
 
-  getAnnualExpenses() {      
-    return [
-      { month: 'Jan', total: 65000 },
-      { month: 'Feb', total: 59000 },
-      { month: 'Mar', total: 80000 },
-      { month: 'Apr', total: 81000 },
-      { month: 'May', total: 56000 },
-      { month: 'Jun', total: 55000 },
-      { month: 'Jul', total: 40000 },
-      { month: 'Aug', total: 66000 },
-      { month: 'Sep', total: 77000 },
-      { month: 'Oct', total: 120000 },
-      { month: 'Nov', total: 33000 },
-      { month: 'Dec', total: 30000 },
-    ];
+  getKPIAnnualVariableExpenses(year: number) {
+    return this.getAnnualExpenses(year)
+    .pipe(map(result => {
+        return new KPI('Annual Variable Expenses', result.total, 'bg-primary text-white');
+    }));  
   }
 
-  async getAnnualExpensesAsChart() {
+  private getAnnualExpenses(year: number) {
+    return this.http.get<IKPITotalExpenses>(`${this.apiURL}/total/${year}`)
+  }
+
+  async getAnnualExpensesAsChart(data: any) {
     const options: ChartConfiguration['options'] = {
       responsive: true,
       plugins: { 
@@ -54,18 +49,20 @@ export class ExpensesService {
       }
     };
     const labels = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = data.map((item: any) => labels[item._id - 1] );
+    const totals = data.map((item: any) => Number(item.total));
     const datasets = [
       { 
-        data: [ 19000, 29000, 40000, 41000, 36000, 35000, 20000, 21000, 19750, 12000, 33000, 30000 ],
+        data: totals,
         label: 'Expenses By Month', type: 'bar'
       },
       {
-        data: [ 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000, 22000 ], 
+        data: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ], 
         label: 'Budget', type: 'line' 
       }
     ];
 
-    return new CustomDataChart(labels, datasets, options);
+    return new CustomDataChart<number>(months, datasets, options);
   }
 
   async getAnnualExpensesByCityAsChart() {
@@ -122,15 +119,5 @@ export class ExpensesService {
     return new CustomDataChart(labels, datasets, options);
   }
 
-  getAnnualExpensesByCategory() { }
-
-  getAnnualExpensesBySubcategory() { }
-
-  getMonthlyExpensesByCategory() { }
-
-  getMonthlyExpensesBySubcategory() { }
-
-
-  
 
 }

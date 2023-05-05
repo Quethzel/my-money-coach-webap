@@ -5,7 +5,6 @@ import { ExpensesService } from '../services/expenses.service';
 import { Subscription } from 'rxjs';
 import { CustomDataChart } from '../models/custom-data-chart';
 
-
 @Component({
   selector: 'app-expenses-dashboard',
   templateUrl: './expenses-dashboard.component.html',
@@ -14,7 +13,10 @@ import { CustomDataChart } from '../models/custom-data-chart';
 export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   
   subKPIs: Subscription = new Subscription;
-  kpis: KPI[] = []; 
+  subKPITotalExpenses: Subscription = new Subscription;
+
+  kpis: KPI[] = [];
+  totalVariableExpensesByYear!: KPI;
 
   annualChart!: CustomDataChart<number>;
   cityChart!: CustomDataChart<number>;
@@ -28,18 +30,21 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
       this.kpis = kpis;
     });
 
+    this.subKPITotalExpenses = this.exService.getKPIAnnualVariableExpenses(2023).subscribe(kpi => {
+      this.totalVariableExpensesByYear = kpi;
+    });
+
     this.exService.getExpensesByMonth().subscribe(data => {
-      console.log(data);
+      this.getAnnualExpensesChart(data);
     });
   
-    this.getAnnualExpensesChart();
     this.getCityChart();
     this.getCategoryChart();
     this.getSubcategoryChart();
   }
 
-  async getAnnualExpensesChart() {
-    this.annualChart = await this.exService.getAnnualExpensesAsChart();
+  async getAnnualExpensesChart(data: any) {
+    this.annualChart = await this.exService.getAnnualExpensesAsChart(data);
   }
 
   async getCityChart() {
