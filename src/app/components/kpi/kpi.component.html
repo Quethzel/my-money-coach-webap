@@ -1,4 +1,4 @@
-<div class="card" [ngClass]="kpi.cssClass">
+<div *ngIf="kpi" class="card" [ngClass]="kpi.cssClass">
     <div class="card-body">
         <div>
             <h3 class="card-title kpi-title">{{kpi.value}}</h3>

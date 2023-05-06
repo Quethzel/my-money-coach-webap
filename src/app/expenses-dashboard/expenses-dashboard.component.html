@@ -6,13 +6,12 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-md-3 mb-3">
+        <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
+      </div>
       <div class="col-md-3 mb-3" *ngFor="let kpi of kpis;">
         <app-kpi [kpi]="kpi"></app-kpi>
       </div>
-    </div>
-
-    <div class="col-md-3 mb-3">
-      <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
     </div>
 
     <div class="row">

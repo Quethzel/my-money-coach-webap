@@ -8,3 +8,8 @@ export interface IExpenses {
     cost: Number;
     date: Date;
 }
+
+export interface IExpensesByCity {
+    city: string;
+    total: number;
+}

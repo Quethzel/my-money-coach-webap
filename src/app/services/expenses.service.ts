@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, of, zip } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { KPI } from '../models/kpi';
-import { CustomDataChart } from '../models/custom-data-chart';
-import { ChartConfiguration } from 'chart.js';
+import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { IKPITotalExpenses } from '../models/interfaces/IKPI';
+import { IExpensesByCity } from '../models/interfaces/expenses';
 
 @Injectable({
   providedIn: 'root'
@@ -16,78 +16,30 @@ export class ExpensesService {
 
   getKPIs(): Observable<KPI[]> {
     const KPIs = [
-      new KPI('Annual Total Expenses', 175000, 'bg-primary text-white'),
-      new KPI('Most Expensive Month', 60000, 'bg-warning text-dark', 'March'),
       new KPI('Remaining Monthly Budget', 12000, 'bg-success text-white', '10 Days Left'),
-      new KPI('Another KPI', 5300, 'bg-danger text-white')
+      new KPI('Average Daily Expenses', 2300, 'bg-danger text-white')
     ];
 
     return of(KPIs);
   }
 
-  // Get the sum of the annual expenses grouped by month
-  getExpensesByMonth():Observable<any>  {
-    return this.http.get(`${this.apiURL}/costByMonth/2023`);
+  getVariableExpensesGroupByMonth(year: number):Observable<any>  {
+    return this.http.get(`${this.apiURL}/costByMonth/${year}`);
   }
 
   getKPIAnnualVariableExpenses(year: number) {
-    return this.getAnnualExpenses(year)
-    .pipe(map(result => {
+    const URL = `${this.apiURL}/total/${year}`;
+    return this.http.get<IKPITotalExpenses>(URL).pipe(map(result => {
         return new KPI('Annual Variable Expenses', result.total, 'bg-primary text-white');
     }));  
   }
 
-  private getAnnualExpenses(year: number) {
-    return this.http.get<IKPITotalExpenses>(`${this.apiURL}/total/${year}`)
-  }
-
-  async getAnnualExpensesAsChart(data: any) {
-    const options: ChartConfiguration['options'] = {
-      responsive: true,
-      plugins: { 
-        legend: { display: false }
-      }
-    };
-    const labels = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const months = data.map((item: any) => labels[item._id - 1] );
-    const totals = data.map((item: any) => Number(item.total));
-    const datasets = [
-      { 
-        data: totals,
-        label: 'Expenses By Month', type: 'bar'
-      },
-      {
-        data: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ], 
-        label: 'Budget', type: 'line' 
-      }
-    ];
-
-    return new CustomDataChart<number>(months, datasets, options);
-  }
-
-  async getAnnualExpensesByCityAsChart() {
-    const options: ChartConfiguration['options'] = {
-      responsive: true,
-      plugins: { 
-        legend: { display: false }
-      }
-    };
-    const labels = [ 'Mty', 'CDMX', 'Oax', 'Xal' ];
-    const datasets = [
-      { data: [ 23000, 10000, 3500, 8000 ], label: 'Expenses By City' }
-    ];
-
-    return new CustomDataChart(labels, datasets, options);
+  getVariableExpensesByCity(year: number) {
+    return this.http.get<IExpensesByCity[]>(`${this.apiURL}/totalByCity/${year}`);
   }
 
   async getCategoryExpensesAsChart() {
-    const options: ChartConfiguration['options'] = {
-      responsive: true,
-      indexAxis: 'y',
-      plugins: { 
-        legend: { display: false }
-      }
-    }
+    const options = new ChartConfig('y');
     const labels = [ 'Car', 'Home', 'Undertake', 'Health Care' ];
     const datasets = [
       { data: [ 21000, 13000, 9000, 5500 ], label: 'Expenses By Category' },
@@ -101,13 +53,7 @@ export class ExpensesService {
   }
 
   async getSubcategoryExpensesAsChart() {
-    const options: ChartConfiguration['options'] = {
-      responsive: true,
-      indexAxis: 'y',
-      plugins: { 
-        legend: { display: false }
-      }
-    }
+    const options = new ChartConfig('y');
     const labels = [ 'Restaurant', 'Books', 'Coffee', 'Appointments', 'Food' ];
     const datasets = [
       { 

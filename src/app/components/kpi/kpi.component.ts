@@ -9,11 +9,6 @@ import { KPI } from 'src/app/models/kpi';
 export class KpiComponent {
   @Input() kpi!: KPI;
 
-  constructor() {
-    console.log(this.kpi);
-  }
-
-
-
+  constructor() { }
 
 }
