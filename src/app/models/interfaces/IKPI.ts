@@ -1,3 +1,3 @@
-export interface IKPITotalExpenses {
+export interface IKPIValue {
     total: number;
 }

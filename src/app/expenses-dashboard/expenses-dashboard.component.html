@@ -9,8 +9,14 @@
       <div class="col-md-3 mb-3">
         <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
       </div>
-      <div class="col-md-3 mb-3" *ngFor="let kpi of kpis;">
-        <app-kpi [kpi]="kpi"></app-kpi>
+      <div class="col-md-3 mb-3">
+        <app-kpi [kpi]="kpiMontlyExpenses"></app-kpi>
+      </div>
+      <div class="col-md-3 mb-3">
+        <app-kpi [kpi]="kpiAverageDailyExpenses"></app-kpi>
+      </div>
+      <div class="col-md-3 mb-3">
+        <app-kpi [kpi]="kpiRemainingMontlyBudget"></app-kpi>
       </div>
     </div>
 

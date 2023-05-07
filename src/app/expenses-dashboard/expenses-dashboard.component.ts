@@ -13,14 +13,18 @@ import { ExpensesChartService } from '../services/expenses-chart.service';
 })
 export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   
-  subKPIs: Subscription = new Subscription;
-  subKPITotalExpenses: Subscription = new Subscription;
+  sbKPIRemainingMontlyExpenses: Subscription = new Subscription;
+  sbKPIAnnualExpenses: Subscription = new Subscription;
+  sbKPIMontlyExpenses: Subscription = new Subscription;
+  sbKPIAverageDailyExpenses: Subscription = new Subscription;
 
-  subExpensesByCity: Subscription = new Subscription;
-  subAnnualExpensesByMonth: Subscription = new Subscription;
+  sbExpensesByCity: Subscription = new Subscription;
+  sbAnnualExpensesByMonth: Subscription = new Subscription;
 
-  kpis: KPI[] = [];
   totalVariableExpensesByYear!: KPI;
+  kpiMontlyExpenses!: KPI;
+  kpiAverageDailyExpenses!: KPI;
+  kpiRemainingMontlyBudget!: KPI;
 
   annualChart!: CustomDataChart<number>;
   cityChart!: CustomDataChart<number>;
@@ -30,23 +34,31 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   currentYear = 2023;
 
   constructor(
-    private exService: ExpensesService,
+    private varexService: ExpensesService,
     private chartService: ExpensesChartService) { }
   
   ngOnInit(): void {
-    this.subKPIs = this.exService.getKPIs().subscribe(kpis => {
-      this.kpis = kpis;
-    });
-
-    this.subKPITotalExpenses = this.exService.getKPIAnnualVariableExpenses(this.currentYear).subscribe(kpi => {
+    this.sbKPIAnnualExpenses = this.varexService.getKPIAnnualVariableExpenses(this.currentYear).subscribe(kpi => {
       this.totalVariableExpensesByYear = kpi;
     });
 
-    this.subAnnualExpensesByMonth = this.exService.getVariableExpensesGroupByMonth(this.currentYear).subscribe(data => {
+    this.sbKPIMontlyExpenses = this.varexService.getKPITotalExpensesByCurrentMonth().subscribe(kpi => {
+      this.kpiMontlyExpenses = kpi;
+    });
+
+    this.sbKPIAverageDailyExpenses = this.varexService.getKPIAverageDailyExpensesInThisMonth().subscribe(kpi => {
+      this.kpiAverageDailyExpenses = kpi;
+    });
+
+    this.sbKPIRemainingMontlyExpenses = this.varexService.getKPIRemainingMontlyBudget().subscribe(kpi => {
+      this.kpiRemainingMontlyBudget = kpi;
+    });
+
+    this.sbAnnualExpensesByMonth = this.varexService.getVariableExpensesGroupByMonth(this.currentYear).subscribe(data => {
       this.annualChart = this.chartService.annualByMonth(data);
     });
 
-    this.subExpensesByCity = this.exService.getVariableExpensesByCity(this.currentYear).subscribe(data => {
+    this.sbExpensesByCity = this.varexService.getVariableExpensesByCity(this.currentYear).subscribe(data => {
       this.cityChart = this.chartService.expensesByCity(data);
     })
   
@@ -55,18 +67,21 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subKPIs.unsubscribe();
-    this.subKPITotalExpenses.unsubscribe();
-    this.subAnnualExpensesByMonth.unsubscribe();
-    this.subExpensesByCity.unsubscribe();
+    this.sbKPIAnnualExpenses.unsubscribe();
+    this.sbKPIMontlyExpenses.unsubscribe();
+    this.sbKPIAverageDailyExpenses.unsubscribe();
+    this.sbKPIRemainingMontlyExpenses.unsubscribe();
+    
+    this.sbAnnualExpensesByMonth.unsubscribe();
+    this.sbExpensesByCity.unsubscribe();
   }
   
   async getCategoryChart() {
-    this.categoryChart = await this.exService.getCategoryExpensesAsChart();
+    this.categoryChart = await this.varexService.getCategoryExpensesAsChart();
   }
 
   async getSubcategoryChart() {
-    this.subcategoryChart = await this.exService.getSubcategoryExpensesAsChart();
+    this.subcategoryChart = await this.varexService.getSubcategoryExpensesAsChart();
   }
 
   // events
