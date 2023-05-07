@@ -6,13 +6,17 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { IKPIValue } from '../models/interfaces/IKPI';
 import { IExpensesByCity } from '../models/interfaces/expenses';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesService {
   private apiURL = `${environment.mcApi}/expenses`;
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+    ) { }
 
   getKPIAnnualVariableExpenses(year: number) {
     const URL = `${this.apiURL}/total/${year}`;
@@ -33,8 +37,11 @@ export class ExpensesService {
     }));
   }
 
-  getKPIRemainingMontlyBudget(): Observable<KPI> {
-    return of(new KPI('Remaining Monthly Budget', 12000, 'bg-success text-white', '10 Days Left'));
+  getKPIRemainingMontlyBudget() {
+    return this.http.get<IKPIValue>(`${this.apiURL}/remainingMontlyBudget`).pipe(map(result => {
+      const daysLeftInMonth = this.commonService.getRemainingDaysInCurrentMonth();
+      return new KPI('Remaining Monthly Budget', result.total, 'bg-success text-white', `${daysLeftInMonth} Days Left`);
+    }));
   }
 
   getVariableExpensesGroupByMonth(year: number): Observable<any> {
