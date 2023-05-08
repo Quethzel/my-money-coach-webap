@@ -28,8 +28,7 @@
             Variable Expenses By Month
           </div>
           <div *ngIf="annualChart" class="card-body">
-            <canvas baseChart class="chart" [data]="annualChart.data" [options]="annualChart.options" [type]="'bar'"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            <canvas baseChart class="chart" [data]="annualChart.data" [options]="annualChart.options" [type]="'bar'"></canvas>
           </div>
         </div>
       </div>
@@ -40,8 +39,8 @@
             Variable Expenses By City
           </div>
           <div *ngIf="cityChart" class="card-body">
-            <canvas baseChart class="chart" [data]="cityChart.data" [options]="cityChart.options"
-              [type]="'bar'"></canvas>
+            <canvas baseChart class="chart" [data]="cityChart.data" [options]="cityChart.options" [type]="'bar'"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
           </div>
         </div>
       </div>
@@ -55,8 +54,7 @@
             Variable Expenses By Category
           </div>
           <div *ngIf="categoryChart" class="card-body">
-            <canvas baseChart class="chart" [data]="categoryChart.data" [options]="categoryChart.options" [type]="'bar'"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            <canvas baseChart class="chart" [data]="categoryChart.data" [options]="categoryChart.options" [type]="'bar'"></canvas>
           </div>
         </div>
       </div>

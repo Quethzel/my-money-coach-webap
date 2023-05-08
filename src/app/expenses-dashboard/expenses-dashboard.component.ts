@@ -17,9 +17,12 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   sbKPIAnnualExpenses: Subscription = new Subscription;
   sbKPIMontlyExpenses: Subscription = new Subscription;
   sbKPIAverageDailyExpenses: Subscription = new Subscription;
+  
 
-  sbExpensesByCity: Subscription = new Subscription;
   sbAnnualExpensesByMonth: Subscription = new Subscription;
+  sbCategory: Subscription = new Subscription;
+  sbSubcategory: Subscription = new Subscription;
+  sbExpensesByCity: Subscription = new Subscription;
 
   totalVariableExpensesByYear!: KPI;
   kpiMontlyExpenses!: KPI;
@@ -55,15 +58,22 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     });
 
     this.sbAnnualExpensesByMonth = this.varexService.getVariableExpensesGroupByMonth(this.currentYear).subscribe(data => {
-      this.annualChart = this.chartService.annualByMonth(data);
+      this.annualChart = this.chartService.byMonth(data);
+    });
+
+    this.sbCategory = this.varexService.getByCategory(this.currentYear).subscribe(data => {
+      this.categoryChart = this.chartService.byCategory(data);
+    });
+
+    this.sbSubcategory = this.varexService.getBySubcategory(this.currentYear).subscribe(data => {
+      this.subcategoryChart = this.chartService.bySubcategory(data);
     });
 
     this.sbExpensesByCity = this.varexService.getVariableExpensesByCity(this.currentYear).subscribe(data => {
-      this.cityChart = this.chartService.expensesByCity(data);
+      this.cityChart = this.chartService.byCity(data);
     })
   
-    this.getCategoryChart();
-    this.getSubcategoryChart();
+    
   }
 
   ngOnDestroy(): void {
@@ -73,16 +83,11 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.sbKPIRemainingMontlyExpenses.unsubscribe();
     
     this.sbAnnualExpensesByMonth.unsubscribe();
+    this.sbCategory.unsubscribe();
+    this.sbSubcategory.unsubscribe();
     this.sbExpensesByCity.unsubscribe();
   }
-  
-  async getCategoryChart() {
-    this.categoryChart = await this.varexService.getCategoryExpensesAsChart();
-  }
 
-  async getSubcategoryChart() {
-    this.subcategoryChart = await this.varexService.getSubcategoryExpensesAsChart();
-  }
 
   // events
   chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
