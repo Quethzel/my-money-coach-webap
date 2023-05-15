@@ -1,0 +1,127 @@
+<!-- <div class="card">
+    <div class="card-header py-3">
+        <p class="text-primary m-0 fw-bold">Contact Settings</p>
+    </div>
+    <div class="card-body">
+        <form [formGroup]>
+            <div class="mb-3"><label class="form-label" for="address"><strong>Concept</strong></label>
+                <input  class="form-control" type="text" id="item" placeholder="Sunset Blvd, 38" name="item"></div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3"><label class="form-label" for="city"><strong>City</strong></label><input
+                            class="form-control" type="text" id="city" placeholder="Los Angeles" name="city"></div>
+                </div>
+                <div class="col">
+                    <div class="mb-3"><label class="form-label" for="country"><strong>Country</strong></label><input
+                            class="form-control" type="text" id="country" placeholder="USA" name="country"></div>
+                </div>
+            </div>
+            <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
+        </form>
+    </div>
+</div> -->
+
+<form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" novalidate>
+    <!-- <div class="row">
+        <div class="col-sm-4">
+            <label for="city" class="form-label">City</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Enter city">
+                <span class="input-group-text">MTY</span>
+                <div *ngIf="expenseForm.controls['city'].invalid && (expenseForm.controls['city'].dirty || expenseForm.controls['city'].touched)"
+                    class="invalid-feedback">
+                    <div *ngIf="expenseForm.controls['city'].errors?.['required']">City is required</div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="mb-3">
+        <label for="item" class="form-label">Item</label>
+        <input type="text" class="form-control" id="item" formControlName="item" placeholder="Item">
+        <div *ngIf="expenseForm.controls['item'].invalid && (expenseForm.controls['item'].dirty || expenseForm.controls['item'].touched)"
+            class="invalid-feedback">
+            <div *ngIf="expenseForm.controls['item'].errors?.['required']">Item is required</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <input type="text" class="form-control" id="category" formControlName="category"
+                    placeholder="Category">
+                <div *ngIf="expenseForm.controls['category'].invalid && (expenseForm.controls['category'].dirty || expenseForm.controls['category'].touched)"
+                    class="invalid-feedback">
+                    <div *ngIf="expenseForm.controls['category'].errors?.['required']">Category is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label for="subcategory" class="form-label">Subcategory</label>
+                <input type="text" class="form-control" id="subcategory" formControlName="subcategory"
+                    placeholder="Subcategory">
+                <div *ngIf="expenseForm.controls['subcategory'].invalid && (expenseForm.controls['subcategory'].touched)"
+                    class="invalid-feedback">
+                    <div *ngIf="expenseForm.controls['subcategory'].errors?.['required']">Subcategory is required</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="mb-3">
+                <label for="cost" class="form-label">Cost</label>
+                <input type="number" class="form-control" id="cost" formControlName="cost" placeholder="0.00">
+                <div *ngIf="expenseForm.controls['cost'].invalid && (expenseForm.controls['cost'].dirty || expenseForm.controls['cost'].touched)"
+                    class="invalid-feedback">
+                    <div *ngIf="expenseForm.controls['cost'].errors?.['required']">Cost is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <div class="input-group mb-3">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon1">Prev.</button>
+                    <input type="text" class="form-control" id="date" bsDatepicker formControlName="date" placeholder="YYYY-MM-DD">
+                    <div *ngIf="expenseForm.controls['date'].invalid && (expenseForm.controls['date'].dirty || expenseForm.controls['date'].touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="expenseForm.controls['date'].errors?.['required']">Date is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <label for="city" class="form-label">City</label>
+            <div class="input-group mb-3">
+                <select class="form-select" id="city" formControlName="city" placeholder="Enter city">
+                    <option value="MTY">Monterrey</option>
+                    <option value="CDMX">CDMX</option>
+                    <option value="XAL">Xalapa</option>
+                    <option value="OAX">Oaxaca</option>
+                  </select>
+                <span class="input-group-text">---</span>
+                <div *ngIf="expenseForm.controls['city'].invalid && (expenseForm.controls['city'].dirty || expenseForm.controls['city'].touched)"
+                    class="invalid-feedback">
+                    <div *ngIf="expenseForm.controls['city'].errors?.['required']">City is required</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-grid gap-2">
+        <button type="submit" [disabled]="expenseForm.invalid" class="btn btn-primary">Submit</button>
+    </div>
+
+
+    <!-- <div class="row">
+        <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group mb-3">
+            <input type="text" class="form-control mb-3" placeholder="Datepicker" bsDatepicker formControlName="date" />
+            <pre *ngIf="myForm?.value?.date" class="code-preview">{{myForm?.value?.date | date}}</pre>
+        </div>
+
+    </div> -->
+
+</form>
+
+<p>Form Value: {{ expenseForm.value | json }}</p>

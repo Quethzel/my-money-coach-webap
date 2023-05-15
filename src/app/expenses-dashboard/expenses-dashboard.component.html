@@ -1,11 +1,14 @@
 <main class="mt-5 pt-3">
   <div class="container-fluid">
     <div class="row">
+      <app-expense-form></app-expense-form>
+    </div>
+    <div class="row">
       <div class="col-md-12">
         <h4>Dashboard</h4>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-3 mb-3">
         <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
       </div>
@@ -18,7 +21,7 @@
       <div class="col-md-3 mb-3">
         <app-kpi [kpi]="kpiRemainingMontlyBudget"></app-kpi>
       </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -33,21 +36,32 @@
         </div>
       </div>
       <div class="col-md-6 mb-3">
-        <div class="card h-100">
-          <div class="card-header">
-            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Variable Expenses By City
-          </div>
-          <div *ngIf="cityChart" class="card-body">
-            <canvas baseChart class="chart" [data]="cityChart.data" [options]="cityChart.options" [type]="'bar'"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        <div class="card h-100 border-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
+              </div>
+              <div class="col-md-6 mb-3">
+                <app-kpi [kpi]="kpiMontlyExpenses"></app-kpi>
+              </div>
+              <div class="col-md-6 mb-3">
+                <app-kpi [kpi]="kpiAverageDailyExpenses"></app-kpi>
+              </div>
+              <div class="col-md-6 mb-3">
+                <app-kpi [kpi]="kpiRemainingMontlyBudget"></app-kpi>
+              </div>
+              <div class="col-md-6 mb-3">
+                <button class="btn" (click)="newExpense()">Record Expense</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-6 mb-3">
+      <div class="col-md-5 mb-3">
         <div class="card h-100">
           <div class="card-header">
             <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
@@ -58,7 +72,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <div class="col-md-7 mb-3">
         <div class="card h-100">
           <div class="card-header">
             <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
@@ -73,10 +87,22 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12 mb-3">
-        <div class="card">
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
           <div class="card-header">
-            <span><i class="bi bi-table me-2"></i></span> Annual Cost per day per City
+            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+            Expenses By City
+          </div>
+          <div *ngIf="cityChart" class="card-body">
+            <canvas baseChart class="chart" [data]="cityChart.data" [options]="cityChart.options" [type]="'bar'"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header">
+            <span><i class="bi bi-table me-2"></i></span> Annual Cost per Day per City
           </div>
           <div class="card-body">
             <div class="table-responsive">

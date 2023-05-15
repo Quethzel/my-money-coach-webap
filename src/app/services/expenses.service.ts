@@ -4,7 +4,7 @@ import { KPI } from '../models/kpi';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { IKPIValue } from '../models/interfaces/IKPI';
-import { IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/expenses';
+import { IExpenses, IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/expenses';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -16,6 +16,11 @@ export class ExpensesService {
     private http: HttpClient,
     private commonService: CommonService
   ) { }
+
+  saveExpense(record: IExpenses) {
+    console.log(record);
+    return this.http.post(this.apiURL, record);
+  }
 
   getKPIAnnualVariableExpenses(year: number) {
     const URL = `${this.apiURL}/total/${year}`;

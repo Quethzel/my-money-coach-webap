@@ -12,6 +12,12 @@ import { KpiComponent } from './components/kpi/kpi.component';
 import localeMX from '@angular/common/locales/es-MX';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 registerLocaleData(localeMX);
 
@@ -23,6 +29,9 @@ registerLocaleData(localeMX);
     FooterComponent,
     HeaderComponent,
     KpiComponent,
+    ExpenseFormComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +39,10 @@ registerLocaleData(localeMX);
     BrowserAnimationsModule,
     NgChartsModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BsDatepickerModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

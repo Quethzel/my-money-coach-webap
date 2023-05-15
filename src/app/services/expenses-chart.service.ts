@@ -50,7 +50,7 @@ export class ExpensesChartService {
   }
 
   bySubcategory(data: IExpensesBySubcategory[]) {
-        const options = new ChartConfig();
+        const options = new ChartConfig('y');
         const labels = data.map(e => e.subcategory);
         const totals = data.map(e => e.total);
         const datasets = [

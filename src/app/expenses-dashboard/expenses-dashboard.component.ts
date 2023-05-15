@@ -5,6 +5,8 @@ import { ExpensesService } from '../services/expenses.service';
 import { Subscription } from 'rxjs';
 import { CustomDataChart } from '../models/custom-data-chart';
 import { ExpensesChartService } from '../services/expenses-chart.service';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { ExpenseFormComponent } from '../components/expense-form/expense-form.component';
 
 @Component({
   selector: 'app-expenses-dashboard',
@@ -17,7 +19,6 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   sbKPIAnnualExpenses: Subscription = new Subscription;
   sbKPIMontlyExpenses: Subscription = new Subscription;
   sbKPIAverageDailyExpenses: Subscription = new Subscription;
-  
 
   sbAnnualExpensesByMonth: Subscription = new Subscription;
   sbCategory: Subscription = new Subscription;
@@ -34,13 +35,16 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   categoryChart!: CustomDataChart<number>;
   subcategoryChart!: CustomDataChart<number>;
 
-  currentYear = 2023;
+  currentYear = new Date().getFullYear();
+  bsModalRef?: BsModalRef;
 
   constructor(
     private varexService: ExpensesService,
-    private chartService: ExpensesChartService) { }
+    private chartService: ExpensesChartService, private modalService: BsModalService) { }
   
   ngOnInit(): void {
+    if (1 < 0) {
+
     this.sbKPIAnnualExpenses = this.varexService.getKPIAnnualVariableExpenses(this.currentYear).subscribe(kpi => {
       this.totalVariableExpensesByYear = kpi;
     });
@@ -73,6 +77,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
       this.cityChart = this.chartService.byCity(data);
     })
   
+  }
     
   }
 
@@ -88,6 +93,10 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.sbExpensesByCity.unsubscribe();
   }
 
+  newExpense() {
+    this.bsModalRef = this.modalService.show(ExpenseFormComponent);
+  }
+
 
   // events
   chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
@@ -95,7 +104,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   }
 
   chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
 
 
