@@ -11,13 +11,14 @@ import { NgChartsModule } from 'ng2-charts';
 import { KpiComponent } from './components/kpi/kpi.component';
 import localeMX from '@angular/common/locales/es-MX';
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { AuthInterceptorService } from './authInterceptor';
 
 registerLocaleData(localeMX);
 
@@ -44,7 +45,13 @@ registerLocaleData(localeMX);
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: AuthInterceptorService, 
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
