@@ -11,10 +11,20 @@
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Expenses</a>
+          <a class="nav-link" routerLink="/expenses">New Expense</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Income</a>
+        </li>
+
+        <li>
+          <a *ngIf="!isAuth" class="nav-link" routerLink="/register">Register</a>
+        </li>
+        <li>
+          <a *ngIf="!isAuth" class="nav-link" routerLink="/login">Login</a>
+        </li>
+        <li>
+          <a *ngIf="isAuth" class="nav-link" (click)="logout()">Logout</a>
         </li>
       </ul>
     </div>

@@ -23,9 +23,7 @@ export class RegisterComponent {
       password: this.password
     };
 
-    this.authService.userRegister(user).subscribe(result => {
-      console.log(result);
-    });
+    this.authService.userRegister(user);
 
   }
 

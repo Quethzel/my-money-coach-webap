@@ -11,21 +11,34 @@ export class AuthService {
   private TOKEN_KEY = 'token';
   constructor(private http: HttpClient) { }
 
-get token() {
-  return localStorage.getItem(this.TOKEN_KEY);
-}
+  get token() {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  get isAuthenticated() {
+    return !!localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  logout() {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
 
   userRegister(user: any) {
-    return this.http.post(`${this.apiURL}/register`, user);
+    return this.http.post<any>(`${this.apiURL}/register`, user).subscribe(res => {
+      this.saveToken(res);
+    })
   }
 
 
   loginByEmail(email: string, password: string) {
     this.http.post<any>(`${this.apiURL}/loginByEmail`, { email, password})
     .subscribe(res => {
-      console.log(res);
-      localStorage.setItem(this.TOKEN_KEY, res);
+      this.saveToken(res);
     });
+  }
+
+  private saveToken(token: any) {
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   test() {
