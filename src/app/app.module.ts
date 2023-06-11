@@ -19,6 +19,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthInterceptorService } from './authInterceptor';
+import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 
 registerLocaleData(localeMX);
 
@@ -33,6 +34,7 @@ registerLocaleData(localeMX);
     ExpenseFormComponent,
     LoginComponent,
     RegisterComponent,
+    ForgotPassComponent,
   ],
   imports: [
     BrowserModule,
