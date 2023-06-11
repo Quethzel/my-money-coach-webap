@@ -4,14 +4,15 @@ import { ExpensesDashboardComponent } from './expenses-dashboard/expenses-dashbo
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, pathMatch: "full" },
   { path: 'register', component: RegisterComponent, pathMatch: "full" },
-  { path: 'home', component: ExpensesDashboardComponent },
-  { path: 'expenses', component: ExpenseFormComponent, pathMatch: "full" },
-  { path: '', component: ExpensesDashboardComponent },
-  { path: '**', component: ExpensesDashboardComponent, pathMatch: 'full' },
+  { path: 'home', component: ExpensesDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'expenses', component: ExpenseFormComponent, pathMatch: "full", canActivate: [AuthGuard] },
+  { path: '', component: ExpensesDashboardComponent, canActivate: [AuthGuard] },
+  { path: '**', component: ExpensesDashboardComponent, pathMatch: 'full', canActivate: [AuthGuard] },
 ];
 
 @NgModule({

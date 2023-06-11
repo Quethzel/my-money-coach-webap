@@ -23,8 +23,7 @@ export class RegisterComponent {
       password: this.password
     };
 
-    this.authService.userRegister(user);
-
+    this.authService.userRegister(user);//TODO: pass will not be send it without encryption!
   }
 
 }

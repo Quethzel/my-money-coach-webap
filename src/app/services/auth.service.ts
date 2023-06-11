@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, lastValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,7 +10,11 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   private apiURL = `${environment.mcApi}`;
   private TOKEN_KEY = 'token';
-  constructor(private http: HttpClient) { }
+
+  private _userAuth = new BehaviorSubject(false);
+  userAuth = this._userAuth.asObservable();
+
+  constructor(private router: Router, private http: HttpClient) { }
 
   get token() {
     return localStorage.getItem(this.TOKEN_KEY);
@@ -19,26 +24,43 @@ export class AuthService {
     return !!localStorage.getItem(this.TOKEN_KEY);
   }
 
-  logout() {
-    localStorage.removeItem(this.TOKEN_KEY);
-  }
-
   userRegister(user: any) {
-    return this.http.post<any>(`${this.apiURL}/register`, user).subscribe(res => {
-      this.saveToken(res);
-    })
+    return this.http.post<any>(`${this.apiURL}/register`, user).subscribe({
+      next: (result) => {
+        this.saveToken(result);
+        this.navToHome();
+      },
+      error: (e) => {
+        console.error(e);
+      }
+    });
   }
-
 
   loginByEmail(email: string, password: string) {
     this.http.post<any>(`${this.apiURL}/loginByEmail`, { email, password})
-    .subscribe(res => {
-      this.saveToken(res);
+    .subscribe({
+        next: (result) => {
+          this.saveToken(result);
+          this.navToHome();
+        },
+        error: (e) => {
+          console.error(e); 
+        }
     });
+  }
+
+  logout() {
+    localStorage.removeItem(this.TOKEN_KEY);
+    this._userAuth.next(true);
   }
 
   private saveToken(token: any) {
     localStorage.setItem(this.TOKEN_KEY, token);
+    this._userAuth.next(true);
+  }
+
+  private navToHome() { 
+      this.router.navigate(['/home']);
   }
 
   test() {

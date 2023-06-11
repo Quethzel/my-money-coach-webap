@@ -13,7 +13,7 @@ export class LoginComponent {
   constructor(private authService: AuthService) { }
 
   login() {
-    this.authService.loginByEmail(this.email, this.pass);
+    this.authService.loginByEmail(this.email, this.pass); //TODO: pass will not send without be encripted!
   }
 
   test() {

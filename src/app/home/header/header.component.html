@@ -1,30 +1,33 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">My Money Coach</a>
+    <a class="navbar-brand" routerLink="/home">My Money Coach</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul *ngIf="isAuth" class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" routerLink="/home">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/expenses">New Expense</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Income</a>
-        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" routerLink="/">Income</a>
+        </li> -->
+      </ul>
+    </div>
 
-        <li>
-          <a *ngIf="!isAuth" class="nav-link" routerLink="/register">Register</a>
-        </li>
-        <li>
-          <a *ngIf="!isAuth" class="nav-link" routerLink="/login">Login</a>
-        </li>
-        <li>
-          <a *ngIf="isAuth" class="nav-link" (click)="logout()">Logout</a>
+    <div class="d-flex">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li *ngIf="isAuth" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item">My Account</a></li>
+            <li><a class="dropdown-item">Settings</a></li>
+            <li><a class="dropdown-item">Logout</a></li>
+          </ul>
         </li>
       </ul>
     </div>

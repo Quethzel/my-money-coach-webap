@@ -10,7 +10,9 @@ export class HeaderComponent {
   isAuth!: boolean;
 
   constructor(private authService: AuthService) {
-    this.isAuth = this.authService.isAuthenticated;
+    this.authService.userAuth.subscribe(() => {
+      this.isAuth = this.authService.isAuthenticated;
+    });
   }
 
   logout() {
