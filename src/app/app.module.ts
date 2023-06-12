@@ -20,6 +20,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthInterceptorService } from './authInterceptor';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
+import { ExpensesListComponent } from './components/expenses-list/expenses-list.component';
+import { ExpensesComponent } from './components/expenses/expenses.component';
 
 registerLocaleData(localeMX);
 
@@ -35,6 +37,8 @@ registerLocaleData(localeMX);
     LoginComponent,
     RegisterComponent,
     ForgotPassComponent,
+    ExpensesListComponent,
+    ExpensesComponent,
   ],
   imports: [
     BrowserModule,

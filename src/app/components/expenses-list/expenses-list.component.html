@@ -1,0 +1,22 @@
+<table class="table table-hover table-bordered table-responsive">
+    <thead>
+      <tr>
+        <th scope="col">City</th>
+        <th scope="col">Item</th>
+        <th scope="col">Category</th>
+        <th scope="col">Subcategory</th>
+        <th scope="col">Cost</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let expense of expenses | async;">
+            <td>{{expense.cityCode}}</td>
+            <td>{{expense.item}}</td>
+            <td>{{expense.category}}</td>
+            <td>{{expense.subcategory}}</td>
+            <td>{{expense.cost}}</td>
+            <td>{{expense.date}}</td>
+        </tr>
+    </tbody>
+  </table>

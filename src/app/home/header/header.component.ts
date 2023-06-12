@@ -8,10 +8,16 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HeaderComponent {
   isAuth!: boolean;
+  username!: string;
 
   constructor(private authService: AuthService) {
     this.authService.userAuth.subscribe(() => {
       this.isAuth = this.authService.isAuthenticated;
+      if (this.isAuth) {
+        this.username = this.authService.username != null
+          ? this.authService.username
+          : 'Account';
+      }
     });
   }
 

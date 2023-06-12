@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
-import { IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/expenses';
+import { IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
 
 @Injectable({
   providedIn: 'root'

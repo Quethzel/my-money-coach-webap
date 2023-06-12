@@ -1,34 +1,36 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/home">My Money Coach</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul *ngIf="isAuth" class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="/home">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/expenses">New Expense</a>
-        </li>
-      </ul>
-    </div>
+<div class="row">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home">My Money Coach</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul *ngIf="isAuth" class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/expenses">Expenses</a>
+          </li>
+        </ul>
+      </div>
 
-    <div class="d-flex">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li *ngIf="isAuth" class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">Account
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item">My Account</a></li>
-            <li><a class="dropdown-item">Settings</a></li>
-            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
+      <div class="d-flex">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li *ngIf="isAuth" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">{{username}}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item">My Account</a></li>
+              <li><a class="dropdown-item">Settings</a></li>
+              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { IExpenses } from 'src/app/models/interfaces/expenses';
+import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 import { ExpensesService } from 'src/app/services/expenses.service';
 
 @Component({

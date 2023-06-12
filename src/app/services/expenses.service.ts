@@ -4,18 +4,25 @@ import { KPI } from '../models/kpi';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { IKPIValue } from '../models/interfaces/IKPI';
-import { IExpenses, IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/expenses';
+import { IExpenses, IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
 import { CommonService } from './common.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesService {
   private apiURL = `${environment.mcApi}/expenses`;
+
   constructor(
     private http: HttpClient,
-    private commonService: CommonService
+    private commonService: CommonService,
   ) { }
+
+  getExpenses() {
+    const URL = `${this.apiURL}`;
+    return this.http.get<IExpenses[]>(URL);
+  }
 
   saveExpense(record: IExpenses) {
     console.log(record);
