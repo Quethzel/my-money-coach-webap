@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 import { ExpensesService } from 'src/app/services/expenses.service';
 
@@ -14,12 +15,16 @@ export class ExpenseFormComponent implements OnInit {
 
   myForm?: UntypedFormGroup;
   
-  constructor(private formBuilder: FormBuilder, private expService: ExpensesService, private fb: UntypedFormBuilder) { }
+  constructor(
+    public bsModalRef: BsModalRef,
+    private formBuilder: FormBuilder,
+    private expService: ExpensesService,
+    private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.expenseForm = this.formBuilder.group({
       city: ['', Validators.required],
-      cityCode: ['', Validators.required],
+      cityCode: [''],
       item: ['', Validators.required],
       category: ['', Validators.required],
       subcategory: ['', Validators.required],
@@ -32,15 +37,28 @@ export class ExpenseFormComponent implements OnInit {
       range: null
     });
 
+    // this.expenseForm.controls['city'].setValue("MTY");
+  }
 
+  chageCity($event: Event) {
+    this.expenseForm.patchValue({
+      cityCode: ($event.target as HTMLInputElement).value
+    });
   }
 
   onSubmit(): void {
-    console.log(this.expenseForm.value);
-
     this.expense = this.expenseForm.getRawValue();
     
-    this.expService.saveExpense(this.expense);
-
+    this.expService.saveExpense(this.expense).subscribe({
+      next: (expense) => {
+        this.bsModalRef.hide();
+      },
+      error: (e) => {
+        alert(e.error?.message);
+        console.error(e);
+      }
+    });
   }
+
+
 }

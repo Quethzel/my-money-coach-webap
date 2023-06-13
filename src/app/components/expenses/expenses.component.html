@@ -1,3 +1,29 @@
 <div class="row">
-    <app-expenses-list [expenses]="expenses"></app-expenses-list>
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Expenses</h1>
+        <div class="btn-toolbar align-items-center mb-2 mb-md-0">
+            <div class="me-2">
+                <button type="button" (click)="openExpenseModal()" class="btn btn-sm btn-outline-secondary">New</button>
+            </div>
+
+            <div class="dropdown">
+                <button type="button"
+                    class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                    data-bs-toggle="dropdown">
+                    Month
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item">Day</a></li>
+                    <li><a class="dropdown-item">Week</a></li>
+                    <li><a class="dropdown-item">Year</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- chart should be here -->
+
+    <h3>Junio 2023</h3>
+    <app-expenses-list [expenses]="expenses"></app-expenses-list>    
 </div>

@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import { IKPIValue } from '../models/interfaces/IKPI';
 import { IExpenses, IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
 import { CommonService } from './common.service';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,6 @@ export class ExpensesService {
   }
 
   saveExpense(record: IExpenses) {
-    console.log(record);
     return this.http.post(this.apiURL, record);
   }
 
