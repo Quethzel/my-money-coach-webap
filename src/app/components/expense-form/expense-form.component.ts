@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { IUserCity } from 'src/app/models/interfaces/ICity';
@@ -10,7 +10,9 @@ import { ExpensesService } from 'src/app/services/expenses.service';
   templateUrl: './expense-form.component.html',
   styleUrls: ['./expense-form.component.scss']
 })
-export class ExpenseFormComponent implements OnInit {
+export class ExpenseFormComponent implements OnInit, AfterViewInit {
+  @ViewChild('item') itemField!: ElementRef;
+
   expense!: IExpenses;
   expenseForm!: FormGroup;
   cities: IUserCity[] = [];
@@ -22,19 +24,12 @@ export class ExpenseFormComponent implements OnInit {
     public bsModalRef: BsModalRef,
     private expService: ExpensesService,
     ) {
-      
       this.maxDate = new Date();
-
     }
 
   ngOnInit(): void {
     this.expenseForm = this.fb.group({
       city: new FormControl(),
-      // city: this.fb.group({
-      //   code: [''],
-      //   name: [''],
-      //   default: [false]
-      // }),
       item: ['', Validators.required],
       category: ['', Validators.required],
       subcategory: ['', Validators.required],
@@ -50,6 +45,12 @@ export class ExpenseFormComponent implements OnInit {
     ];
 
     this.setDefaultCity();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.itemField?.nativeElement?.focus();
+    }, 500);
   }
 
   onChangeCity($event: any) {

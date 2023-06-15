@@ -5,7 +5,7 @@ export interface IExpenses {
     item: String;
     category: String;
     subcategory: String;
-    cost: Number;
+    cost: number;
     date: Date;
 }
 

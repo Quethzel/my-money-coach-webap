@@ -10,7 +10,7 @@ import { HeaderComponent } from './home/header/header.component';
 import { NgChartsModule } from 'ng2-charts';
 import { KpiComponent } from './components/kpi/kpi.component';
 import localeMX from '@angular/common/locales/es-MX';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ExpenseFormComponent } from './components/expense-form/expense-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,6 +42,7 @@ registerLocaleData(localeMX);
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgChartsModule,

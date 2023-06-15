@@ -10,13 +10,13 @@
       </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let expense of expenses | async;">
-            <td>{{expense.cityCode}}</td>
-            <td>{{expense.item}}</td>
-            <td>{{expense.category}}</td>
-            <td>{{expense.subcategory}}</td>
-            <td>{{expense.cost}}</td>
-            <td>{{expense.date}}</td>
+        <tr *ngFor="let expense of expenses | async">
+            <td>{{ expense.cityCode }}</td>
+            <td>{{ expense.item }}</td>
+            <td>{{ expense.category }}</td>
+            <td>{{ expense.subcategory }}</td>
+            <td>{{ expense.cost | currency }}</td>
+            <td>{{expense.date | date: 'dd/MM/yyyy' }}</td>
         </tr>
     </tbody>
   </table>

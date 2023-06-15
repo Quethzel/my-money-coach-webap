@@ -9,5 +9,7 @@ import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 })
 export class ExpensesListComponent {
     @Input() expenses!: Observable<IExpenses[]>;
+    
+    constructor() { }
 
 }
