@@ -9,7 +9,7 @@
     <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="mb-3">
             <label for="item" class="form-label">Item</label>
-            <input type="text" class="form-control" id="item" formControlName="item" placeholder="Item">
+            <input type="text" class="form-control" id="item" formControlName="item" placeholder="Item" autofocus>
             <div *ngIf="expenseForm.controls['item'].invalid && (expenseForm.controls['item'].dirty || expenseForm.controls['item'].touched)"
                 class="invalid-feedback">
                 <div *ngIf="expenseForm.controls['item'].errors?.['required']">Item is required</div>
@@ -54,8 +54,8 @@
                 <div class="mb-3">
                     <label for="date" class="form-label">Date</label>
                     <div class="input-group mb-3">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon1">Prev.</button>
-                        <input type="text" class="form-control" id="date" bsDatepicker formControlName="date" placeholder="YYYY-MM-DD">
+                        <button class="btn btn-outline-secondary" type="button" id="prev" (click)="setPreviousDate()">Prev.</button>
+                        <input type="text" class="form-control" id="date" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [maxDate]="maxDate" formControlName="date" placeholder="YYYY-MM-DD">
                         <div *ngIf="expenseForm.controls['date'].invalid && (expenseForm.controls['date'].dirty || expenseForm.controls['date'].touched)"
                             class="invalid-feedback">
                             <div *ngIf="expenseForm.controls['date'].errors?.['required']">Date is required</div>
@@ -63,16 +63,14 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-4">
                 <label for="city" class="form-label">City</label>
                 <div class="input-group mb-3">
-                    <select class="form-select" id="city" (change)="chageCity($event)" formControlName="city" placeholder="Enter city">
-                        <option value="MTY">Monterrey</option>
-                        <option value="CDMX">CDMX</option>
-                        <option value="XAL">Xalapa</option>
-                        <option value="OAX">Oaxaca</option>
+                    <select class="form-select" id="city" formControlName="city" (change)="onChangeCity($event)" placeholder="Choose city">
+                        <option *ngFor="let city of cities" [ngValue]="city" [attr.data-value]="city.code">{{city.name}}</option>
                       </select>
-                    <span class="input-group-text">---</span>
+                    <span class="input-group-text">{{cityCode}}</span>
                     <div *ngIf="expenseForm.controls['city'].invalid && (expenseForm.controls['city'].dirty || expenseForm.controls['city'].touched)"
                         class="invalid-feedback">
                         <div *ngIf="expenseForm.controls['city'].errors?.['required']">City is required</div>
