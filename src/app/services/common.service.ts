@@ -14,4 +14,12 @@ export class CommonService {
     return daysInMonth - today.getDate();;
   }
 
+  getMonthName(month: number) {
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June', 
+      'July', 'August', 'September', 'October', 'November'];
+
+      return monthNames[month];
+  }
+
 }

@@ -7,23 +7,16 @@
                 <button type="button" (click)="openExpenseModal()" class="btn btn-sm btn-outline-secondary">New</button>
             </div>
 
-            <div class="dropdown">
-                <button type="button"
-                    class="btn btn-sm btn-outline-secondary dropdown-toggle" 
-                    data-bs-toggle="dropdown">
-                    Month
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item">Week</a></li>
-                    <li><a class="dropdown-item">Year</a></li>
-                </ul>
+            <div class="btn-group btn-group-sm btn-outline ms-2">
+                <a (click)="filterBy('month')" [class.active]="activeFilter == 'month'" class="btn btn-outline-secondary" aria-current="page">Month</a>
+                <a (click)="filterBy('year')" [class.active]="activeFilter == 'year'" class="btn btn-outline-secondary">Year</a>
             </div>
         </div>
     </div>
 
     <!-- chart should be here -->
 
-    <h3>Junio 2023</h3>
+    <h3><span *ngIf="activeFilter == 'month'">{{currentMonth}}</span> {{currentDate.getFullYear()}}</h3>
     <app-expenses-list [expenses]="expenses"></app-expenses-list>
 
 </div>

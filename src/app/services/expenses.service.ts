@@ -18,8 +18,16 @@ export class ExpensesService {
     private commonService: CommonService,
   ) { }
 
-  getExpenses() {
+  getAllExpenses() {
     const URL = `${this.apiURL}`;
+    return this.http.get<IExpenses[]>(URL);
+  }
+
+  getExpenses(year: number, month?: number) {
+    const URL = month
+      ? `${this.apiURL}/${year}/${month}`
+      : `${this.apiURL}/${year}`;
+      
     return this.http.get<IExpenses[]>(URL);
   }
 
