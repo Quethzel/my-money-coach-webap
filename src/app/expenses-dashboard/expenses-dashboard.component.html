@@ -8,7 +8,7 @@
         <h4>Dashboard</h4>
       </div>
     </div>
-    <!-- <div class="row">
+    <div class="row">
       <div class="col-md-3 mb-3">
         <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
       </div>
@@ -21,21 +21,21 @@
       <div class="col-md-3 mb-3">
         <app-kpi [kpi]="kpiRemainingMontlyBudget"></app-kpi>
       </div>
-    </div> -->
+    </div>
 
     <div class="row">
       <div class="col-md-6 mb-3">
         <div class="card h-100">
           <div class="card-header">
             <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Variable Expenses By Month
+            Expenses By Month
           </div>
           <div *ngIf="annualChart" class="card-body">
             <canvas baseChart class="chart" [data]="annualChart.data" [options]="annualChart.options" [type]="'bar'"></canvas>
           </div>
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <!-- <div class="col-md-6 mb-3">
         <div class="card h-100 border-0">
           <div class="card-body">
             <div class="row">
@@ -57,26 +57,26 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="row">
-      <div class="col-md-5 mb-3">
+      <div class="col-md-6 mb-3">
         <div class="card h-100">
           <div class="card-header">
             <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Variable Expenses By Category
+            Expenses By Category
           </div>
           <div *ngIf="categoryChart" class="card-body">
             <canvas baseChart class="chart" [data]="categoryChart.data" [options]="categoryChart.options" [type]="'bar'"></canvas>
           </div>
         </div>
       </div>
-      <div class="col-md-7 mb-3">
+      <div class="col-md-6 mb-3">
         <div class="card h-100">
           <div class="card-header">
             <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Variable Expenses By Subcategory
+            Expenses By Subcategory
           </div>
           <div *ngIf="subcategoryChart" class="card-body">
             <canvas baseChart class="chart" [data]="subcategoryChart.data" [options]="subcategoryChart.options"
@@ -99,6 +99,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-md-6 mb-3">
         <div class="card h-100">
           <div class="card-header">
@@ -147,5 +148,6 @@
         </div>
       </div>
     </div>
+
   </div>
 </main>

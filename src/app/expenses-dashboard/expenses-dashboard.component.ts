@@ -43,37 +43,37 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     private chartService: ExpensesChartService, private modalService: BsModalService) { }
   
   ngOnInit(): void {
-    // this.sbKPIAnnualExpenses = this.varexService.getKPIAnnualVariableExpenses(this.currentYear).subscribe(kpi => {
-    //   this.totalVariableExpensesByYear = kpi;
-    // });
+    this.sbKPIAnnualExpenses = this.varexService.getKPIAnnualVariableExpenses(this.currentYear).subscribe(kpi => {
+      this.totalVariableExpensesByYear = kpi;
+    });
 
-    // this.sbKPIMontlyExpenses = this.varexService.getKPITotalExpensesByCurrentMonth().subscribe(kpi => {
-    //   this.kpiMontlyExpenses = kpi;
-    // });
+    this.sbKPIMontlyExpenses = this.varexService.getKPITotalExpensesByCurrentMonth().subscribe(kpi => {
+      this.kpiMontlyExpenses = kpi;
+    });
 
-    // this.sbKPIAverageDailyExpenses = this.varexService.getKPIAverageDailyExpensesInThisMonth().subscribe(kpi => {
-    //   this.kpiAverageDailyExpenses = kpi;
-    // });
+    this.sbKPIAverageDailyExpenses = this.varexService.getKPIAverageDailyExpensesInThisMonth().subscribe(kpi => {
+      this.kpiAverageDailyExpenses = kpi;
+    });
 
-    // this.sbKPIRemainingMontlyExpenses = this.varexService.getKPIRemainingMontlyBudget().subscribe(kpi => {
-    //   this.kpiRemainingMontlyBudget = kpi;
-    // });
+    this.sbKPIRemainingMontlyExpenses = this.varexService.getKPIRemainingMontlyBudget().subscribe(kpi => {
+      this.kpiRemainingMontlyBudget = kpi;
+    });
 
     this.sbAnnualExpensesByMonth = this.varexService.getVariableExpensesGroupByMonth(this.currentYear).subscribe(data => {
       this.annualChart = this.chartService.byMonth(data);
     });
 
-    // this.sbCategory = this.varexService.getByCategory(this.currentYear).subscribe(data => {
-    //   this.categoryChart = this.chartService.byCategory(data);
-    // });
+    this.sbCategory = this.varexService.getByCategory(this.currentYear).subscribe(data => {
+      this.categoryChart = this.chartService.byCategory(data);
+    });
 
-    // this.sbSubcategory = this.varexService.getBySubcategory(this.currentYear).subscribe(data => {
-    //   this.subcategoryChart = this.chartService.bySubcategory(data);
-    // });
+    this.sbSubcategory = this.varexService.getBySubcategory(this.currentYear).subscribe(data => {
+      this.subcategoryChart = this.chartService.bySubcategory(data);
+    });
 
-    // this.sbExpensesByCity = this.varexService.getVariableExpensesByCity(this.currentYear).subscribe(data => {
-    //   this.cityChart = this.chartService.byCity(data);
-    // });
+    this.sbExpensesByCity = this.varexService.getVariableExpensesByCity(this.currentYear).subscribe(data => {
+      this.cityChart = this.chartService.byCity(data);
+    });
     
   }
 

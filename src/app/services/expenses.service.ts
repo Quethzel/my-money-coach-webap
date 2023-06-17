@@ -38,7 +38,7 @@ export class ExpensesService {
   getKPIAnnualVariableExpenses(year: number) {
     const URL = `${this.apiURL}/total/${year}`;
     return this.http.get<IKPIValue>(URL).pipe(map(result => {
-      return new KPI('Annual Variable Expenses to Date', result.total, 'bg-primary text-white');
+      return new KPI('Annual Accrued Expenses', result.total, 'bg-primary text-white');
     }));
   }
 
