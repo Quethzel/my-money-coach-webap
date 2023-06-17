@@ -25,8 +25,8 @@ export class ExpensesService {
 
   getExpenses(year: number, month?: number) {
     const URL = month
-      ? `${this.apiURL}/${year}/${month}`
-      : `${this.apiURL}/${year}`;
+      ? `${this.apiURL}/list/${year}/${month}`
+      : `${this.apiURL}/list/${year}`;
       
     return this.http.get<IExpenses[]>(URL);
   }
@@ -62,7 +62,7 @@ export class ExpensesService {
   }
 
   getVariableExpensesGroupByMonth(year: number) {
-    return this.http.get<IExpensesByMonth[]>(`${this.apiURL}/costByMonth/${year}`);
+    return this.http.get<IExpensesByMonth[]>(`${this.apiURL}/groupByMonth/${year}`);
   }
 
   getVariableExpensesByCity(year: number) {
