@@ -16,7 +16,11 @@
 
     <!-- chart should be here -->
 
-    <h3><span *ngIf="activeFilter == 'month'">{{currentMonth}}</span> {{currentDate.getFullYear()}}</h3>
+    <h3>
+        <span *ngIf="activeFilter == 'month'">{{currentMonth}}</span>
+        <span *ngIf="activeFilter == 'year'">Year</span>
+        {{currentDate.getFullYear()}}
+    </h3>
     <app-expenses-list [expenses]="expenses" (editItem)="editItem($event)" (deleteItem)="deleteItem($event)"></app-expenses-list>
 
 </div>
