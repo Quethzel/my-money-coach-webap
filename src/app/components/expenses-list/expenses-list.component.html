@@ -1,6 +1,7 @@
 <table class="table table-hover table-responsive small">
     <thead>
       <tr>
+        <th scope="col">Action</th>
         <th scope="col">City</th>
         <th scope="col">Item</th>
         <th scope="col">Category</th>
@@ -11,6 +12,10 @@
     </thead>
     <tbody>
         <tr *ngFor="let expense of expenses | async">
+            <td>
+              <a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="delete(expense)"><fa-icon [icon]="['fas', 'trash']"></fa-icon> </a>
+              <a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(expense)"><fa-icon [icon]="['fas', 'pen-to-square']"></fa-icon> </a>
+            </td>
             <td>{{ expense.cityCode }}</td>
             <td>{{ expense.item }}</td>
             <td>{{ expense.category }}</td>

@@ -1,5 +1,6 @@
 //TODO: this is not used
 export interface IExpenses {
+    id: string;
     city: String;
     cityCode: String;
     item: String;

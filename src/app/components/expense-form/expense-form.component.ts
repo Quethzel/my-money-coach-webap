@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IUserCity } from 'src/app/models/interfaces/ICity';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 import { ExpensesService } from 'src/app/services/expenses.service';
@@ -13,6 +13,7 @@ import { ExpensesService } from 'src/app/services/expenses.service';
 export class ExpenseFormComponent implements OnInit, AfterViewInit {
   @ViewChild('item') itemField!: ElementRef;
 
+  params: Object;
   expense!: IExpenses;
   expenseForm!: FormGroup;
   cities: IUserCity[] = [];
@@ -20,12 +21,14 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
   maxDate: Date;
 
   constructor(
-    private fb: FormBuilder,
     public bsModalRef: BsModalRef,
+    private fb: FormBuilder,
+    private modalService: BsModalService,
     private expService: ExpensesService,
-    ) {
-      this.maxDate = new Date();
-    }
+  ) {
+    this.maxDate = new Date();
+    this.params = (this.modalService.config.initialState) as Object;
+  }
 
   ngOnInit(): void {
     this.expenseForm = this.fb.group({
@@ -37,6 +40,7 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
       date: [new Date(), Validators.required]
     });
 
+    //TODO: cities should be comes from user cities
     this.cities = [
       { code: 'MTY', name: 'Monterrey', default: true },
       { code: 'CDMX', name: 'CDMX', default: false },
@@ -44,7 +48,12 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
       { code: 'OAX', name: 'Oaxaca', default: false },
     ];
 
-    this.setDefaultCity();
+    if (Object.keys(this.params).length > 0) {
+      this.fillDataForm(this.params as IExpenses);
+    } else {
+      this.setDefaultCity();
+    }
+
   }
 
   ngAfterViewInit() {
@@ -56,6 +65,37 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
   onChangeCity($event: any) {
     const cc = $event.target.selectedOptions[0]?.dataset?.value;
     this.cityCode = cc ? cc : '---';
+  }
+
+  fillDataForm(expense: IExpenses) {
+    this.expenseForm.setValue({
+      item: expense.item,
+      city: expense.city,
+      category: expense.category,
+      subcategory: expense.subcategory,
+      cost: expense.cost,
+      date: expense.date
+    });
+
+    const city = this.cities.find(c => c.code == expense.cityCode);
+    if (city) {
+      this.expenseForm.controls['city'].setValue(city, { onlySelf: true });
+      this.cityCode = city.code;
+    } else {
+      this.setDefaultCity();
+      alert(`City ${expense.city} no longer exists. Default city set`);
+    }
+  }
+
+  setDefaultCity() {
+    const defaultCity = this.cities.find(c => c.default == true);
+    if (defaultCity) {
+      this.expenseForm.controls['city'].setValue(defaultCity, { onlySelf: true });
+      this.cityCode = defaultCity.code;
+    } else {
+      this.expenseForm.controls['city'].setValue(this.cities[0]);
+      this.cityCode = this.cities[0].code;
+    }
   }
 
   setPreviousDate() {
@@ -70,20 +110,9 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setDefaultCity() {
-    const defaultCity = this.cities.find(c => c.default == true);
-    if (defaultCity) {
-      this.expenseForm.controls['city'].setValue(defaultCity, {onlySelf: true});
-      this.cityCode = defaultCity.code;
-    } else {
-      this.expenseForm.controls['city'].setValue(this.cities[0]);
-      this.cityCode = this.cities[0].code;
-    }
-  }
-
   onSubmit(): void {
     this.expense = this.mapToExpense(this.expenseForm.getRawValue());
-  
+
     this.expService.saveExpense(this.expense).subscribe({
       next: (expense) => {
         this.bsModalRef.hide();

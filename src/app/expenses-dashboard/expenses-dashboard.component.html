@@ -35,29 +35,20 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-6 mb-3">
-        <div class="card h-100 border-0">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
-              </div>
-              <div class="col-md-6 mb-3">
-                <app-kpi [kpi]="kpiMontlyExpenses"></app-kpi>
-              </div>
-              <div class="col-md-6 mb-3">
-                <app-kpi [kpi]="kpiAverageDailyExpenses"></app-kpi>
-              </div>
-              <div class="col-md-6 mb-3">
-                <app-kpi [kpi]="kpiRemainingMontlyBudget"></app-kpi>
-              </div>
-              <div class="col-md-6 mb-3">
-                <button class="btn" (click)="newExpense()">Record Expense</button>
-              </div>
-            </div>
+
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header">
+            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+            Expenses By City
+          </div>
+          <div *ngIf="cityChart" class="card-body">
+            <canvas baseChart class="chart" [data]="cityChart.data" [options]="cityChart.options" [type]="'bar'"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
           </div>
         </div>
-      </div> -->
+      </div>
+      
     </div>
 
     <div class="row">
@@ -87,20 +78,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6 mb-3">
-        <div class="card h-100">
-          <div class="card-header">
-            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Expenses By City
-          </div>
-          <div *ngIf="cityChart" class="card-body">
-            <canvas baseChart class="chart" [data]="cityChart.data" [options]="cityChart.options" [type]="'bar'"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-3">
+      <!-- <div class="col-md-6 mb-3">
         <div class="card h-100">
           <div class="card-header">
             <span><i class="bi bi-table me-2"></i></span> Annual Cost per Day per City
@@ -147,6 +125,7 @@
           </div>
         </div>
       </div>
+       -->
     </div>
 
   </div>

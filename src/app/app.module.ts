@@ -22,6 +22,8 @@ import { AuthInterceptorService } from './authInterceptor';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { ExpensesListComponent } from './components/expenses-list/expenses-list.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 registerLocaleData(localeMX);
 
@@ -51,6 +53,7 @@ registerLocaleData(localeMX);
     FormsModule,
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
+    FontAwesomeModule,
   ],
   providers: [
     { 
@@ -61,4 +64,8 @@ registerLocaleData(localeMX);
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(librabry: FaIconLibrary) {
+    librabry.addIcons(faTrash, faPenToSquare);
+  }
+}

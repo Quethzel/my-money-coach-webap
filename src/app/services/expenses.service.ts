@@ -28,11 +28,18 @@ export class ExpensesService {
       ? `${this.apiURL}/list/${year}/${month}`
       : `${this.apiURL}/list/${year}`;
       
-    return this.http.get<IExpenses[]>(URL);
+    return this.http.get<IExpenses[]>(URL).pipe(map(data => { 
+      data.forEach(v => { v.date = new Date(v.date) });
+      return data; 
+    }));
   }
 
   saveExpense(record: IExpenses) {
     return this.http.post(this.apiURL, record);
+  }
+
+  delete(id: string) {
+    return this.http.delete<IExpenses>(`${this.apiURL}/${id}`);
   }
 
   getKPIAnnualVariableExpenses(year: number) {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 
@@ -8,8 +8,18 @@ import { IExpenses } from 'src/app/models/interfaces/IExpenses';
   styleUrls: ['./expenses-list.component.scss']
 })
 export class ExpensesListComponent {
-    @Input() expenses!: Observable<IExpenses[]>;
-    
-    constructor() { }
+  @Input() expenses!: Observable<IExpenses[]>;
+  @Output() editItem = new EventEmitter<IExpenses>();
+  @Output() deleteItem = new EventEmitter<IExpenses>();
+
+  constructor() { }
+
+  edit(item: IExpenses) {
+    this.editItem.emit(item);
+  }
+
+  delete(item: IExpenses) {
+    this.deleteItem.emit(item);
+  }
 
 }
