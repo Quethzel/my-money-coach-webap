@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 
@@ -12,14 +13,37 @@ export class ExpensesListComponent {
   @Output() editItem = new EventEmitter<IExpenses>();
   @Output() deleteItem = new EventEmitter<IExpenses>();
 
-  constructor() { }
+  modalRef?: BsModalRef;
+  message?: string;
+
+  expense!: IExpenses;
+  rowNumber!: number;
+
+  constructor(private modalService: BsModalService) { }
+
+  private delete(item: IExpenses) {
+    this.deleteItem.emit(item);
+  }
 
   edit(item: IExpenses) {
     this.editItem.emit(item);
   }
 
-  delete(item: IExpenses) {
-    this.deleteItem.emit(item);
+  openDeleteModal(rowNumber: number, item: IExpenses, template: TemplateRef<any>) {
+    this.rowNumber = rowNumber;
+    this.expense = item;
+    const params: ModalOptions = {
+      class: 'modal-sm'
+    };
+
+    this.modalRef = this.modalService.show(template, params);
+  }
+
+  confirmDelete(val: boolean) {
+    this.modalRef?.hide();
+    if (val) {
+      this.delete(this.expense);
+    }
   }
 
 }
