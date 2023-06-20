@@ -14,6 +14,7 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
   @ViewChild('item') itemField!: ElementRef;
 
   params: Object;
+  expenseId!: string;
   expense!: IExpenses;
   expenseForm!: FormGroup;
   cities: IUserCity[] = [];
@@ -49,7 +50,7 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
     ];
 
     if (Object.keys(this.params).length > 0) {
-      this.fillDataForm(this.params as IExpenses);
+      this.fillWithParams(this.params as IExpenses);
     } else {
       this.setDefaultCity();
     }
@@ -67,7 +68,8 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
     this.cityCode = cc ? cc : '---';
   }
 
-  fillDataForm(expense: IExpenses) {
+  fillWithParams(expense: IExpenses) {
+    this.expenseId = expense.id;
     this.expenseForm.setValue({
       item: expense.item,
       city: expense.city,
@@ -118,7 +120,7 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
         this.bsModalRef.hide();
       },
       error: (e) => {
-        alert(e.error?.message);
+        alert(e.error?.error?.message);
         console.error(e);
       }
     });
@@ -126,6 +128,7 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
 
   private mapToExpense(data: any) {
     return {
+      id: this.expenseId ? this.expenseId : null,
       city: data.city.name,
       cityCode: data.city.code,
       item: data.item,

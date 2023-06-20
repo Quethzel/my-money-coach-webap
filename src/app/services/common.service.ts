@@ -22,4 +22,13 @@ export class CommonService {
       return monthNames[month];
   }
 
+  /**
+   * Validate if a value is null or undefined
+   * @param value any value
+   * @returns true if the value is empty otherwise false
+   */
+  isEmpty(value: any) {
+    return value == null || value == undefined;
+  }
+
 }

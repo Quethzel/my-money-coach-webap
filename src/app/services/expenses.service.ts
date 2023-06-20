@@ -34,8 +34,10 @@ export class ExpensesService {
     }));
   }
 
-  saveExpense(record: IExpenses) {
-    return this.http.post(this.apiURL, record);
+  saveExpense(expense: IExpenses) {
+    return this.commonService.isEmpty(expense.id)
+      ? this.http.post(this.apiURL, expense)
+      : this.http.put(`${this.apiURL}/${expense.id}`, expense);
   }
 
   delete(id: string) {
