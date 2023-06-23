@@ -24,6 +24,7 @@ import { ExpensesListComponent } from './components/expenses-list/expenses-list.
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 registerLocaleData(localeMX);
 
@@ -41,6 +42,7 @@ registerLocaleData(localeMX);
     ForgotPassComponent,
     ExpensesListComponent,
     ExpensesComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,

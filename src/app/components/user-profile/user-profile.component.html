@@ -1,0 +1,123 @@
+<!-- <div class="d-flex flex-column"> -->
+<div class="container-fluid">
+    <h3 class="text-dark mb-4">Profile</h3>
+    <div class="row mb-3">
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4"
+                        src="assets/img/image1.jpg" width="160" height="160">
+                    <div class="mb-3"><button class="btn btn-primary" type="button">Change Photo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseOne">
+                            User Settings
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+                                <div class="row">
+                                    <div class="col-6 col-sm-12">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="email">Email</label>
+                                            <input class="form-control" type="email" formControlName="email" id="email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="name">Name(s)</label>
+                                            <input class="form-control" type="text" formControlName="name" id="name" placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="last_name">Last Name</label>
+                                            <input class="form-control" type="text" formControlName="lastName" id="lastName" placeholder="Last Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <button class="btn btn-success" type="submit">Save User Settings</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseTwo">App Settings
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <form [formGroup]="settingsForm" (submit)="saveAppSettings()">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="budget">Monthly Expense Budget</label>
+                                            <input class="form-control" type="number" formControlName="monthlyExpenseBudget" id="budget" placeholder="0.00"
+                                                name="budget">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <button class="btn btn-success" type="submit">Save App Settings</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseThree">
+                            Account
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <form [formGroup]="settingsForm" (submit)="deleteAccount()">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <button type="button" class="btn btn-danger" type="submit">Delete my Account</button>
+                                        </div>
+                                        <div class="alert alert-danger">
+                                            <p>This action will delete your account along with all your data.<br />
+                                                There is no way to reverse this change!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<!-- </div> -->
