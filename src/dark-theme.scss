@@ -1,0 +1,91 @@
+@import "../node_modules/bootstrap/scss/functions";
+// 2. Include any default variable overrides here
+// 3. Include remainder of required Bootstrap stylesheets
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+.dark {
+    @import "bootstrap";
+    
+    $enable-gradients: true;
+
+    /* redefine theme colors for dark theme */
+    $primary: #012345;
+    $secondary: #111111;
+    $success: #222222;
+    $dark: #000;
+    
+    $theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "danger": $danger,
+        "info": $indigo,
+        "dark": $dark,
+        "light": #FFF,
+    );
+
+    /* redefine theme color variables */
+    @each $color, $value in $theme-colors {
+        --#{$variable-prefix}#{$color}: #{$value};
+    }
+    
+    $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+    
+    @each $color, $value in $theme-colors-rgb {
+        --#{$variable-prefix}#{$color}-rgb: #{$value};
+    }
+
+    $body-bg: #000;
+    $body-color: #eeeeee;
+    
+    --#{$variable-prefix}body-color: #{$body-color};
+    --#{$variable-prefix}body-bg: #{$body-bg};
+
+    $link-color: #eee;
+    $link-color-hover: #fff;
+    --#{$variable-prefix}link-color: #{$link-color};
+    --#{$variable-prefix}link-hover-color: #{$link-color-hover};
+    
+
+    $modal-content-bg: #333;
+    $modal-content-color: #fff;
+    $modal-content-border-color: #333;
+    $modal-footer-bg: #333;
+    $modal-footer-border-color: #333;
+    $modal-header-border-width: #333;
+    $border-color-gray: #515151;
+
+    --#{$prefix}modal-bg: #{$modal-content-bg};
+    --#{$variable-prefix}modal-color: #{$modal-content-color};
+    --#{$variable-prefix}modal-border-color: #{$modal-content-border-color};
+    --#{$variable-prefix}modal-header-border-width: #{$modal-header-border-width};
+    --#{$variable-prefix}modal-footer-bg: #{$modal-footer-bg};
+    --#{$variable-prefix}modal-footer-border-color: #{$modal-footer-border-color};
+    --#{$variable-prefix}border-color: #{$border-color-gray};
+
+    .modal {
+        --#{$prefix}modal-bg: #{$modal-content-bg};
+    }
+
+    --bs-gradient: none;
+
+    $danger-text: #ea868f;
+    $danger-bg: #2c0b0e;
+    $danger-border: #842029;
+
+    .alert-danger {
+        --#{$variable-prefix}alert-color: #{$danger-text};
+        --#{$variable-prefix}alert-bg: #{$danger-bg};
+        --#{$variable-prefix}alert-border-color: #{$danger-border};
+        --#{$variable-prefix}alert-link-color: #{$danger-text};
+    }
+
+    .form-control {
+        color: #f2f2f2
+    }
+
+}
+
+.dark .btn-close {
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat !important;
+}
