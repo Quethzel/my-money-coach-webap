@@ -63,8 +63,13 @@ export class AuthService {
 
   private saveToken(token: any) {
     const decoded = jwtDecode<any>(token);
-    localStorage.setItem('username', `${decoded.name} ${decoded.lastName}`)
+    const username = decoded.lastName 
+      ? `${decoded.name} ${decoded.lastName}`
+      : decoded.name;
+
+    localStorage.setItem('username', username)
     localStorage.setItem(this.TOKEN_KEY, token);
+    
     this._userAuth.next(true);
   }
 

@@ -67,12 +67,11 @@
                     <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
                         <div class="accordion-body">
                             <form [formGroup]="settingsForm" (submit)="saveAppSettings()">
-                                <div class="row">
+                                <div formGroupName="settings" class="row">
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label class="form-label" for="budget">Monthly Expense Budget</label>
-                                            <input class="form-control" type="number" formControlName="monthlyExpenseBudget" id="budget" placeholder="0.00"
-                                                name="budget">
+                                            <input class="form-control" type="number" formControlName="monthlyExpenseBudget" id="budget" placeholder="0.00">
                                         </div>
                                     </div>
                                 </div>

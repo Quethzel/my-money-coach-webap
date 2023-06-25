@@ -23,7 +23,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
 
     this.settingsForm = this.fb.group({
-      monthlyExpenseBudget: [null]
+      settings: this.fb.group({
+        monthlyExpenseBudget: [null]
+      })
     });
   }
 
@@ -39,11 +41,22 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   saveProfile() {
-    console.log(this.profileForm.getRawValue());
+    const profile = this.profileForm.getRawValue();
+    const user = { ...profile } as IUser;
+
+    this.userService.save(user).subscribe(user => {
+      alert('user information updated!');
+    })
   }
 
   saveAppSettings() {
-    console.log(this.settingsForm.getRawValue());
+    const settings = this.settingsForm.getRawValue();
+    const user = { ...settings } as IUser;
+
+    this.userService.save(user).subscribe(user => {
+      alert('app settings updated!');
+    });
+
   }
 
   deleteAccount() {
@@ -51,17 +64,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   private setUserInfo(dataUser: IUser) {
-    this.profileForm.setValue({
-      email: dataUser.email,
-      name: dataUser.name,
-      lastName: dataUser.lastName
-    });
-
-    if (dataUser.settings && dataUser.settings.monthlyExpenseBudget) {
-      this.profileForm.setValue({
-        monthlyExpenseBudget: dataUser.settings.monthlyExpenseBudget
-      });
-    }
+    this.profileForm.patchValue(dataUser);
+    this.settingsForm.patchValue(dataUser);
   }
+
 
 }
