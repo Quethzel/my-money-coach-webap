@@ -53,20 +53,26 @@ export class ExpensesService {
 
   getKPITotalExpensesByCurrentMonth() {
     return this.http.get<IKPIValue>(`${this.apiURL}/totalMontlyExpenses`).pipe(map(result => {
-      return new KPI('Montly Expenses', result.total, 'bg-success text-white')
+      return new KPI('Montly Expenses', result.total, 'bg-primary text-white')
     }));
   }
 
   getKPIAverageDailyExpensesInThisMonth() {
     return this.http.get<IKPIValue>(`${this.apiURL}/averageDailyExpenses`).pipe(map(result => {
-      return new KPI('Average Daily Expenses', result.total, 'bg-danger text-white')
+      return new KPI('Average Daily Expenses', result.total, 'bg-primary text-white')
     }));
   }
 
   getKPIRemainingMontlyBudget() {
     return this.http.get<IKPIValue>(`${this.apiURL}/remainingMontlyBudget`).pipe(map(result => {
-      const daysLeftInMonth = this.commonService.getRemainingDaysInCurrentMonth();
-      return new KPI('Remaining Monthly Budget', result.total, 'bg-success text-white', `${daysLeftInMonth} Days Left`);
+      if (result.total != null) {
+        const daysLeftInMonth = this.commonService.getRemainingDaysInCurrentMonth();
+        return new KPI('Remaining Monthly Budget', result.total, 'bg-success text-white', `${daysLeftInMonth} Days Left`);
+      } else {
+        return new KPI('Remaining Monthly Budget', result.total, 'bg-danger text-white', `Not set`);
+      }
+
+      
     }));
   }
 

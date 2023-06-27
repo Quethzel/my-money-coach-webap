@@ -67,6 +67,9 @@ export class AuthService {
       ? `${decoded.name} ${decoded.lastName}`
       : decoded.name;
 
+
+    const settings = decoded.settings ? decoded.settings : {};
+    localStorage.setItem('settings', JSON.stringify(settings));
     localStorage.setItem('username', username)
     localStorage.setItem(this.TOKEN_KEY, token);
     

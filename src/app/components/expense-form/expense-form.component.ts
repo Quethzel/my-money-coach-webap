@@ -54,7 +54,6 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
     } else {
       this.setDefaultCity();
     }
-
   }
 
   ngAfterViewInit() {
@@ -113,17 +112,19 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    this.expense = this.mapToExpense(this.expenseForm.getRawValue());
-
-    this.expService.saveExpense(this.expense).subscribe({
-      next: (expense) => {
-        this.bsModalRef.hide();
-      },
-      error: (e) => {
-        alert(e.error?.error?.message);
-        console.error(e);
-      }
-    });
+    if (this.expenseForm.valid) {
+      this.expense = this.mapToExpense(this.expenseForm.getRawValue());
+      
+      this.expService.saveExpense(this.expense).subscribe({
+        next: (expense) => {
+          this.bsModalRef.hide();
+        },
+        error: (e) => {
+          alert(e.error?.error?.message);
+          console.error(e);
+        }
+      });
+    }
   }
 
   private mapToExpense(data: any) {

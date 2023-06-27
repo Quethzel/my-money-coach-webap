@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
 import { IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
+import { IUserSettings } from '../models/interfaces/IUser';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,23 @@ export class ExpensesChartService {
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const months = data.map((item: any) => labels[item.month - 1] );
     const totals = data.map((item: any) => Number(item.total));
+    
     const datasets = [
       { 
         data: totals,
         label: 'Expenses By Month', type: 'bar'
       },
-      {
-        data: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ], 
-        label: 'Budget', type: 'line' 
-      }
     ];
+
+    const settingsObject = localStorage.getItem('settings');
+    if (settingsObject != null) {
+      const settings = JSON.parse(settingsObject);
+      const budget = settings.monthlyExpenseBudget;
+      if (budget) {
+        const budgetData = Array(11).fill(budget);
+        datasets.push({ data: budgetData, label: 'Budget', type: 'line' });
+      }
+    }
 
     return new CustomDataChart<number>(months, datasets, options);
   }
