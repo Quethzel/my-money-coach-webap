@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let expense of expenses | async; let i = index;">
+    <tr *ngFor="let expense of expenses; let i = index;">
       <td><b>{{ i + 1 }}</b></td>
       <td>
         <a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Delete"

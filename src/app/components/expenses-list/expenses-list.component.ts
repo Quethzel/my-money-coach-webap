@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 
 @Component({
@@ -9,7 +8,7 @@ import { IExpenses } from 'src/app/models/interfaces/IExpenses';
   styleUrls: ['./expenses-list.component.scss']
 })
 export class ExpensesListComponent {
-  @Input() expenses!: Observable<IExpenses[]>;
+  @Input() expenses: IExpenses[];
   @Output() editItem = new EventEmitter<IExpenses>();
   @Output() deleteItem = new EventEmitter<IExpenses>();
 
@@ -19,7 +18,9 @@ export class ExpensesListComponent {
   expense!: IExpenses;
   rowNumber!: number;
 
-  constructor(private modalService: BsModalService) { }
+  constructor(private modalService: BsModalService) {
+    this.expenses = [];
+  }
 
   private delete(item: IExpenses) {
     this.deleteItem.emit(item);

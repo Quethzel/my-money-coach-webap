@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 import { ExpensesService } from 'src/app/services/expenses.service';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
@@ -12,10 +12,10 @@ import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
   templateUrl: './expenses.component.html',
   styleUrls: ['./expenses.component.scss']
 })
-export class ExpensesComponent implements OnInit {
+export class ExpensesComponent implements OnInit, OnDestroy {
   bsModalRef?: BsModalRef;
-  expenses!: Observable<IExpenses[]>;
-  
+  sbExpenses!: Subscription;
+  expenses!: IExpenses[];
   activeFilter: string;
   currentDate: Date;
   currentMonth: string;
@@ -30,6 +30,7 @@ export class ExpensesComponent implements OnInit {
       this.currentDate = new Date();
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
       this.activeFilter = 'month';
+      this.expenses = [];
 
       this.filters = new ExpenseFilters();
     }
@@ -38,8 +39,14 @@ export class ExpensesComponent implements OnInit {
     this.filterBy(this.activeFilter);
   }
 
+  ngOnDestroy(): void {
+    if (this.sbExpenses) this.sbExpenses.unsubscribe();
+  }
+
   getExpenses(filters: ExpenseFilters) {
-    this.expenses = this.expenseService.getExpenses(filters.year, filters.month);
+    this.sbExpenses = this.expenseService.getExpenses(filters.year, filters.month).subscribe(data => {
+      this.expenses = data;
+    });
   }
 
   filterBy(filterBy: string) {
