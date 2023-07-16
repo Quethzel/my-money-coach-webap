@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build-prod": "ng build --base-href 'https://Quethzel.github.io/my-money-coach-webap/'",
+    "deploy": "npx angular-cli-ghpages --dir=dist/money-coach-pwa"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +23,7 @@
     "@fortawesome/angular-fontawesome": "^0.12.1",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "ag-grid-community": "^30.0.3",
     "bootstrap": "^5.1.3",
     "jwt-decode": "^3.1.2",
     "ng2-charts": "^4.1.1",
@@ -34,6 +37,7 @@
     "@angular/cli": "~15.2.6",
     "@angular/compiler-cli": "^15.2.0",
     "@types/jasmine": "~4.3.0",
+    "angular-cli-ghpages": "^1.0.6",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
