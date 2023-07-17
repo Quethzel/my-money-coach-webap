@@ -25,6 +25,10 @@ import { ExpensesComponent } from './components/expenses/expenses.component';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { EditableExpenseGridComponent } from './components/editable-expense-grid/editable-expense-grid.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns-renderer/grid-expense-btns-renderer.component';
+import { RowNumberCellRendererComponent } from './components/row-number-cell-renderer/row-number-cell-renderer.component';
 
 registerLocaleData(localeMX);
 
@@ -43,6 +47,9 @@ registerLocaleData(localeMX);
     ExpensesListComponent,
     ExpensesComponent,
     UserProfileComponent,
+    EditableExpenseGridComponent,
+    GridExpenseBtnsRendererComponent,
+    RowNumberCellRendererComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +63,7 @@ registerLocaleData(localeMX);
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     FontAwesomeModule,
+    AgGridModule,
   ],
   providers: [
     { 

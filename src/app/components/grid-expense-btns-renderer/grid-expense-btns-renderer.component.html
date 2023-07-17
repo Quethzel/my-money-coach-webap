@@ -1,0 +1,12 @@
+<a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Delete"
+    (click)="onDelete(template)">
+    <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+</a>
+
+<ng-template #template>
+    <div class="modal-body text-center">
+      <p>Do you realy want to delete item <b>#{{rowNumber}} {{expense.item}}?</b></p>
+      <button type="button" class="btn btn-default" (click)="confirmDelete(true)">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="confirmDelete(false)">No</button>
+    </div>
+</ng-template>

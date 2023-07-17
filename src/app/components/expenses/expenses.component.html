@@ -29,4 +29,9 @@
         <app-expenses-list [expenses]="expenses" (editItem)="editItem($event)" (deleteItem)="deleteItem($event)"></app-expenses-list>
     </div>
 
+
+    <div style="height: 500px;">
+        <app-editable-expense-grid [expenses]="expenses" (editItem)="editItem($event)" (deleteItem)="deleteItem($event)"></app-editable-expense-grid>
+    </div>
+
 </div>
