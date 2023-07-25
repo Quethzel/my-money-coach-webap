@@ -7,6 +7,9 @@
     [enableCellChangeFlash]="true"
     [rowSelection]="'single'"
     [getRowId]="getRowId"
+    [pinnedTopRowData]="pinnedTopRowData"
+    [rowClassRules]="rowClassRules"
     (cellValueChanged)="onCellValueChanged($event)"
+    (cellEditingStopped)="onCellEditingStopped($event)"
     (gridReady)="onGridReady($event)">
 </ag-grid-angular>

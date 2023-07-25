@@ -1,11 +1,11 @@
 //TODO: this is not used
 export interface IExpenses {
     id: string;
-    city: String;
-    cityCode: String;
-    item: String;
-    category: String;
-    subcategory: String;
+    city: string | null;
+    cityCode: string | null;
+    item: string;
+    category: string;
+    subcategory: string | null;
     cost: number;
     date: Date;
 }

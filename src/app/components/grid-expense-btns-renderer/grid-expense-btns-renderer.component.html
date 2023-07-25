@@ -1,4 +1,4 @@
-<a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Delete"
+<a *ngIf="!isPinnedRowOnTop" class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Delete"
     (click)="onDelete(template)">
     <fa-icon [icon]="['fas', 'trash']"></fa-icon>
 </a>

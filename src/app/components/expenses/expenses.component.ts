@@ -84,4 +84,10 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     });
   }
 
+  saveItem(item: IExpenses) {
+    this.expenseService.saveExpense(item).subscribe(() => {
+      this.filterBy(this.activeFilter);
+    });
+  }
+
 }

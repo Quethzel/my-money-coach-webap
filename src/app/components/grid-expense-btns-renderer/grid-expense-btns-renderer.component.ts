@@ -11,6 +11,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 })
 export class GridExpenseBtnsRendererComponent implements ICellRendererAngularComp {
   componentParent: any;
+  isPinnedRowOnTop!: boolean;
   
   rowId: string | undefined;
   rowNumber!: number;
@@ -26,10 +27,10 @@ export class GridExpenseBtnsRendererComponent implements ICellRendererAngularCom
     this.expense = params.data;
     this.rowNumber = params.rowIndex + 1;
     this.componentParent = params.context.componentParent;
+    this.isPinnedRowOnTop = params.node.isRowPinned();
   }
 
   refresh(params: ICellRendererParams<any, any, any>): boolean {
-    console.log(params);
     return false;
   }
 

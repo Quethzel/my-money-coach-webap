@@ -29,6 +29,8 @@ import { EditableExpenseGridComponent } from './components/editable-expense-grid
 import { AgGridModule } from 'ag-grid-angular';
 import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns-renderer/grid-expense-btns-renderer.component';
 import { RowNumberCellRendererComponent } from './components/row-number-cell-renderer/row-number-cell-renderer.component';
+import { CityCellEditorComponent } from './components/city-cell-editor/city-cell-editor.component';
+import { CityCellRendererComponent } from './components/city-cell-renderer/city-cell-renderer.component';
 
 registerLocaleData(localeMX);
 
@@ -50,6 +52,8 @@ registerLocaleData(localeMX);
     EditableExpenseGridComponent,
     GridExpenseBtnsRendererComponent,
     RowNumberCellRendererComponent,
+    CityCellEditorComponent,
+    CityCellRendererComponent,
   ],
   imports: [
     BrowserModule,

@@ -31,7 +31,7 @@
 
 
     <div style="height: 500px;">
-        <app-editable-expense-grid [expenses]="expenses" (editItem)="editItem($event)" (deleteItem)="deleteItem($event)"></app-editable-expense-grid>
+        <app-editable-expense-grid [expenses]="expenses" (saveItem)="saveItem($event)" (deleteItem)="deleteItem($event)"></app-editable-expense-grid>
     </div>
 
 </div>
