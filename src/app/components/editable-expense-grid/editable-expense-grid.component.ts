@@ -9,7 +9,6 @@ import { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, ColumnApi, GridReadyEven
 import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
 import { GridExpenseBtnsRendererComponent } from '../grid-expense-btns-renderer/grid-expense-btns-renderer.component';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
-import { RowNumberCellRendererComponent } from '../row-number-cell-renderer/row-number-cell-renderer.component';
 import { CityCellEditorComponent } from '../city-cell-editor/city-cell-editor.component';
 import { CityCellRendererComponent } from '../city-cell-renderer/city-cell-renderer.component';
 import { IUserCity } from 'src/app/models/interfaces/ICity';

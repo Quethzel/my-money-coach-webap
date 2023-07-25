@@ -28,7 +28,6 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { EditableExpenseGridComponent } from './components/editable-expense-grid/editable-expense-grid.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns-renderer/grid-expense-btns-renderer.component';
-import { RowNumberCellRendererComponent } from './components/row-number-cell-renderer/row-number-cell-renderer.component';
 import { CityCellEditorComponent } from './components/city-cell-editor/city-cell-editor.component';
 import { CityCellRendererComponent } from './components/city-cell-renderer/city-cell-renderer.component';
 
@@ -51,7 +50,6 @@ registerLocaleData(localeMX);
     UserProfileComponent,
     EditableExpenseGridComponent,
     GridExpenseBtnsRendererComponent,
-    RowNumberCellRendererComponent,
     CityCellEditorComponent,
     CityCellRendererComponent,
   ],
