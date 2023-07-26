@@ -141,10 +141,19 @@ export class EditableExpenseGridComponent {
     this.deleteItem.emit(item);
   }
 
-  onCellValueChanged(params: CellValueChangedEvent) { }
+  onCellValueChanged(params: CellValueChangedEvent) {
+    const isRowPinned = params.node.isRowPinned();
+    const valueChange = params.oldValue != params.newValue;
+
+    if (valueChange && !isRowPinned) {
+      const item = params.node.data as IExpenses;
+      this.save(item);
+    }
+
+  }
 
   onCellEditingStopped(params: CellEditingStoppedEvent) {
-    // save data
+    // save new item
     if (this.isValidItem(this.inputRow)) {
       const defaultCity = this.getDefaultCity();
       const newExpense = this.inputRow as IExpenses;

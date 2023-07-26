@@ -9,6 +9,6 @@ export class AppComponent {
   title = 'money-coach-pwa';
 
   constructor() {
-    console.log('v 1.1.0');
+    console.log('v 1.1.2');
   }
 }

@@ -21,13 +21,19 @@
         <span *ngIf="activeFilter == 'year'">Year</span>
         {{currentDate.getFullYear()}}
     </h3>
+    <div class="row mb-3">
+        <span *ngIf="expenses.length > 0">
+            Rows: {{ expenses.length }} | Total Expenses: {{totalExpenses | currency}}
+        </span>
+    </div>
 
     <div *ngIf="expenses.length == 0" class="no-records d-flex justify-content-center align-items-center">
         <p>No expenses found</p>
     </div>
-    <div *ngIf="expenses.length > 0">
+
+    <!-- <div *ngIf="expenses.length > 0">
         <app-expenses-list [expenses]="expenses" (editItem)="editItem($event)" (deleteItem)="deleteItem($event)"></app-expenses-list>
-    </div>
+    </div> -->
 
 
     <div style="height: 500px;">

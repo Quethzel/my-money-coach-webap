@@ -19,6 +19,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   activeFilter: string;
   currentDate: Date;
   currentMonth: string;
+  totalExpenses: number = 0;
 
   filters: ExpenseFilters;
 
@@ -46,6 +47,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   getExpenses(filters: ExpenseFilters) {
     this.sbExpenses = this.expenseService.getExpenses(filters.year, filters.month).subscribe(data => {
       this.expenses = data;
+      this.totalExpenses = this.getTotalExpenses();
     });
   }
 
@@ -88,6 +90,12 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.expenseService.saveExpense(item).subscribe(() => {
       this.filterBy(this.activeFilter);
     });
+  }
+
+  private getTotalExpenses() {
+    let total = 0;
+    this.expenses.forEach(e => total += e.cost);
+    return total;
   }
 
 }
