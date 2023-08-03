@@ -30,7 +30,7 @@ export class EditableExpenseGridComponent {
   ];
 
   public columnDefs: ColDef[] = [
-    { field: 'lineNo', headerName: '#', editable: false, maxWidth: 50, suppressMenu: true, sortable: false },
+    { field: 'lineNo', headerName: '#', editable: false, minWidth: 60, maxWidth: 75, suppressMenu: true, sortable: false, resizable: true },
     { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false },
     { field: 'cityCode', headerName: 'City', minWidth: 80, maxWidth: 80,
       cellEditor: 'agSelectCellEditor',

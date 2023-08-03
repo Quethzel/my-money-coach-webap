@@ -1,31 +1,40 @@
 <div class="row">
-    <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Expenses</h1>
-        <div class="btn-toolbar align-items-center mb-2 mb-md-0">
-            <div class="me-2">
-                <button type="button" (click)="openExpenseModal()" class="btn btn-sm btn-outline-secondary">New</button>
-            </div>
-
-            <div class="btn-group btn-group-sm btn-outline ms-2">
-                <a (click)="filterBy('month')" [class.active]="activeFilter == 'month'" class="btn btn-outline-secondary" aria-current="page">Month</a>
-                <a (click)="filterBy('year')" [class.active]="activeFilter == 'year'" class="btn btn-outline-secondary">Year</a>
-            </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <!-- <h3>Variable Expenses</h3> -->
+        <div class="col-md-7">
+            <h3>Variable Expenses - 
+                <span *ngIf="activeFilter == 'month'">{{currentMonth}}</span>
+                <span *ngIf="activeFilter == 'year'">Year</span>
+                {{currentDate.getFullYear()}}
+            </h3>
+        </div>
+        <div class="col-md-5 d-flex justify-content-end">
+            <span *ngIf="expenses.length > 0">
+                Rows: {{ expenses.length }} | Total Expenses: {{totalExpenses | currency}}
+            </span>
         </div>
     </div>
 
     <!-- chart should be here -->
-
-    <h3>
-        <span *ngIf="activeFilter == 'month'">{{currentMonth}}</span>
-        <span *ngIf="activeFilter == 'year'">Year</span>
-        {{currentDate.getFullYear()}}
-    </h3>
-    <div class="row mb-3">
+    <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center mb-3">
+        <div class="row">
+            <div class="btn-toolbar align-items-center mb-2 mb-md-0">
+                <!-- <div class="me-2">
+                    <button type="button" (click)="openExpenseModal()" class="btn btn-sm btn-outline-secondary">New</button>
+                </div> -->
+                <div class="btn-group btn-group-sm btn-outline ms-2">
+                    <a (click)="filterBy('month')" [class.active]="activeFilter == 'month'" class="btn btn-outline-secondary" aria-current="page">Month</a>
+                    <a (click)="filterBy('year')" [class.active]="activeFilter == 'year'" class="btn btn-outline-secondary">Year</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- <div class="row mb-3">
         <span *ngIf="expenses.length > 0">
             Rows: {{ expenses.length }} | Total Expenses: {{totalExpenses | currency}}
         </span>
-    </div>
+    </div> -->
 
     <div *ngIf="expenses.length == 0" class="no-records d-flex justify-content-center align-items-center">
         <p>No expenses found</p>
@@ -36,7 +45,7 @@
     </div> -->
 
 
-    <div style="height: 500px;">
+    <div style="height: 500px; overflow-y: auto;">
         <app-editable-expense-grid [expenses]="expenses" (saveItem)="saveItem($event)" (deleteItem)="deleteItem($event)"></app-editable-expense-grid>
     </div>
 
