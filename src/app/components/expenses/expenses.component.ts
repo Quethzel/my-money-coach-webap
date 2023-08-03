@@ -6,6 +6,7 @@ import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 import { ExpenseFormComponent } from '../expense-form/expense-form.component';
 import { CommonService } from 'src/app/services/common.service';
 import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
+import { VariableExpense } from 'src/app/models/variable-expense';
 
 @Component({
   selector: 'app-expenses',
@@ -80,13 +81,13 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.openExpenseModal(item);
   }
 
-  deleteItem(item: IExpenses) {
+  deleteItem(item: VariableExpense) {
     this.expenseService.delete(item.id).subscribe(item => {
       this.filterBy(this.activeFilter);  
     });
   }
 
-  saveItem(item: IExpenses) {
+  saveItem(item: VariableExpense) {
     this.expenseService.saveExpense(item).subscribe(() => {
       this.filterBy(this.activeFilter);
     });

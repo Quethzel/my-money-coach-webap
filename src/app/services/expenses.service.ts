@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { IKPIValue } from '../models/interfaces/IKPI';
 import { IExpenses, IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
 import { CommonService } from './common.service';
+import { VariableExpense } from '../models/variable-expense';
 
 @Injectable({
   providedIn: 'root'
@@ -34,14 +35,14 @@ export class ExpensesService {
     }));
   }
 
-  saveExpense(expense: IExpenses) {
+  saveExpense(expense: VariableExpense) {
     return this.commonService.isEmpty(expense.id)
       ? this.http.post(this.apiURL, expense)
       : this.http.put(`${this.apiURL}/${expense.id}`, expense);
   }
 
   delete(id: string) {
-    return this.http.delete<IExpenses>(`${this.apiURL}/${id}`);
+    return this.http.delete<VariableExpense>(`${this.apiURL}/${id}`);
   }
 
   getKPIAnnualVariableExpenses(year: number) {

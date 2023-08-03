@@ -1,3 +1,4 @@
+//TODO: This component is not used. Remove it
 import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { IUserCity } from 'src/app/models/interfaces/ICity';

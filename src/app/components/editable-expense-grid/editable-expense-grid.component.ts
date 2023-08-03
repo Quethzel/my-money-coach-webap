@@ -8,10 +8,8 @@ import { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, ColumnApi, GridReadyEven
 } from 'ag-grid-community';
 import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
 import { GridExpenseBtnsRendererComponent } from '../grid-expense-btns-renderer/grid-expense-btns-renderer.component';
-import { IExpenses } from 'src/app/models/interfaces/IExpenses';
-import { CityCellEditorComponent } from '../city-cell-editor/city-cell-editor.component';
-import { CityCellRendererComponent } from '../city-cell-renderer/city-cell-renderer.component';
 import { IUserCity } from 'src/app/models/interfaces/ICity';
+import { VariableExpense } from 'src/app/models/variable-expense';
 
 @Component({
   selector: 'app-editable-expense-grid',
@@ -19,9 +17,9 @@ import { IUserCity } from 'src/app/models/interfaces/ICity';
   styleUrls: ['./editable-expense-grid.component.scss']
 })
 export class EditableExpenseGridComponent {
-  @Input() expenses: IExpenses[] | any[];
-  @Output() saveItem = new EventEmitter<IExpenses>();
-  @Output() deleteItem = new EventEmitter<IExpenses>();
+  @Input() expenses: VariableExpense[];
+  @Output() saveItem = new EventEmitter<VariableExpense>();
+  @Output() deleteItem = new EventEmitter<VariableExpense>();
   
   //TODO: cities should be comes from user cities
   cities: IUserCity[] = [
@@ -32,26 +30,34 @@ export class EditableExpenseGridComponent {
   ];
 
   public columnDefs: ColDef[] = [
-    { field: 'lineNo', headerName: '#', editable: false, maxWidth: 70 },
-    { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 120 },
+    { field: 'lineNo', headerName: '#', editable: false, maxWidth: 50, suppressMenu: true, sortable: false },
+    { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false },
     { field: 'cityCode', headerName: 'City', minWidth: 80, maxWidth: 80,
-      cellEditor: CityCellEditorComponent,
-      cellEditorParams: () => {
-        return { 
-          defaultCity: this.getDefaultCity(),
-          cities: this.cities 
-        }
-      },
-      cellRenderer: CityCellRendererComponent,
-      cellRendererParams: () => {
-        return { defaultCity: this.getDefaultCity() }
-      }
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: this.getCityCodes() }
     },
-    { field: 'item', headerName: 'Item', width: 220 },
+    { field: 'item', headerName: 'Item', width: 300 },
     { field: 'category', headerName: 'Category', width: 100, maxWidth: 150 },
     { field: 'subcategory', headerName: 'Subcategory', width: 120, maxWidth: 180 },
-    { field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 80, maxWidth: 120 },
-    { field: 'date', headerName: 'Date', width: 100, maxWidth: 130 },
+    { field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120, 
+      valueFormatter: (params: any) => {
+        const options = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
+        const currencyString = Intl.NumberFormat('es-MX', options);
+        return currencyString.format(params.value);
+      }
+    },
+    { field: 'date', headerName: 'Date', width: 100, maxWidth: 130, 
+      cellEditor: 'agDateCellEditor',
+      cellEditorParams: {
+        max: new Date()
+      },
+      cellRenderer: (data: any) => { 
+        const opt: Intl.DateTimeFormatOptions = { year: "2-digit", month: "short", day: "2-digit" };
+        const dt = data.value ? new Date(data.value) : new Date();
+        const dateString = new Intl.DateTimeFormat('es-MX', opt).format(dt);
+        return dateString;
+      }
+    },
   ];
 
   public defaultColDef: ColDef = {
@@ -80,19 +86,15 @@ export class EditableExpenseGridComponent {
   };
 
   context!: any;
-  inputRow:  {[k: string]: any} = {};
+  newVariableExpense:  VariableExpense;
   pinnedTopRowData: any[] = [];
 
   constructor() {
-    this.context = {
-      componentParent: this
-    }
-
+    this.context = { componentParent: this }
     this.expenses = [];
 
-    // this.inputRow = this.newRow();
-    this.pinnedTopRowData = [this.inputRow];
-
+    this.newVariableExpense = new VariableExpense(this.getDefaultCity());
+    this.pinnedTopRowData = [this.newVariableExpense];
 
     this.filters = new ExpenseFilters();
     this.filters.byThisMonth();
@@ -102,6 +104,10 @@ export class EditableExpenseGridComponent {
     let city = this.cities.find(c => c.default == true);
     if (!city) city = this.cities[0];
     return city;
+  }
+
+  getCityCodes() {
+    return this.cities.map(c => c.code);
   }
 
   autoSizeAll(skipHeader: boolean = false) {
@@ -130,13 +136,11 @@ export class EditableExpenseGridComponent {
     this.autoSizeAll();
   }
 
-  save(item: IExpenses) {
+  save(item: VariableExpense) {
     this.saveItem.emit(item);
   }
 
-  delete(rowId: any, item: IExpenses) {
-    // const selectedData = this.gridApi.getSelectedRows();
-    // this.gridApi.applyTransaction({ remove: selectedData });
+  delete(rowId: any, item: VariableExpense) {
     this.gridApi.applyTransaction({ remove: [rowId] });
     this.deleteItem.emit(item);
   }
@@ -146,7 +150,7 @@ export class EditableExpenseGridComponent {
     const valueChange = params.oldValue != params.newValue;
 
     if (valueChange && !isRowPinned) {
-      const item = params.node.data as IExpenses;
+      const item = params.node.data as VariableExpense;
       this.save(item);
     }
 
@@ -154,28 +158,17 @@ export class EditableExpenseGridComponent {
 
   onCellEditingStopped(params: CellEditingStoppedEvent) {
     // save new item
-    if (this.isValidItem(this.inputRow)) {
-      const defaultCity = this.getDefaultCity();
-      const newExpense = this.inputRow as IExpenses;
-      if (!newExpense.cityCode) {
-        newExpense.city = defaultCity.name;
-        newExpense.cityCode = defaultCity.code;
-      } else {
-        const city = this.cities.find(c => c.code == newExpense.cityCode);
-        if (city) newExpense.city = city.name;
-      }
-
-      this.expenses = [...this.expenses, newExpense];
-
-      this.save(newExpense);
+    if (this.isValidItem(this.newVariableExpense)) {
+      this.expenses = [...this.expenses, this.newVariableExpense];
+      this.save(this.newVariableExpense);
       
       //reset pinned row
-      this.inputRow = {};
-      this.pinnedTopRowData = [this.inputRow];
+      this.newVariableExpense = new VariableExpense(this.getDefaultCity());
+      this.pinnedTopRowData = [this.newVariableExpense];
     }
   }
 
-  private isValidItem(item: Partial<IExpenses>) {
+  private isValidItem(item: Partial<VariableExpense>) {
     return item.item && item.category && item.cost && item.date;
   }
 

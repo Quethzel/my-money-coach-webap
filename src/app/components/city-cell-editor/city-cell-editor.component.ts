@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+//TODO: This component is not used. Remove it
+import { AfterViewInit, Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ICellEditorAngularComp } from 'ag-grid-angular';
 import { IUserCity } from 'src/app/models/interfaces/ICity';
 
@@ -7,7 +8,8 @@ import { IUserCity } from 'src/app/models/interfaces/ICity';
   templateUrl: './city-cell-editor.component.html',
   styleUrls: ['./city-cell-editor.component.scss']
 })
-export class CityCellEditorComponent implements ICellEditorAngularComp { 
+export class CityCellEditorComponent implements ICellEditorAngularComp, AfterViewInit { 
+  @ViewChild('input', { read: ViewContainerRef }) public input: any;
 
   cities!: any;
   value!: string;
@@ -19,8 +21,18 @@ export class CityCellEditorComponent implements ICellEditorAngularComp {
     this.value = params.value ? params.value : params.defaultCity;
   }
 
+  isPopup(): boolean {
+    return true;
+  }
+
   getValue() {
     return this.value;
+  }
+
+  ngAfterViewInit(): void {
+    window.setTimeout(() => {
+      this.input.nativeElement.focus();
+    })
   }
 
 }
