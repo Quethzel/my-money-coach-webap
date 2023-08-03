@@ -7,8 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'money-coach-pwa';
+  version = 'v1.01.03';
 
-  constructor() {
-    console.log('v 1.1.2');
-  }
+  constructor() { }
 }
