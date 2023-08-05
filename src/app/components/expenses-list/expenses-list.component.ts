@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
-
+//TODO: Remove this component. Was replaced by editable expenses grid 
 @Component({
   selector: 'app-expenses-list',
   templateUrl: './expenses-list.component.html',

@@ -30,6 +30,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns-renderer/grid-expense-btns-renderer.component';
 import { CityCellEditorComponent } from './components/city-cell-editor/city-cell-editor.component';
 import { CityCellRendererComponent } from './components/city-cell-renderer/city-cell-renderer.component';
+import { VariableExpensesKpiBarComponent } from './components/variable-expenses-kpi-bar/variable-expenses-kpi-bar.component';
 
 registerLocaleData(localeMX);
 
@@ -52,6 +53,7 @@ registerLocaleData(localeMX);
     GridExpenseBtnsRendererComponent,
     CityCellEditorComponent,
     CityCellRendererComponent,
+    VariableExpensesKpiBarComponent,
   ],
   imports: [
     BrowserModule,

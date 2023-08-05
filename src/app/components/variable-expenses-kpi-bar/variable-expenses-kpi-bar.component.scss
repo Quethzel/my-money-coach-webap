@@ -1,0 +1,19 @@
+.kpi-bar {
+    // height: 85px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.kpi-box {
+    flex: auto;
+    // margin: 0 5px;
+    padding: 5px 20px;
+    text-align: center;
+    background-color: #f7f7f7;
+}
+.kpi-box h1 {
+    font-size: 22px;
+    font-weight: 400px;
+}
+.title {
+    font-size: 14px;
+}
