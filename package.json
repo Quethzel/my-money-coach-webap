@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build-prod": "ng build --base-href 'https://Quethzel.github.io/my-money-coach-webap/'",
-    "deploy": "npx angular-cli-ghpages --dir=dist/money-coach-pwa"
+    "deploy": "npx angular-cli-ghpages --dir=dist/money-coach-pwa",
+    "dev-net": "ng serve --host 0.0.0.0"
   },
   "private": true,
   "dependencies": {
