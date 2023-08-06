@@ -1,3 +1,4 @@
+import { formatNumber } from '@angular/common';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -29,6 +30,11 @@ export class CommonService {
    */
   isEmpty(value: any) {
     return value == null || value == undefined;
+  }
+
+  formatAsCurrency(value: number) {
+    const ftValue = formatNumber(value, 'es-MX', '1.0-2');
+    return `$${ftValue}`;
   }
 
 }
