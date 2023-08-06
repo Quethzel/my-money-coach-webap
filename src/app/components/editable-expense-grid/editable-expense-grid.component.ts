@@ -31,22 +31,12 @@ export class EditableExpenseGridComponent {
 
   public columnDefs: ColDef[] = [
     { field: 'lineNo', headerName: '#', editable: false, minWidth: 60, maxWidth: 75, suppressMenu: true, sortable: false, resizable: true },
-    { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false },
     { field: 'cityCode', headerName: 'City', minWidth: 80, maxWidth: 80,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: this.getCityCodes() }
     },
-    { field: 'item', headerName: 'Item', width: 300 },
-    { field: 'category', headerName: 'Category', width: 100, maxWidth: 150 },
-    { field: 'subcategory', headerName: 'Subcategory', width: 120, maxWidth: 180 },
-    { field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120, 
-      valueFormatter: (params: any) => {
-        const options = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
-        const currencyString = Intl.NumberFormat('es-MX', options);
-        return currencyString.format(params.value);
-      }
-    },
-    { field: 'date', headerName: 'Date', width: 100, maxWidth: 130, 
+    { 
+      field: 'date', headerName: 'Date', width: 90, maxWidth: 130, 
       cellEditor: 'agDateCellEditor',
       cellEditorParams: {
         max: new Date()
@@ -58,6 +48,17 @@ export class EditableExpenseGridComponent {
         return dateString;
       }
     },
+    { field: 'item', headerName: 'Item', width: 300 },
+    { field: 'category', headerName: 'Category', width: 100, maxWidth: 150 },
+    { field: 'subcategory', headerName: 'Subcategory', width: 120, maxWidth: 180 },
+    { field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120, 
+      valueFormatter: (params: any) => {
+        const options = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
+        const currencyString = Intl.NumberFormat('es-MX', options);
+        return currencyString.format(params.value);
+      }
+    },
+    { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false },
   ];
 
   public defaultColDef: ColDef = {
