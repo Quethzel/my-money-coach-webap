@@ -7,6 +7,7 @@ import { ExpenseFormComponent } from '../expense-form/expense-form.component';
 import { CommonService } from 'src/app/services/common.service';
 import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
 import { VariableExpense } from 'src/app/models/variable-expense';
+import { KPIType, KPIv2 } from 'src/app/models/kpiV2';
 
 @Component({
   selector: 'app-expenses',
@@ -20,9 +21,14 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   activeFilter: string;
   currentDate: Date;
   currentMonth: string;
-  totalExpenses: number = 0;
 
   filters: ExpenseFilters;
+
+  kpiMonthlyExpenses: KPIv2;
+  kpiAverageDailyExpenses: KPIv2;
+  kpiRemaningMonthlyBudget: KPIv2;
+  kpiRemainingDaysMonth: KPIv2;
+  kpiTotalRows: KPIv2;
 
   constructor(
     private modalService: BsModalService,
@@ -48,7 +54,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   getExpenses(filters: ExpenseFilters) {
     this.sbExpenses = this.expenseService.getExpenses(filters.year, filters.month).subscribe(data => {
       this.expenses = data;
-      this.totalExpenses = this.getTotalExpenses();
+      this.loadKPIs(this.expenses);
     });
   }
 
@@ -93,10 +99,57 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getTotalExpenses() {
+  private getTotalExpenses(data: IExpenses[]) {
     let total = 0;
     this.expenses.forEach(e => total += e.cost);
     return total;
   }
+
+  private loadKPIs(data: IExpenses[]) {
+    const total = this.getTotalExpenses(data);
+    this.kpiMonthlyExpenses = new KPIv2('Monthly Expenses', total, KPIType.Currency);
+
+    const dailyAvg = this.averageDaily(data, 'month');
+    this.kpiAverageDailyExpenses = new KPIv2('Average Daily Expenses', dailyAvg, KPIType.Currency);
+
+
+    // This KPI will be only available for filter by Month
+    const userSettings = localStorage.getItem('settings');
+    if (this.activeFilter == 'month' && userSettings != null) {
+      const settings = JSON.parse(userSettings);
+      const budget = settings.monthlyExpenseBudget;
+      const remaining = budget - this.getTotalExpenses(data);
+      const budgetAsCurrency = this.commonService.formatAsCurrency(budget);
+      const legend = `/ ${budgetAsCurrency}`;
+      this.kpiRemaningMonthlyBudget = new KPIv2('Remaning Monthly Budget', remaining, KPIType.Currency, legend);
+    }
+
+    const daysLeft = this.commonService.getRemainingDaysInCurrentMonth();
+    this.kpiRemainingDaysMonth = new KPIv2('Days Left', daysLeft, KPIType.Number);
+
+    this.kpiTotalRows = new KPIv2('Total Rows', data.length, KPIType.Number);
+  }
+
+  private averageDaily(data: IExpenses[], period: 'month' | 'year') {
+    const total = this.getTotalExpenses(data);
+    let days: number;
+    let result: number;
+
+    if (period == 'month') {
+      days = new Date().getDate();
+      result = total/days;
+    } else if (period == 'year') {
+      const firstDateOfTheYear = new Date(new Date().getFullYear(), 0, 1);
+      const today = new Date();
+      const diff = today.getTime() - firstDateOfTheYear.getTime();
+      const daysDiff = Math.ceil(diff / (1000 * 3600 * 24) );
+      result = total/daysDiff;
+    } else {
+      console.log('measure not implemented!');
+    }
+
+    return result;
+  }
+
 
 }

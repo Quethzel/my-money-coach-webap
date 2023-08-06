@@ -31,6 +31,7 @@ import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns
 import { CityCellEditorComponent } from './components/city-cell-editor/city-cell-editor.component';
 import { CityCellRendererComponent } from './components/city-cell-renderer/city-cell-renderer.component';
 import { VariableExpensesKpiBarComponent } from './components/variable-expenses-kpi-bar/variable-expenses-kpi-bar.component';
+import { KpiV2Component } from './components/kpi-v2/kpi-v2.component';
 
 registerLocaleData(localeMX);
 
@@ -54,6 +55,7 @@ registerLocaleData(localeMX);
     CityCellEditorComponent,
     CityCellRendererComponent,
     VariableExpensesKpiBarComponent,
+    KpiV2Component,
   ],
   imports: [
     BrowserModule,

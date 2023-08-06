@@ -1,6 +1,5 @@
 <div class="row">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <!-- <h3>Variable Expenses</h3> -->
         <div class="col-md-7">
             <h3>Variable Expenses - 
                 <span *ngIf="activeFilter == 'month'">{{currentMonth}}</span>
@@ -8,15 +7,16 @@
                 {{currentDate.getFullYear()}}
             </h3>
         </div>
-        <div class="col-md-5 d-flex justify-content-end">
-            <span *ngIf="expenses.length > 0">
-                Rows: {{ expenses.length }} | Total Expenses: {{totalExpenses | currency}}
-            </span>
-        </div>
     </div>
 
-    <div class="mb-3">
-        <app-variable-expenses-kpi-bar></app-variable-expenses-kpi-bar>
+    <div class="col-12 mb-3">
+        <div *ngIf="expenses.length > 0" class="kpi-bar">
+            <app-kpi-v2 [kpi]="kpiMonthlyExpenses"></app-kpi-v2>
+            <app-kpi-v2 [kpi]="kpiAverageDailyExpenses"></app-kpi-v2>
+            <app-kpi-v2 [kpi]="kpiRemaningMonthlyBudget"></app-kpi-v2>
+            <app-kpi-v2 [kpi]="kpiRemainingDaysMonth"></app-kpi-v2>
+            <app-kpi-v2 [kpi]="kpiTotalRows"></app-kpi-v2>        
+        </div>
     </div>
 
     <!-- filters -->

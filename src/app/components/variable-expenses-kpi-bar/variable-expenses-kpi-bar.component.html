@@ -1,32 +1,26 @@
 <div class="kpi-bar">
-    <div class="kpi-box">
+    <!-- <div class="kpi-box">
         <p class="title">Total Expenses</p>
-        <!-- <span class="legend">Current Year</span> -->
         <h1>$148,197.21</h1>
-    </div>
+    </div> -->
     <div class="kpi-box">
         <p class="title">Monthly Expenses</p>
-        <!-- <span class="legend"></span> -->
-        <h1>$48,197.21</h1>
+        <h1>{{totalMonthlyExpenses | currency}}</h1>
     </div>
     <div class="kpi-box">
         <p class="title">Average Daily Expenses</p>
-        <!-- <span class="legend"></span> -->
         <h1>$4,897.99</h1>
     </div>
     <div class="kpi-box">
         <p class="title">Remaning Monthly Budget</p>
-        <!-- <span class="legend">Budget $40,000</span> -->
         <h1>$21,850.00</h1>
     </div>
     <div class="kpi-box">
         <p class="title">Days left</p>
-        <!-- <span class="legend"></span> -->
         <h1>13</h1>
     </div>
     <div class="kpi-box">
         <p class="title">Total Rows</p>
-        <h1>44</h1>
-        <!-- <span class="legend"></span> -->
+        <h1>{{expenses.length}}</h1>
     </div>
 </div>
