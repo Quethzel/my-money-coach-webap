@@ -107,9 +107,15 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
   private loadKPIs(data: IExpenses[]) {
     const total = this.getTotalExpenses(data);
-    this.kpiMonthlyExpenses = new KPIv2('Monthly Expenses', total, KPIType.Currency);
+    const totalExpTitle = this.activeFilter == 'month' ? 'Monthly Expenses' : 'Annual Expenses';
+    this.kpiMonthlyExpenses = new KPIv2(totalExpTitle, total, KPIType.Currency);
 
-    const dailyAvg = this.averageDaily(data, 'month');
+    let dailyAvg;
+    if (this.activeFilter == 'month') {
+      dailyAvg = this.averageDaily(data, this.activeFilter);
+    } else if (this.activeFilter == 'year') {
+      dailyAvg = this.averageDaily(data, this.activeFilter);
+    }
     this.kpiAverageDailyExpenses = new KPIv2('Average Daily Expenses', dailyAvg, KPIType.Currency);
 
 
@@ -124,7 +130,13 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       this.kpiRemaningMonthlyBudget = new KPIv2('Remaning Monthly Budget', remaining, KPIType.Currency, legend);
     }
 
-    const daysLeft = this.commonService.getRemainingDaysInCurrentMonth();
+    let daysLeft: number;
+    if (this.activeFilter == 'month') { 
+      daysLeft = this.commonService.getRemainingDaysInCurrentMonth();
+    } else {
+      daysLeft = this.commonService.getRemaningDaysInCurrentYear();
+    }
+
     this.kpiRemainingDaysMonth = new KPIv2('Days Left', daysLeft, KPIType.Number);
 
     this.kpiTotalRows = new KPIv2('Total Rows', data.length, KPIType.Number);

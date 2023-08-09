@@ -12,7 +12,15 @@ export class CommonService {
     const today = new Date();
     const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 
-    return daysInMonth - today.getDate();;
+    return daysInMonth - today.getDate();
+  }
+
+  getRemaningDaysInCurrentYear() {
+    const today = new Date();
+    const lastDateOfTheYear = new Date(today.getFullYear(), 11, 31);
+    const diff = Math.abs(today.getTime() - lastDateOfTheYear.getTime());
+
+    return Math.ceil(diff/(1000*3600*24));
   }
 
   getMonthName(month: number) {
