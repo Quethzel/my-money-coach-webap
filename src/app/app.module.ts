@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +32,7 @@ import { CityCellEditorComponent } from './components/city-cell-editor/city-cell
 import { CityCellRendererComponent } from './components/city-cell-renderer/city-cell-renderer.component';
 import { VariableExpensesKpiBarComponent } from './components/variable-expenses-kpi-bar/variable-expenses-kpi-bar.component';
 import { KpiV2Component } from './components/kpi-v2/kpi-v2.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeMX);
 
@@ -70,6 +71,12 @@ registerLocaleData(localeMX);
     ModalModule.forRoot(),
     FontAwesomeModule,
     AgGridModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     { 

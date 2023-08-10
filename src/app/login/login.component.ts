@@ -16,7 +16,4 @@ export class LoginComponent {
     this.authService.loginByEmail(this.email, this.pass); //TODO: pass will not send without be encripted!
   }
 
-  test() {
-    this.authService.test();
-  }
 }
