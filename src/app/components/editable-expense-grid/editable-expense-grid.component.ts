@@ -5,6 +5,7 @@ import { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, ColumnApi, GridReadyEven
   CellEditingStoppedEvent,
   ValueFormatterParams,
   RowClassRules,
+  GridOptions,
 } from 'ag-grid-community';
 import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
 import { GridExpenseBtnsRendererComponent } from '../grid-expense-btns-renderer/grid-expense-btns-renderer.component';
@@ -71,6 +72,11 @@ export class EditableExpenseGridComponent {
       this.isEmptyPinnedCell(params)
         ? this.createPinnedCellPlaceholder(params)
         : undefined,
+  };
+
+  gridOptions: GridOptions = {
+    suppressMenuHide: true,
+    rowSelection: "single"
   };
 
   @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
