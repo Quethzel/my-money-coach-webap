@@ -30,6 +30,8 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   kpiRemainingDaysMonth: KPIv2;
   kpiTotalRows: KPIv2;
 
+  kpiRemaningMonthlyBudgetClass: string;
+
   constructor(
     private modalService: BsModalService,
     private expenseService: ExpensesService,
@@ -127,6 +129,15 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       const remaining = budget - this.getTotalExpenses(data);
       const budgetAsCurrency = this.commonService.formatAsCurrency(budget);
       const legend = `/ ${budgetAsCurrency}`;
+      
+      if (remaining <= 0) { this.kpiRemaningMonthlyBudgetClass = 'bl6-danger' }
+      else {
+        const twentyFivePercent = (25 * remaining) / 100;
+        if (remaining <= twentyFivePercent) {
+          this.kpiRemaningMonthlyBudgetClass = 'bl6-warning';
+        }
+      }
+      
       this.kpiRemaningMonthlyBudget = new KPIv2('Remaning Monthly Budget', remaining, KPIType.Currency, legend);
     }
 
