@@ -52,7 +52,7 @@ export class EditableExpenseGridComponent {
         return currencyString.format(params.value);
       }
     },
-    { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false },
+    { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false, editable: false },
   ];
 
   public defaultColDef: ColDef = {
@@ -110,7 +110,6 @@ export class EditableExpenseGridComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.gridApi) {
-      this.gridApi.setDomLayout('autoHeight');
       this.gridColumnApi.applyColumnState({
         state: [{ colId: 'date', sort: 'desc' }],
         defaultState: { sort: null },
@@ -124,6 +123,7 @@ export class EditableExpenseGridComponent {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.autoSizeAll();
+    this.gridApi.setFocusedCell(0, 'item', 'top');
   }
 
   save(item: VariableExpense) {
@@ -131,7 +131,7 @@ export class EditableExpenseGridComponent {
   }
 
   delete(rowId: any, item: VariableExpense) {
-    this.gridApi.applyTransaction({ remove: [rowId] });
+    // this.gridApi.applyTransaction({ remove: [rowId] });
     this.deleteItem.emit(item);
   }
 
@@ -155,6 +155,7 @@ export class EditableExpenseGridComponent {
       //reset pinned row
       this.newVariableExpense = new VariableExpense(this.userService.getDefaultCity());
       this.pinnedTopRowData = [this.newVariableExpense];
+      this.gridApi.setFocusedCell(0, 'item', 'top');
     }
   }
 
