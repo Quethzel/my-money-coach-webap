@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -6,8 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'money-coach-pwa';
-  version = 'v1.01.08';
+  version = 'v1.02.05';
 
-  constructor() { }
+  constructor(private userService: UserService) {
+    this.userService.loadCities();
+  }
 }

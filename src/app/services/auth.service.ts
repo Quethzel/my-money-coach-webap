@@ -80,13 +80,4 @@ export class AuthService {
       this.router.navigate(['/home']);
   }
 
-  test() {
-    this.http.get(`${this.apiURL}/test`)
-    .subscribe(res => {
-      console.log(res);
-    });
-  }
-
-
-
 }

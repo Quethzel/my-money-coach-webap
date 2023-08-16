@@ -1,4 +1,4 @@
-import { formatNumber } from "@angular/common";
+import { CommonService } from "../services/common.service";
 
 export enum KPIType {
     Number = 1,
@@ -17,15 +17,10 @@ export class KPIv2 {
         }
         
         if (kpiType == KPIType.Currency) {
-            this.value = this.formatAsCurrency(Number(value));
+            this.value = CommonService.formatAsCurrency(Number(value));
         } else {
             this.value = value.toString();
         }
     }
 
-    //TODO: replace by same method in common service
-    private formatAsCurrency(value: number) {
-        const ftValue = formatNumber(value, 'es-MX', '1.0-2');
-        return `$${ftValue}`;
-    }
 }

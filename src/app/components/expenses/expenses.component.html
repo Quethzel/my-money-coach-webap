@@ -12,7 +12,7 @@
     <div class="col-12 mb-3">
         <div *ngIf="expenses.length > 0" class="kpi-bar">
             <app-kpi-v2 [kpi]="kpiMonthlyExpenses"></app-kpi-v2>
-            <app-kpi-v2 *ngIf="activeFilter == 'month'" [kpi]="kpiRemaningMonthlyBudget"></app-kpi-v2>
+            <app-kpi-v2 *ngIf="activeFilter == 'month'" [kpi]="kpiRemaningMonthlyBudget" [ngClass]="kpiRemaningMonthlyBudgetClass"></app-kpi-v2>
             <app-kpi-v2 [kpi]="kpiAverageDailyExpenses"></app-kpi-v2>
             <app-kpi-v2 [kpi]="kpiRemainingDaysMonth"></app-kpi-v2>
             <app-kpi-v2 [kpi]="kpiTotalRows"></app-kpi-v2>        
@@ -31,7 +31,7 @@
         </div>
     </div>
     <!-- grid -->
-    <div style="height: 500px; overflow-y: auto;">
+    <div>
         <app-editable-expense-grid [expenses]="expenses" (saveItem)="saveItem($event)" (deleteItem)="deleteItem($event)"></app-editable-expense-grid>
     </div>
 
