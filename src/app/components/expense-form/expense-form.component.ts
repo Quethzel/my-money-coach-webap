@@ -4,6 +4,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IUserCity } from 'src/app/models/interfaces/ICity';
 import { IExpenses } from 'src/app/models/interfaces/IExpenses';
 import { ExpensesService } from 'src/app/services/expenses.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-expense-form',
@@ -26,9 +27,11 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private modalService: BsModalService,
     private expService: ExpensesService,
+    private userService: UserService,
   ) {
     this.maxDate = new Date();
     this.params = (this.modalService.config.initialState) as Object;
+    this.cities = this.userService.cties;
   }
 
   ngOnInit(): void {
@@ -40,14 +43,6 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
       cost: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
       date: [new Date(), Validators.required]
     });
-
-    //TODO: cities should be comes from user cities
-    this.cities = [
-      { code: 'MTY', name: 'Monterrey', default: true },
-      { code: 'CDMX', name: 'CDMX', default: false },
-      { code: 'XAL', name: 'Xalapa', default: false },
-      { code: 'OAX', name: 'Oaxaca', default: false },
-    ];
 
     if (Object.keys(this.params).length > 0) {
       this.fillWithParams(this.params as IExpenses);

@@ -8,6 +8,11 @@ export class CommonService {
 
   constructor() { }
 
+  static formatAsCurrency(value: number) {
+    const ftValue = formatNumber(value, 'es-MX', '1.0-2');
+    return `$${ftValue}`;
+  }
+
   getRemainingDaysInCurrentMonth() {
     const today = new Date();
     const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
@@ -38,11 +43,6 @@ export class CommonService {
    */
   isEmpty(value: any) {
     return value == null || value == undefined;
-  }
-
-  formatAsCurrency(value: number) {
-    const ftValue = formatNumber(value, 'es-MX', '1.0-2');
-    return `$${ftValue}`;
   }
 
 }

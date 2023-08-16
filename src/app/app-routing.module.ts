@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent, pathMatch: "full" },
   { path: 'forgot-pass', component: ForgotPassComponent, pathMatch: "full" },
   { path: 'dashboard', redirectTo: '/expenses', pathMatch: "full" },
-  { path: 'home', redirectTo: '/expenses', pathMatch: "full" }, //TODO: Home was redirected to expenses. This is a temp route.
+  { path: 'home', redirectTo: '/expenses', pathMatch: "full" },
   { path: 'expenses', component: ExpensesComponent, pathMatch: "full", canActivate: [AuthGuard] },
   { path: 'profile', component: UserProfileComponent, pathMatch: "full", canActivate: [AuthGuard] },
   { path: '', redirectTo: '/expenses', pathMatch: "full" },

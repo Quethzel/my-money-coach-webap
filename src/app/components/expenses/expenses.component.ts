@@ -127,7 +127,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       const settings = JSON.parse(userSettings);
       const budget = settings.monthlyExpenseBudget;
       const remaining = budget - this.getTotalExpenses(data);
-      const budgetAsCurrency = this.commonService.formatAsCurrency(budget);
+      const budgetAsCurrency = CommonService.formatAsCurrency(budget);
       const legend = `/ ${budgetAsCurrency}`;
       
       if (remaining <= 0) { this.kpiRemaningMonthlyBudgetClass = 'bl6-danger' }

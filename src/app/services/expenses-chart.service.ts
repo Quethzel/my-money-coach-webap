@@ -10,7 +10,6 @@ export class ExpensesChartService {
 
   constructor() { }
 
-  //TODO: Budget value is hardcode
   byMonth(data: IExpensesByMonth[]) {
     const options = new ChartConfig();
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

@@ -28,9 +28,6 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { EditableExpenseGridComponent } from './components/editable-expense-grid/editable-expense-grid.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns-renderer/grid-expense-btns-renderer.component';
-import { CityCellEditorComponent } from './components/city-cell-editor/city-cell-editor.component';
-import { CityCellRendererComponent } from './components/city-cell-renderer/city-cell-renderer.component';
-import { VariableExpensesKpiBarComponent } from './components/variable-expenses-kpi-bar/variable-expenses-kpi-bar.component';
 import { KpiV2Component } from './components/kpi-v2/kpi-v2.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
@@ -53,9 +50,6 @@ registerLocaleData(localeMX);
     UserProfileComponent,
     EditableExpenseGridComponent,
     GridExpenseBtnsRendererComponent,
-    CityCellEditorComponent,
-    CityCellRendererComponent,
-    VariableExpensesKpiBarComponent,
     KpiV2Component,
   ],
   imports: [
