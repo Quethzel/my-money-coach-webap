@@ -8,6 +8,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
 import { VariableExpense } from 'src/app/models/variable-expense';
 import { KPIType, KPIv2 } from 'src/app/models/kpiV2';
+import { VariableExpensesEventhubService } from 'src/app/services/variable-expenses-eventhub.service';
 
 @Component({
   selector: 'app-expenses',
@@ -23,6 +24,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   currentMonth: string;
 
   filters: ExpenseFilters;
+  gridHasUIFilters: boolean;
 
   kpiMonthlyExpenses: KPIv2;
   kpiAverageDailyExpenses: KPIv2;
@@ -32,10 +34,13 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
   kpiRemaningMonthlyBudgetClass: string;
 
+  sbGridHasUIFilters: Subscription;
+
   constructor(
     private modalService: BsModalService,
     private expenseService: ExpensesService,
     private commonService: CommonService,
+    private veEventHub: VariableExpensesEventhubService
     ) {
       this.currentDate = new Date();
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
@@ -43,6 +48,10 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       this.expenses = [];
 
       this.filters = new ExpenseFilters();
+
+      this.sbGridHasUIFilters = this.veEventHub.$gridHasUIFilters.subscribe(value => {
+        this.gridHasUIFilters = value;
+      });
     }
 
   ngOnInit() {
@@ -51,6 +60,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.sbExpenses) this.sbExpenses.unsubscribe();
+    if (this.sbGridHasUIFilters) this.sbGridHasUIFilters.unsubscribe();
   }
 
   getExpenses(filters: ExpenseFilters) {
@@ -99,6 +109,10 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.expenseService.saveExpense(item).subscribe(() => {
       this.filterBy(this.activeFilter);
     });
+  }
+
+  clearGridFilters() {
+    this.veEventHub.setGridHasUIFilters(false);
   }
 
   private getTotalExpenses(data: IExpenses[]) {

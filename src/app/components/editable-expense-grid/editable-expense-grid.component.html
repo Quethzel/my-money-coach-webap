@@ -8,7 +8,9 @@
     [enableCellChangeFlash]="true"
     [getRowId]="getRowId"
     [pinnedTopRowData]="pinnedTopRowData"
+    [pinnedBottomRowData]="pinnedBottomRowData"
     [rowClassRules]="rowClassRules"
+    (filterChanged)="onFilterChanged($event)"
     (cellValueChanged)="onCellValueChanged($event)"
     (cellEditingStopped)="onCellEditingStopped($event)"
     (gridReady)="onGridReady($event)">

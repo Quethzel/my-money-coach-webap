@@ -30,6 +30,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns-renderer/grid-expense-btns-renderer.component';
 import { KpiV2Component } from './components/kpi-v2/kpi-v2.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { CellRendererDateComponent } from './components/cell-renderer-date/cell-renderer-date.component';
 
 registerLocaleData(localeMX);
 
@@ -51,6 +52,7 @@ registerLocaleData(localeMX);
     EditableExpenseGridComponent,
     GridExpenseBtnsRendererComponent,
     KpiV2Component,
+    CellRendererDateComponent,
   ],
   imports: [
     BrowserModule,

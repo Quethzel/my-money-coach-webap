@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, ColumnApi, GridReadyEvent, 
   CellValueChangedEvent, 
@@ -11,35 +11,48 @@ import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
 import { GridExpenseBtnsRendererComponent } from '../grid-expense-btns-renderer/grid-expense-btns-renderer.component';
 import { VariableExpense } from 'src/app/models/variable-expense';
 import { UserService } from 'src/app/services/user.service';
+import { VariableExpensesEventhubService } from 'src/app/services/variable-expenses-eventhub.service';
+import { Subscription } from 'rxjs';
+import { CellRendererDateComponent } from '../cell-renderer-date/cell-renderer-date.component';
 
 @Component({
   selector: 'app-editable-expense-grid',
   templateUrl: './editable-expense-grid.component.html',
   styleUrls: ['./editable-expense-grid.component.scss']
 })
-export class EditableExpenseGridComponent {
+export class EditableExpenseGridComponent implements OnDestroy {
   @Input() expenses: VariableExpense[];
   @Output() saveItem = new EventEmitter<VariableExpense>();
   @Output() deleteItem = new EventEmitter<VariableExpense>();
-  
 
-  public columnDefs: ColDef[] = [
+  @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
+
+  private gridApi!: GridApi;
+  private gridColumnApi!: ColumnApi;
+  private filters: ExpenseFilters;
+  private sbEventHub: Subscription;
+
+  context!: any;
+  newVariableExpense:  VariableExpense;
+  pinnedTopRowData: any[] = [];
+  pinnedBottomRowData: any[] = [];
+
+  columnDefs: ColDef[] = [
     { field: 'lineNo', headerName: '#', editable: false, minWidth: 60, maxWidth: 75, suppressMenu: true, sortable: false, resizable: true },
     { field: 'cityCode', headerName: 'City', minWidth: 80, maxWidth: 80,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: this.userService.getCityCodes() }
     },
     { 
-      field: 'date', headerName: 'Date', width: 90, maxWidth: 130, 
+      field: 'date', headerName: 'Date', minWidth:100, width: 100, maxWidth: 130, 
       cellEditor: 'agDateCellEditor',
       cellEditorParams: {
         max: new Date()
       },
-      cellRenderer: (data: any) => { 
-        const opt: Intl.DateTimeFormatOptions = { year: "2-digit", month: "short", day: "2-digit" };
-        const dt = data.value ? new Date(data.value) : new Date();
-        const dateString = new Intl.DateTimeFormat('es-MX', opt).format(dt);
-        return dateString;
+      cellRendererSelector: (params: any) => {
+        if (!params.node.rowPinned) {
+          return { component: CellRendererDateComponent }
+        } else { return undefined }
       }
     },
     { field: 'item', headerName: 'Item', width: 300 },
@@ -55,7 +68,7 @@ export class EditableExpenseGridComponent {
     { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false, editable: false },
   ];
 
-  public defaultColDef: ColDef = {
+  defaultColDef: ColDef = {
     flex: 1,
     editable: true,
     sortable: true,
@@ -72,24 +85,16 @@ export class EditableExpenseGridComponent {
     rowSelection: "single"
   };
 
-  @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
-  private gridApi!: GridApi;
-  private gridColumnApi!: ColumnApi;
-  private filters: ExpenseFilters;
-  
-  public getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+  rowClassRules: RowClassRules = {
+    'pinned-row-top': (params) => { return params.node.rowPinned == 'top' },
+    'pinned-row-bottom': (params) => { return params.node.rowPinned == 'bottom' }
+  };
+
+  getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
     return params.data.id;
   };
 
-  public rowClassRules: RowClassRules = {
-    'pinned-row-top': (params) => { return params.node.rowPinned == 'top' }
-  };
-
-  context!: any;
-  newVariableExpense:  VariableExpense;
-  pinnedTopRowData: any[] = [];
-
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private veEventHub: VariableExpensesEventhubService) {
     this.context = { componentParent: this }
     this.expenses = [];
 
@@ -98,6 +103,15 @@ export class EditableExpenseGridComponent {
 
     this.filters = new ExpenseFilters();
     this.filters.byThisMonth();
+
+    this.sbEventHub = this.veEventHub.$gridHasUIFilters.subscribe(value => {
+      if (!value) { this.clearUIFilters() }
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.sbEventHub) this.sbEventHub.unsubscribe();
   }
 
   autoSizeAll(skipHeader: boolean = false) {
@@ -131,7 +145,6 @@ export class EditableExpenseGridComponent {
   }
 
   delete(rowId: any, item: VariableExpense) {
-    // this.gridApi.applyTransaction({ remove: [rowId] });
     this.deleteItem.emit(item);
   }
 
@@ -159,6 +172,26 @@ export class EditableExpenseGridComponent {
     }
   }
 
+  onFilterChanged($event: any) {
+    let totalCost = 0;
+    let totalLines = 0;
+    $event.api.forEachNodeAfterFilter((node: any) => { 
+      totalLines += 1;
+      totalCost += node.data.cost 
+    });
+    this.setPinnedRowBottom(totalLines, totalCost);
+
+    const hasUIFilter = Object.keys($event.api.getFilterModel()).length > 0;
+    this.veEventHub.setGridHasUIFilters(hasUIFilter);
+  }
+
+  clearUIFilters() {
+    if (this.gridApi) {
+      this.gridApi.setFilterModel(null);
+      this.gridApi.setPinnedBottomRowData([]);
+    }
+  }
+
   private isValidItem(item: Partial<VariableExpense>) {
     return item.item && item.category && item.cost && item.date;
   }
@@ -178,5 +211,20 @@ export class EditableExpenseGridComponent {
         return colDef.headerName;
     else return '---';
   }
+
+  private setPinnedRowBottom(totalLines: number, totalCost: number) {
+    if (this.gridApi) {
+      const pinnedBottomRow: any = {};
+      this.gridColumnApi.getAllGridColumns().forEach(item => { 
+        const id = item.getColId();
+        pinnedBottomRow[id] = null ;
+      });
+      
+      pinnedBottomRow['cost'] = totalCost;
+      pinnedBottomRow['lineNo'] = totalLines;
+      this.gridApi.setPinnedBottomRowData([pinnedBottomRow]);
+    }
+  }
+
 
 }
