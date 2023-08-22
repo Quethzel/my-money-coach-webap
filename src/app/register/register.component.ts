@@ -7,23 +7,28 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  name!: string;
-  lastName!: string;
-  email!: string;
-  password!: string;
-  confirmPass!: string;
+  user = {
+    name: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPass: ''
+  };
+    
+  errorMessage: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.errorMessage = null;
+  }
 
   register() {
-    const user = {
-      name: this.name,
-      lastName: this.lastName,
-      email: this.email,
-      password: this.password
-    };
-
-    this.authService.userRegister(user);//TODO: pass will not be send it without encryption!
+    if (this.user.password != this.user.confirmPass) {
+      this.errorMessage = 'Passwords not match. Please verify';
+      return;
+    } else {
+      //TODO: pass will not be send it without encryption!
+      this.authService.userRegister(this.user);
+    }
   }
 
 }

@@ -37,6 +37,13 @@ export class AuthService {
       },
       error: (e) => {
         console.error(e);
+        if (e.status == 409) {
+          alert(`${e.error.message}`);
+        } else if (e.status == 500) {
+          alert(`${e.statusText}. Please contact the administrator. ${e.message}`);
+        } else {
+          alert('An error occurred while trying to register. Please try again later or contact the administrator. ')
+        }
       }
     });
   }

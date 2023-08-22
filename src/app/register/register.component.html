@@ -13,22 +13,23 @@
                         <form class="user">
                             <div class="row mb-3">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input class="form-control form-control-user" [(ngModel)]="name" type="text" id="name" placeholder="Name(s)" name="name">
+                                    <input class="form-control form-control-user" [(ngModel)]="user.name" type="text" id="name" placeholder="Name(s)" name="name">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input class="form-control form-control-user" [(ngModel)]="lastName" type="text" id="lastName" placeholder="Last Name" name="lastName">
+                                    <input class="form-control form-control-user" [(ngModel)]="user.lastName" type="text" id="lastName" placeholder="Last Name" name="lastName">
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <input class="form-control form-control-user" [(ngModel)]="email" type="email" id="email" aria-describedby="email" placeholder="Email Address" name="email">
+                                <input class="form-control form-control-user" [(ngModel)]="user.email" type="email" id="email" aria-describedby="email" placeholder="Email Address" name="email">
                             </div>
                             <div class="row mb-3">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input class="form-control form-control-user" [(ngModel)]="password" type="password" id="password" placeholder="Password" name="password">
+                                    <input class="form-control form-control-user" [(ngModel)]="user.password" type="password" id="password" placeholder="Password" name="password">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input class="form-control form-control-user" [(ngModel)]="confirmPass" type="password" id="confirmPass" placeholder="Repeat Password" name="confirmPass">
+                                    <input class="form-control form-control-user" [(ngModel)]="user.confirmPass" type="password" id="confirmPass" placeholder="Repeat Password" name="confirmPass">
                                 </div>
+                                <div *ngIf="errorMessage" class="col-sm-12 mb-3 text-danger">{{errorMessage}}</div>
                             </div>
                             <button class="btn btn-primary d-block btn-user w-100" type="submit" (click)="register()">Register Account</button>
                         </form>
