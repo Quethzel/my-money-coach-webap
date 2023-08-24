@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1692683065828,
+  "timestamp": 1692854028552,
   "index": "https://Quethzel.github.io/my-money-coach-webap/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "https://Quethzel.github.io/my-money-coach-webap/favicon.ico",
         "https://Quethzel.github.io/my-money-coach-webap/index.html",
-        "https://Quethzel.github.io/my-money-coach-webap/main.60eec5a74facf6da.js",
+        "https://Quethzel.github.io/my-money-coach-webap/main.52eaf4f06d93ef45.js",
         "https://Quethzel.github.io/my-money-coach-webap/manifest.webmanifest",
         "https://Quethzel.github.io/my-money-coach-webap/polyfills.d86a6b8d21201eab.js",
         "https://Quethzel.github.io/my-money-coach-webap/runtime.777a588a6e9e39d6.js",
@@ -93,8 +93,8 @@
     "https://Quethzel.github.io/my-money-coach-webap/assets/img/forgot-pass.jpg": "c008cc33d7ee1059912df88dfe435df7d5fd3682",
     "https://Quethzel.github.io/my-money-coach-webap/assets/img/login.jpg": "8db41ed29e1e9ce1c7b31e38d01c2681bd0798f0",
     "https://Quethzel.github.io/my-money-coach-webap/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "https://Quethzel.github.io/my-money-coach-webap/index.html": "988fc67b0dd25ca716f06979407ccb0e1683b87f",
-    "https://Quethzel.github.io/my-money-coach-webap/main.60eec5a74facf6da.js": "0236c33109fb18164211dc23dc0610037536bc89",
+    "https://Quethzel.github.io/my-money-coach-webap/index.html": "ce441a0c37ab806292691dca29dd2a655b9cd9a2",
+    "https://Quethzel.github.io/my-money-coach-webap/main.52eaf4f06d93ef45.js": "997797a479e9cad4dd66a63899eb5a7cdbf4832b",
     "https://Quethzel.github.io/my-money-coach-webap/manifest.webmanifest": "938247bb21223c6822949bc66decce15e7cee54e",
     "https://Quethzel.github.io/my-money-coach-webap/polyfills.d86a6b8d21201eab.js": "6c4ca8d3ebb9813ddd9c33a4ef0328d7623d124a",
     "https://Quethzel.github.io/my-money-coach-webap/runtime.777a588a6e9e39d6.js": "21c01dda90eb86e3b390b4799b141031e0309542",
