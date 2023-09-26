@@ -7,6 +7,7 @@ import { AuthGuard } from './auth.guard';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { AnnualExpensesComponent } from './components/annual-expenses/annual-expenses.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, pathMatch: "full" },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'dashboard', redirectTo: '/expenses', pathMatch: "full" },
   { path: 'home', redirectTo: '/expenses', pathMatch: "full" },
   { path: 'expenses', component: ExpensesComponent, pathMatch: "full", canActivate: [AuthGuard] },
+  { path: 'annual-expenses', component: AnnualExpensesComponent, pathMatch: "full", canActivate: [AuthGuard] },
   { path: 'profile', component: UserProfileComponent, pathMatch: "full", canActivate: [AuthGuard] },
   { path: '', redirectTo: '/expenses', pathMatch: "full" },
   { path: '**', component: ExpensesDashboardComponent, pathMatch: 'full', canActivate: [AuthGuard] },
