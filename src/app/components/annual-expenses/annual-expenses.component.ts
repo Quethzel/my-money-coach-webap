@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AnnualExpense } from 'src/app/models/annual-expense';
+import { IAnnualExpense } from 'src/app/models/interfaces/IAnnualExpense';
+import { AnnualExpensesService } from 'src/app/services/annual-expenses.service';
 
 @Component({
   selector: 'app-annual-expenses',
@@ -7,12 +10,21 @@ import { AnnualExpense } from 'src/app/models/annual-expense';
   styleUrls: ['./annual-expenses.component.scss']
 })
 export class AnnualExpensesComponent {
-  annualExpenses: AnnualExpense[];
+  sbExpenses: Subscription;
+  annualExpenses: IAnnualExpense[];
   currentDate: Date;
 
-  constructor() {
+  constructor(private aexService: AnnualExpensesService) {
     this.currentDate = new Date();
     this.annualExpenses = [];
+
+    this.getExpenses(new Date().getFullYear());
+  }
+
+  getExpenses(year: number) {
+    this.sbExpenses = this.aexService.getAllExpensesByYear(year).subscribe(data => {
+      this.annualExpenses = data;
+    });
   }
 
   saveItem(item: AnnualExpense) {
