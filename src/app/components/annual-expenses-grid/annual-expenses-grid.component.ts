@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { AgGridAngular } from 'ag-grid-angular';
 import { CellEditingStoppedEvent, CellValueChangedEvent, ColDef, ColumnApi, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { AnnualExpense } from 'src/app/models/annual-expense';
+import { CellRendererDateComponent } from '../cell-renderer-date/cell-renderer-date.component';
 
 @Component({
   selector: 'app-annual-expenses-grid',
@@ -32,8 +33,21 @@ export class AnnualExpensesGridComponent {
     { field: 'item', headerName: 'Item' },
     { field: 'category', headerName: 'Category' },
     { field: 'subcategory', headerName: 'Subcategory' },
-    { field: 'paymentDate', headerName: 'Payment Date' },
-    { field: 'cost', headerName: 'Cost' },
+    { field: 'paymentDate', headerName: 'Payment Date', 
+      cellEditor: 'agDateCellEditor', cellEditorParams: { max: new Date() },
+      cellRendererSelector: (params: any) => {
+        if (!params.node.rowPinned) {
+          return { component: CellRendererDateComponent, params: { formatDate: { month: "short", day: "numeric" } } }
+        } else { return undefined }
+      }
+    },
+    { field: 'cost', headerName: 'Cost', type: 'numericColumn', 
+      valueFormatter: (params: any) => {
+        const options = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
+        const currencyString = Intl.NumberFormat('es-MX', options);
+        return currencyString.format(params.value);
+      }
+    },
   ];
 
     defaultColDef: ColDef = {
