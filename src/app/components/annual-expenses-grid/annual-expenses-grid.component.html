@@ -9,7 +9,12 @@
     [getRowId]="getRowId"
     [pinnedTopRowData]="pinnedTopRowData"
     [pinnedBottomRowData]="pinnedBottomRowData"
+    [rowClassRules]="rowClassRules"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    (rowDataUpdated)="onRowDataUpdated($event)"
+    (filterChanged)="onFilterChanged($event)"
     (cellValueChanged)="onCellValueChanged($event)"
     (cellEditingStopped)="onCellEditingStopped($event)"
     (gridReady)="onGridReady($event)">
 </ag-grid-angular>
+

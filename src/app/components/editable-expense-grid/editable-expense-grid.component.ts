@@ -114,6 +114,17 @@ export class EditableExpenseGridComponent implements OnDestroy {
     if (this.sbEventHub) this.sbEventHub.unsubscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.gridApi) {
+      this.gridColumnApi.applyColumnState({
+        state: [{ colId: 'date', sort: 'desc' }],
+        defaultState: { sort: null },
+      });
+      console.log('test');
+      this.gridApi.refreshCells();
+    }
+  }
+
   autoSizeAll(skipHeader: boolean = false) {
     const allColumnIds: string[] = [];
     this.gridColumnApi.getColumns()!.forEach((column) => {
@@ -122,30 +133,11 @@ export class EditableExpenseGridComponent implements OnDestroy {
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.gridApi) {
-      this.gridColumnApi.applyColumnState({
-        state: [{ colId: 'date', sort: 'desc' }],
-        defaultState: { sort: null },
-      });
-
-      this.gridApi.refreshCells();
-    }
-  }
-
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.autoSizeAll();
     this.gridApi.setFocusedCell(0, 'item', 'top');
-  }
-
-  save(item: VariableExpense) {
-    this.saveItem.emit(item);
-  }
-
-  delete(rowId: any, item: VariableExpense) {
-    this.deleteItem.emit(item);
   }
 
   onCellValueChanged(params: CellValueChangedEvent) {
@@ -156,7 +148,6 @@ export class EditableExpenseGridComponent implements OnDestroy {
       const item = params.node.data as VariableExpense;
       this.save(item);
     }
-
   }
 
   onCellEditingStopped(params: CellEditingStoppedEvent) {
@@ -183,6 +174,14 @@ export class EditableExpenseGridComponent implements OnDestroy {
 
     const hasUIFilter = Object.keys($event.api.getFilterModel()).length > 0;
     this.veEventHub.setGridHasUIFilters(hasUIFilter);
+  }
+
+  save(item: VariableExpense) {
+    this.saveItem.emit(item);
+  }
+
+  delete(rowId: any, item: VariableExpense) {
+    this.deleteItem.emit(item);
   }
 
   clearUIFilters() {

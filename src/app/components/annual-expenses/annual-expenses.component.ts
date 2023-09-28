@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AnnualExpense } from 'src/app/models/annual-expense';
 import { IAnnualExpense } from 'src/app/models/interfaces/IAnnualExpense';
@@ -9,7 +9,7 @@ import { AnnualExpensesService } from 'src/app/services/annual-expenses.service'
   templateUrl: './annual-expenses.component.html',
   styleUrls: ['./annual-expenses.component.scss']
 })
-export class AnnualExpensesComponent {
+export class AnnualExpensesComponent implements OnInit, OnDestroy {
   sbExpenses: Subscription;
   annualExpenses: IAnnualExpense[];
   currentDate: Date;
@@ -18,7 +18,14 @@ export class AnnualExpensesComponent {
     this.currentDate = new Date();
     this.annualExpenses = [];
 
-    this.getExpenses(new Date().getFullYear());
+  }
+
+  ngOnInit(): void {
+    this.getExpenses(this.currentDate.getFullYear());
+  }
+
+  ngOnDestroy(): void {
+    if (this.sbExpenses) this.sbExpenses.unsubscribe();
   }
 
   getExpenses(year: number) {
@@ -28,7 +35,11 @@ export class AnnualExpensesComponent {
   }
 
   saveItem(item: AnnualExpense) {
-    console.log(item);
+    this.aexService.saveExpense(item).subscribe(() => {
+      console.log('saved');
+    }, (error) => {
+      console.log('error', error);
+    });
   }
 
   deleteItem(item: AnnualExpense) {
