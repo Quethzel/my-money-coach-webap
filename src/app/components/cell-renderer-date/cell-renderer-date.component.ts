@@ -9,11 +9,14 @@ import { ICellRendererParams } from 'ag-grid-community';
 })
 export class CellRendererDateComponent implements ICellRendererAngularComp {
   dateString: string;
+  locale = 'es-MX';
+  defaultFormat = { year: "2-digit", month: "short", day: "2-digit" };
 
-  agInit(params: ICellRendererParams<any, any, any>): void {
-    const opt: Intl.DateTimeFormatOptions = { year: "2-digit", month: "short", day: "2-digit" };
+  agInit(params: any): void {
+    const opt = params.formatDate ? params.formatDate : this.defaultFormat;
     const dt = params.value ? new Date(params.value) : new Date();
-    this.dateString = new Intl.DateTimeFormat('es-MX', opt).format(dt);
+
+    this.dateString = new Intl.DateTimeFormat(this.locale, opt).format(dt);
   }
   refresh(params: ICellRendererParams<any, any, any>): boolean {
     return false;

@@ -31,6 +31,8 @@ import { GridExpenseBtnsRendererComponent } from './components/grid-expense-btns
 import { KpiV2Component } from './components/kpi-v2/kpi-v2.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CellRendererDateComponent } from './components/cell-renderer-date/cell-renderer-date.component';
+import { AnnualExpensesComponent } from './components/annual-expenses/annual-expenses.component';
+import { AnnualExpensesGridComponent } from './components/annual-expenses-grid/annual-expenses-grid.component';
 
 registerLocaleData(localeMX);
 
@@ -53,6 +55,8 @@ registerLocaleData(localeMX);
     GridExpenseBtnsRendererComponent,
     KpiV2Component,
     CellRendererDateComponent,
+    AnnualExpensesComponent,
+    AnnualExpensesGridComponent,
   ],
   imports: [
     BrowserModule,

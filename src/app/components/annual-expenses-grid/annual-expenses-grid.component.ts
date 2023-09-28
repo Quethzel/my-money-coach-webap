@@ -1,53 +1,38 @@
-import { Component, EventEmitter, Input, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, ColumnApi, GridReadyEvent, 
-  CellValueChangedEvent, 
-  CellEditingStoppedEvent,
-  ValueFormatterParams,
-  RowClassRules,
-  GridOptions,
-} from 'ag-grid-community';
-import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
-import { GridExpenseBtnsRendererComponent } from '../grid-expense-btns-renderer/grid-expense-btns-renderer.component';
-import { VariableExpense } from 'src/app/models/variable-expense';
-import { UserService } from 'src/app/services/user.service';
-import { VariableExpensesEventhubService } from 'src/app/services/variable-expenses-eventhub.service';
-import { Subscription } from 'rxjs';
+import { CellEditingStoppedEvent, CellValueChangedEvent, ColDef, ColumnApi, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent, RowClassRules, ValueFormatterParams } from 'ag-grid-community';
+import { AnnualExpense } from 'src/app/models/annual-expense';
 import { CellRendererDateComponent } from '../cell-renderer-date/cell-renderer-date.component';
 
 @Component({
-  selector: 'app-editable-expense-grid',
-  templateUrl: './editable-expense-grid.component.html',
-  styleUrls: ['./editable-expense-grid.component.scss']
+  selector: 'app-annual-expenses-grid',
+  templateUrl: './annual-expenses-grid.component.html',
+  styleUrls: ['./annual-expenses-grid.component.scss']
 })
-export class EditableExpenseGridComponent implements OnDestroy {
-  @Input() expenses: VariableExpense[];
-  @Output() saveItem = new EventEmitter<VariableExpense>();
-  @Output() deleteItem = new EventEmitter<VariableExpense>();
+export class AnnualExpensesGridComponent {
+  @Input() expenses: AnnualExpense[];
+  @Output() saveItem = new EventEmitter<AnnualExpense>();
+  @Output() deleteItem = new EventEmitter<AnnualExpense>();
 
   @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
 
   private gridApi!: GridApi;
   private gridColumnApi!: ColumnApi;
-  private filters: ExpenseFilters;
-  private sbEventHub: Subscription;
 
   context!: any;
-  newVariableExpense:  VariableExpense;
+  newAnnualExpense: AnnualExpense;
   pinnedTopRowData: any[] = [];
   pinnedBottomRowData: any[] = [];
 
   columnDefs: ColDef[] = [
-    { field: 'lineNo', headerName: '#', editable: false, minWidth: 60, maxWidth: 75, suppressMenu: true, sortable: false, resizable: true },
-    { field: 'cityCode', headerName: 'City', minWidth: 80, maxWidth: 80,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: this.userService.getCityCodes() }
-    },
+    { field: 'item', headerName: 'Item', width: 300 },
+    { field: 'category', headerName: 'Category', width: 100, maxWidth: 150 },
+    { field: 'subcategory', headerName: 'Subcategory', width: 120, maxWidth: 180 },
     { 
-      field: 'date', headerName: 'Date', minWidth:100, width: 100, maxWidth: 130, 
+      field: 'paymentDate', headerName: 'Date', minWidth:100, width: 100, maxWidth: 130, 
       cellEditor: 'agDateCellEditor',
       cellEditorParams: {
-        max: new Date()
+        max: new Date(new Date().getFullYear(), 11, 31)
       },
       cellRendererSelector: (params: any) => {
         if (!params.node.rowPinned) {
@@ -55,17 +40,14 @@ export class EditableExpenseGridComponent implements OnDestroy {
         } else { return undefined }
       }
     },
-    { field: 'item', headerName: 'Item', width: 300 },
-    { field: 'category', headerName: 'Category', width: 100, maxWidth: 150 },
-    { field: 'subcategory', headerName: 'Subcategory', width: 120, maxWidth: 180 },
-    { field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120, 
+    {
+      field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120,
       valueFormatter: (params: any) => {
         const options = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
         const currencyString = Intl.NumberFormat('es-MX', options);
         return currencyString.format(params.value);
       }
     },
-    { field: 'actions', headerName: 'Actions', cellRenderer: GridExpenseBtnsRendererComponent, maxWidth: 85, suppressMenu: true, sortable: false, editable: false },
   ];
 
   defaultColDef: ColDef = {
@@ -94,33 +76,23 @@ export class EditableExpenseGridComponent implements OnDestroy {
     return params.data.id;
   };
 
-  constructor(private userService: UserService, private veEventHub: VariableExpensesEventhubService) {
+  constructor() {
     this.context = { componentParent: this }
     this.expenses = [];
 
-    this.newVariableExpense = new VariableExpense(this.userService.getDefaultCity());
-    this.pinnedTopRowData = [this.newVariableExpense];
-
-    this.filters = new ExpenseFilters();
-    this.filters.byThisMonth();
-
-    this.sbEventHub = this.veEventHub.$gridHasUIFilters.subscribe(value => {
-      if (!value) { this.clearUIFilters() }
-    });
-
-  }
-
-  ngOnDestroy(): void {
-    if (this.sbEventHub) this.sbEventHub.unsubscribe();
+    this.newAnnualExpense = new AnnualExpense();
+    this.pinnedTopRowData = [this.newAnnualExpense];
+    
+    this.clearUIFilters();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.gridApi) {
       this.gridColumnApi.applyColumnState({
-        state: [{ colId: 'date', sort: 'desc' }],
+        state: [{ colId: 'paymentDate', sort: 'asc' }],
         defaultState: { sort: null },
       });
-      console.log('test');
+      console.log('ngOnChanges');
       this.gridApi.refreshCells();
     }
   }
@@ -140,25 +112,35 @@ export class EditableExpenseGridComponent implements OnDestroy {
     this.gridApi.setFocusedCell(0, 'item', 'top');
   }
 
+  onFirstDataRendered(params: any) {
+    this.generateDataForPinnedRowBottom();
+  }
+
+  onRowDataUpdated(params: any) {
+    if (this.gridApi) {
+      this.generateDataForPinnedRowBottom();
+    }
+  }
+
   onCellValueChanged(params: CellValueChangedEvent) {
     const isRowPinned = params.node.isRowPinned();
     const valueChange = params.oldValue != params.newValue;
 
     if (valueChange && !isRowPinned) {
-      const item = params.node.data as VariableExpense;
+      const item = params.node.data as AnnualExpense;
       this.save(item);
     }
   }
 
   onCellEditingStopped(params: CellEditingStoppedEvent) {
     // save new item
-    if (this.isValidItem(this.newVariableExpense)) {
-      this.expenses = [...this.expenses, this.newVariableExpense];
-      this.save(this.newVariableExpense);
-      
+    if (this.isValidItem(this.newAnnualExpense)) {
+      this.expenses = [...this.expenses, this.newAnnualExpense];
+      this.save(this.newAnnualExpense);
+
       //reset pinned row
-      this.newVariableExpense = new VariableExpense(this.userService.getDefaultCity());
-      this.pinnedTopRowData = [this.newVariableExpense];
+      this.newAnnualExpense = new AnnualExpense();
+      this.pinnedTopRowData = [this.newAnnualExpense];
       this.gridApi.setFocusedCell(0, 'item', 'top');
     }
   }
@@ -171,16 +153,13 @@ export class EditableExpenseGridComponent implements OnDestroy {
       totalCost += node.data.cost 
     });
     this.setPinnedRowBottom(totalLines, totalCost);
-
-    const hasUIFilter = Object.keys($event.api.getFilterModel()).length > 0;
-    this.veEventHub.setGridHasUIFilters(hasUIFilter);
   }
 
-  save(item: VariableExpense) {
+  save(item: AnnualExpense) {
     this.saveItem.emit(item);
   }
 
-  delete(rowId: any, item: VariableExpense) {
+  delete(item: AnnualExpense) {
     this.deleteItem.emit(item);
   }
 
@@ -191,8 +170,8 @@ export class EditableExpenseGridComponent implements OnDestroy {
     }
   }
 
-  private isValidItem(item: Partial<VariableExpense>) {
-    return item.item && item.category && item.cost && item.date;
+  private isValidItem(item: Partial<AnnualExpense>) {
+    return item.item && item.category && item.cost && item.paymentDate;
   }
 
   private isEmptyPinnedCell({ node, value }: ValueFormatterParams): boolean {
@@ -218,12 +197,21 @@ export class EditableExpenseGridComponent implements OnDestroy {
         const id = item.getColId();
         pinnedBottomRow[id] = null ;
       });
-      
+
       pinnedBottomRow['cost'] = totalCost;
-      pinnedBottomRow['lineNo'] = totalLines;
+      // pinnedBottomRow['lineNo'] = totalLines;
       this.gridApi.setPinnedBottomRowData([pinnedBottomRow]);
     }
   }
 
+  private generateDataForPinnedRowBottom() {
+    let totalCost = 0;
+    let totalLines = 0;
+    this.gridApi.forEachNode((node) => {
+      totalLines += 1;
+      totalCost += node.data.cost 
+    });
+    this.setPinnedRowBottom(totalLines, totalCost);
+  }
 
 }
