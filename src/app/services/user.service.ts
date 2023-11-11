@@ -37,6 +37,8 @@ export class UserService {
       { code: 'CDMX', name: 'CDMX', default: false },
       { code: 'XAL', name: 'Xalapa', default: false },
       { code: 'OAX', name: 'Oaxaca', default: false },
+      { code: 'HTX', name: 'Houston-Texas', default: false },
+      { code: 'PBL', name: 'Puebla', default: false },
     ];
 
     return of(this.cities);
