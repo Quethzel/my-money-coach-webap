@@ -3,6 +3,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { CellEditingStoppedEvent, CellValueChangedEvent, ColDef, ColumnApi, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent, RowClassRules, ValueFormatterParams } from 'ag-grid-community';
 import { AnnualExpense } from 'src/app/models/annual-expense';
 import { CellRendererDateComponent } from '../cell-renderer-date/cell-renderer-date.component';
+import { AnnualExpensesGridBtnsComponent } from '../annual-expenses-grid-btns/annual-expenses-grid-btns.component';
 
 @Component({
   selector: 'app-annual-expenses-grid',
@@ -48,6 +49,7 @@ export class AnnualExpensesGridComponent {
         return currencyString.format(params.value);
       }
     },
+    { field: 'actions', headerName: 'Actions', cellRenderer: AnnualExpensesGridBtnsComponent, maxWidth: 85, suppressMenu: true, sortable: false, editable: false },
   ];
 
   defaultColDef: ColDef = {

@@ -33,6 +33,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { CellRendererDateComponent } from './components/cell-renderer-date/cell-renderer-date.component';
 import { AnnualExpensesComponent } from './components/annual-expenses/annual-expenses.component';
 import { AnnualExpensesGridComponent } from './components/annual-expenses-grid/annual-expenses-grid.component';
+import { AnnualExpensesGridBtnsComponent } from './components/annual-expenses-grid-btns/annual-expenses-grid-btns.component';
 
 registerLocaleData(localeMX);
 
@@ -57,6 +58,7 @@ registerLocaleData(localeMX);
     CellRendererDateComponent,
     AnnualExpensesComponent,
     AnnualExpensesGridComponent,
+    AnnualExpensesGridBtnsComponent,
   ],
   imports: [
     BrowserModule,

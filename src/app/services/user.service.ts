@@ -30,7 +30,7 @@ export class UserService {
   deleteAccount() {
 
   }
-
+//TODO: this data should be in the database
   loadCities() {
     this.cities = [
       { code: 'MTY', name: 'Monterrey', default: true },

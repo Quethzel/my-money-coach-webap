@@ -36,14 +36,16 @@ export class AnnualExpensesComponent implements OnInit, OnDestroy {
 
   saveItem(item: AnnualExpense) {
     this.aexService.saveExpense(item).subscribe(() => {
-      console.log('saved');
+      this.getExpenses(this.currentDate.getFullYear());
     }, (error) => {
       console.log('error', error);
     });
   }
 
   deleteItem(item: AnnualExpense) {
-    console.log('delete: item: ', item);
+    this.aexService.delete(item.id).subscribe(item => {
+      this.getExpenses(this.currentDate.getFullYear());
+    });
   }
 
 }
