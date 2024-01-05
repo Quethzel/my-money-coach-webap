@@ -23,7 +23,7 @@ import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { ExpensesListComponent } from './components/expenses-list/expenses-list.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPenToSquare, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { EditableExpenseGridComponent } from './components/editable-expense-grid/editable-expense-grid.component';
 import { AgGridModule } from 'ag-grid-angular';
@@ -91,6 +91,6 @@ registerLocaleData(localeMX);
 })
 export class AppModule {
   constructor(librabry: FaIconLibrary) {
-    librabry.addIcons(faTrash, faPenToSquare);
+    librabry.addIcons(faTrash, faPenToSquare, faChevronLeft, faChevronRight);
   }
 }

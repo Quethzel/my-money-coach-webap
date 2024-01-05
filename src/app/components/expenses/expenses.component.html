@@ -24,9 +24,21 @@
         <div class="row">
             <div class="btn-toolbar align-items-center mb-2 mb-md-0">
                 <button *ngIf="gridHasUIFilters" (click)="clearGridFilters()" class="btn btn-sm btn-outline-danger">Clear Filters</button>
+                <div>
+                    <a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Previous"
+                        (click)="onPrevPeriod()">
+                        <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
+                    </a>
+                </div>
                 <div class="btn-group btn-group-sm btn-outline ms-2">
                     <a (click)="filterBy('month')" [class.active]="activeFilter == 'month'" class="btn btn-outline-secondary" aria-current="page">Month</a>
                     <a (click)="filterBy('year')" [class.active]="activeFilter == 'year'" class="btn btn-outline-secondary">Year</a>
+                </div>
+                <div>
+                    <a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Next"
+                        (click)="onNextPeriod()">
+                        <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+                    </a>
                 </div>
             </div>
         </div>

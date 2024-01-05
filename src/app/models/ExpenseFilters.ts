@@ -18,6 +18,12 @@ export class ExpenseFilters {
         return this.getFilters();
     }
 
+    byYearAndMonth(year: number, month: number) {
+        this.year = year;
+        this.month = month;
+        return this.getFilters();
+    }
+
 
     getFilters() {
         return this;

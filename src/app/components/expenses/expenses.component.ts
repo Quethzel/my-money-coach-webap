@@ -72,12 +72,20 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
   filterBy(filterBy: string) {
     this.activeFilter = filterBy;
+    this.currentDate = new Date();
     
     if(filterBy == 'month') {
       this.getExpenses(this.filters.byThisMonth());
     } else {
       this.getExpenses(this.filters.byThisYear());
     }
+  }
+
+  filterByDate(date: Date) {
+    const period = new ExpenseFilters();
+    period.year = date.getFullYear();
+    period.month = date.getMonth();
+    this.getExpenses(period);
   }
 
   openExpenseModal(item?: IExpenses) {
@@ -113,6 +121,42 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
   clearGridFilters() {
     this.veEventHub.setGridHasUIFilters(false);
+  }
+
+  onPrevPeriod() {
+    if (this.activeFilter == 'month') {
+      if (this.currentDate.getMonth() == 0) {
+        this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
+        this.currentDate.setMonth(11);
+      } else {
+        this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+      }
+      
+      this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
+      this.filterByDate(this.currentDate);
+    } else if (this.activeFilter == 'year') {
+      this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
+      this.filterByDate(this.currentDate);
+    }
+  }
+
+  onNextPeriod() {
+    if (this.activeFilter == 'month') {
+      if (this.currentDate.getMonth() == new Date().getMonth()) return;
+      if (this.currentDate.getMonth() == 11) {
+        this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
+        this.currentDate.setMonth(0);
+      } else {
+        this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+      }
+      
+      this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
+      this.filterByDate(this.currentDate);
+    } else if (this.activeFilter == 'year') {
+      if (this.currentDate.getFullYear() == new Date().getFullYear()) return;
+      this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
+      this.filterByDate(this.currentDate);
+    }
   }
 
   private getTotalExpenses(data: IExpenses[]) {
@@ -156,7 +200,9 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     }
 
     let daysLeft: number;
-    if (this.activeFilter == 'month') { 
+    if (this.currentDate < new Date()) {
+      daysLeft = 0;
+    } else if (this.activeFilter == 'month') { 
       daysLeft = this.commonService.getRemainingDaysInCurrentMonth();
     } else {
       daysLeft = this.commonService.getRemaningDaysInCurrentYear();
