@@ -171,10 +171,8 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.kpiMonthlyExpenses = new KPIv2(totalExpTitle, total, KPIType.Currency);
 
     let dailyAvg;
-    if (this.activeFilter == 'month') {
-      dailyAvg = this.averageDaily(data, this.activeFilter);
-    } else if (this.activeFilter == 'year') {
-      dailyAvg = this.averageDaily(data, this.activeFilter);
+    if (this.activeFilter == 'month' || this.activeFilter == 'year') {
+      dailyAvg = this.averageDaily(data, this.currentDate, this.activeFilter);
     }
     this.kpiAverageDailyExpenses = new KPIv2('Average Daily Expenses', dailyAvg, KPIType.Currency);
 
@@ -216,17 +214,21 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.kpiTotalRows = new KPIv2('Total Rows', data.length, KPIType.Number);
   }
 
-  private averageDaily(data: IExpenses[], period: 'month' | 'year') {
+  private averageDaily(data: IExpenses[], date: Date, period: 'month' | 'year') {
     const total = this.getTotalExpenses(data);
     let days: number;
     let result: number;
 
     if (period == 'month') {
-      days = new Date().getDate();
+      days = date.getDate();
       result = total/days;
     } else if (period == 'year') {
-      const firstDateOfTheYear = new Date(new Date().getFullYear(), 0, 1);
-      const today = new Date();
+
+      const firstDateOfTheYear = new Date(date.getFullYear(), 0, 1);
+      const lastDateOfTheYear = new Date(date.getFullYear(), 11, 31, 23, 59, 59);
+      const todayWithoutTime = new Date().setHours(0,0,0,0);
+      const dateWithoutTime = new Date(date).setHours(0,0,0,0);
+      const today = dateWithoutTime < todayWithoutTime ? lastDateOfTheYear : new Date();
       const diff = today.getTime() - firstDateOfTheYear.getTime();
       const daysDiff = Math.ceil(diff / (1000 * 3600 * 24) );
       result = total/daysDiff;
