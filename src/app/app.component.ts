@@ -7,7 +7,7 @@ import { UserService } from './services/user.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  version = 'v1.02.12';
+  version = 'v1.02.13';
 
   constructor(private userService: UserService) {
     this.userService.loadCities();

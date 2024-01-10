@@ -199,8 +199,11 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       this.kpiRemaningMonthlyBudget = new KPIv2('Remaning Monthly Budget', remaining, KPIType.Currency, legend);
     }
 
+    const today = new Date().setHours(0,0,0,0);
+    const chosenDate = new Date(this.currentDate).setHours(0,0,0,0);
     let daysLeft: number;
-    if (this.currentDate < new Date()) {
+
+    if (chosenDate < today) {
       daysLeft = 0;
     } else if (this.activeFilter == 'month') { 
       daysLeft = this.commonService.getRemainingDaysInCurrentMonth();
