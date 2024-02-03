@@ -105,8 +105,8 @@ export class ExpensesBarChartComponent implements OnChanges {
         xKey: 'month',
         yKey: category,
         yName: category,
-        stacked: true,
-        normalizedTo: 100,
+        // stacked: true,
+        // normalizedTo: 100,
       });
     });
 

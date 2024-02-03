@@ -24,8 +24,8 @@ export class ExpensesService {
     return this.http.get<IExpenses[]>(URL);
   }
 
-  getExpenses(year: number, month?: number) {
-    const URL = month
+  getExpenses(year: number, month?: number | null) {
+    const URL = month != null
       ? `${this.apiURL}/list/${year}/${month}`
       : `${this.apiURL}/list/${year}`;
       

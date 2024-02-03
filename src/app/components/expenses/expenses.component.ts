@@ -81,10 +81,10 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterByDate(date: Date) {
+  filterByDate(date: Date, byPeriod: 'month' | 'year') {
     const period = new ExpenseFilters();
     period.year = date.getFullYear();
-    period.month = date.getMonth();
+    period.month = byPeriod == 'month' ? date.getMonth() : null;
     this.getExpenses(period);
   }
 
@@ -133,10 +133,10 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       }
       
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
-      this.filterByDate(this.currentDate);
+      this.filterByDate(this.currentDate, this.activeFilter);
     } else if (this.activeFilter == 'year') {
       this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
-      this.filterByDate(this.currentDate);
+      this.filterByDate(this.currentDate, this.activeFilter);
     }
   }
 
@@ -151,11 +151,11 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       }
       
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
-      this.filterByDate(this.currentDate);
+      this.filterByDate(this.currentDate, this.activeFilter);
     } else if (this.activeFilter == 'year') {
       if (this.currentDate.getFullYear() == new Date().getFullYear()) return;
       this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
-      this.filterByDate(this.currentDate);
+      this.filterByDate(this.currentDate, this.activeFilter);
     }
   }
 
