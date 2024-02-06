@@ -131,13 +131,11 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       } else {
         this.currentDate.setMonth(this.currentDate.getMonth() - 1);
       }
-      
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
-      this.filterByDate(this.currentDate, this.activeFilter);
     } else if (this.activeFilter == 'year') {
       this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
-      this.filterByDate(this.currentDate, this.activeFilter);
     }
+    this.filterByDate(this.currentDate, this.activeFilter as 'month' | 'year');
   }
 
   onNextPeriod() {
@@ -148,15 +146,13 @@ export class ExpensesComponent implements OnInit, OnDestroy {
         this.currentDate.setMonth(0);
       } else {
         this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-      }
-      
+      } 
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
-      this.filterByDate(this.currentDate, this.activeFilter);
     } else if (this.activeFilter == 'year') {
       if (this.currentDate.getFullYear() == new Date().getFullYear()) return;
       this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
-      this.filterByDate(this.currentDate, this.activeFilter);
     }
+    this.filterByDate(this.currentDate, this.activeFilter as 'month' | 'year');
   }
 
   private getTotalExpenses(data: IExpenses[]) {
