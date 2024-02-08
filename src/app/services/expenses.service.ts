@@ -4,9 +4,10 @@ import { KPI } from '../models/kpi';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { IKPIValue } from '../models/interfaces/IKPI';
-import { IExpenses, IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
+import { IExpenses, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
 import { CommonService } from './common.service';
 import { VariableExpense } from '../models/variable-expense';
+import { IChartByCategory } from '../models/interfaces/IChart';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,8 @@ export class ExpensesService {
     return this.http.get<IExpenses[]>(URL);
   }
 
-  getExpenses(year: number, month?: number) {
-    const URL = month
+  getExpenses(year: number, month?: number | null) {
+    const URL = month != null
       ? `${this.apiURL}/list/${year}/${month}`
       : `${this.apiURL}/list/${year}`;
       
@@ -90,7 +91,7 @@ export class ExpensesService {
       ? `${this.apiURL}/expensesByCategory/${year}/${month}`
       : `${this.apiURL}/expensesByCategory/${year}`;
 
-    return this.http.get<IExpensesByCategory[]>(URL);
+    return this.http.get<IChartByCategory[]>(URL);
   }
 
   getBySubcategory(year: number, month?: number) {

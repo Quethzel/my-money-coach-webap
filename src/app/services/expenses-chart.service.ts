@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
-import { IExpensesByCategory, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
+import { IExpenses, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
 import { IUserSettings } from '../models/interfaces/IUser';
+import { IChartByCategory } from '../models/interfaces/IChart';
+import { AgChartOptions } from 'ag-charts-community';
+import { CommonService } from '../services/common.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesChartService {
 
-  constructor() { }
+  constructor(private commonService: CommonService) { }
 
   byMonth(data: IExpensesByMonth[]) {
     const options = new ChartConfig();
@@ -45,17 +48,6 @@ export class ExpensesChartService {
     return new CustomDataChart(lables, datasets, options);
   }
 
-  byCategory(data: IExpensesByCategory[]) {
-    const options = new ChartConfig('y');
-    const labels = data.map(e => e.category);
-    const totals = data.map(e => e.total);
-    const datasets = [
-      { data: totals, label: 'Expenses By Category' },
-    ];
-
-    return new CustomDataChart(labels, datasets, options);
-  }
-
   bySubcategory(data: IExpensesBySubcategory[]) {
         const options = new ChartConfig('y');
         const labels = data.map(e => e.subcategory);
@@ -66,5 +58,48 @@ export class ExpensesChartService {
     
         return new CustomDataChart(labels, datasets, options);
   }
+
+
+  byCategory(data: IExpenses[], options: AgChartOptions) {
+    const dataChart = this.transformDataByCategory(data);
+    options.data = dataChart;
+    return this.buildCategorySeries(options);
+  }
+
+  private transformDataByCategory(data: IExpenses[]) {
+    const dataChart: IChartByCategory[] = [];
+
+    data.forEach((item) => {
+      const category = item.category;
+      const index = dataChart.findIndex((x) => x.category === category);
+      index === -1
+        ? dataChart.push({ category: item.category, total: item.cost})
+        : (dataChart[index].total += item.cost);
+    });
+
+    return dataChart;
+  }
+
+  private buildCategorySeries(options: AgChartOptions) {
+    if (options.data.length > 0) {   
+      options.data = options.data.sort((a, b) => b.total - a.total);
+      options.series.forEach((item) => {
+        item.tooltip = {
+          renderer: (params: any) => {
+            return {
+              title: params.datum?.category,
+              content: params.datum?.total != null 
+                ? `${this.commonService.capitalize(params.yKey)} : ${CommonService.formatAsCurrency(params.datum.total)}` 
+                : `${this.commonService.capitalize(params.yKey)}: 0`
+            };
+          }
+        }
+      });
+    }
+    return options;
+  }
+
+  
+
 
 }

@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, ColumnApi, GridReadyEvent, 
-  CellValueChangedEvent, 
+import {
+  ColDef, GetRowIdFunc, GetRowIdParams, GridApi, ColumnApi, GridReadyEvent,
+  CellValueChangedEvent,
   CellEditingStoppedEvent,
   ValueFormatterParams,
   RowClassRules,
@@ -33,18 +34,19 @@ export class EditableExpenseGridComponent implements OnDestroy {
   private sbEventHub: Subscription;
 
   context!: any;
-  newVariableExpense:  VariableExpense;
+  newVariableExpense: VariableExpense;
   pinnedTopRowData: any[] = [];
   pinnedBottomRowData: any[] = [];
 
   columnDefs: ColDef[] = [
     { field: 'lineNo', headerName: '#', editable: false, minWidth: 60, maxWidth: 75, suppressMenu: true, sortable: false, resizable: true },
-    { field: 'cityCode', headerName: 'City', minWidth: 80, maxWidth: 80,
+    {
+      field: 'cityCode', headerName: 'City', minWidth: 80, maxWidth: 80,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: this.userService.getCityCodes() }
     },
-    { 
-      field: 'date', headerName: 'Date', minWidth:100, width: 100, maxWidth: 130, 
+    {
+      field: 'date', headerName: 'Date', minWidth: 100, width: 100, maxWidth: 130,
       cellEditor: 'agDateCellEditor',
       cellEditorParams: {
         max: new Date()
@@ -58,7 +60,8 @@ export class EditableExpenseGridComponent implements OnDestroy {
     { field: 'item', headerName: 'Item', width: 300 },
     { field: 'category', headerName: 'Category', width: 100, maxWidth: 150 },
     { field: 'subcategory', headerName: 'Subcategory', width: 120, maxWidth: 180 },
-    { field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120, 
+    {
+      field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120,
       valueFormatter: (params: any) => {
         const options = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
         const currencyString = Intl.NumberFormat('es-MX', options);
@@ -94,7 +97,9 @@ export class EditableExpenseGridComponent implements OnDestroy {
     return params.data.id;
   };
 
-  constructor(private userService: UserService, private veEventHub: VariableExpensesEventhubService) {
+  constructor(
+    private userService: UserService,
+    private veEventHub: VariableExpensesEventhubService) {
     this.context = { componentParent: this }
     this.expenses = [];
 
@@ -155,7 +160,7 @@ export class EditableExpenseGridComponent implements OnDestroy {
     if (this.isValidItem(this.newVariableExpense)) {
       this.expenses = [...this.expenses, this.newVariableExpense];
       this.save(this.newVariableExpense);
-      
+
       //reset pinned row
       this.newVariableExpense = new VariableExpense(this.userService.getDefaultCity());
       this.pinnedTopRowData = [this.newVariableExpense];
@@ -166,9 +171,9 @@ export class EditableExpenseGridComponent implements OnDestroy {
   onFilterChanged($event: any) {
     let totalCost = 0;
     let totalLines = 0;
-    $event.api.forEachNodeAfterFilter((node: any) => { 
+    $event.api.forEachNodeAfterFilter((node: any) => {
       totalLines += 1;
-      totalCost += node.data.cost 
+      totalCost += node.data.cost
     });
     this.setPinnedRowBottom(totalLines, totalCost);
 
@@ -202,7 +207,7 @@ export class EditableExpenseGridComponent implements OnDestroy {
     );
   }
 
-  private createPinnedCellPlaceholder({colDef,}: ValueFormatterParams) {
+  private createPinnedCellPlaceholder({ colDef }: ValueFormatterParams) {
     if (colDef != undefined && colDef.field && colDef.headerName)
       if (colDef.field == 'item')
         return 'New Item...';
@@ -214,11 +219,11 @@ export class EditableExpenseGridComponent implements OnDestroy {
   private setPinnedRowBottom(totalLines: number, totalCost: number) {
     if (this.gridApi) {
       const pinnedBottomRow: any = {};
-      this.gridColumnApi.getAllGridColumns().forEach(item => { 
+      this.gridColumnApi.getAllGridColumns().forEach(item => {
         const id = item.getColId();
-        pinnedBottomRow[id] = null ;
+        pinnedBottomRow[id] = null;
       });
-      
+
       pinnedBottomRow['cost'] = totalCost;
       pinnedBottomRow['lineNo'] = totalLines;
       this.gridApi.setPinnedBottomRowData([pinnedBottomRow]);

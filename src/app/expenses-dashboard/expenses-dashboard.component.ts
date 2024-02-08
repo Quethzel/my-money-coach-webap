@@ -63,9 +63,9 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
       this.annualChart = this.chartService.byMonth(data);
     });
 
-    this.sbCategory = this.varexService.getByCategory(this.currentYear).subscribe(data => {
-      this.categoryChart = this.chartService.byCategory(data);
-    });
+    // this.sbCategory = this.varexService.getByCategory(this.currentYear).subscribe(data => {
+    //   this.categoryChart = this.chartService.byCategory(data);
+    // });
 
     this.sbSubcategory = this.varexService.getBySubcategory(this.currentYear).subscribe(data => {
       this.subcategoryChart = this.chartService.bySubcategory(data);

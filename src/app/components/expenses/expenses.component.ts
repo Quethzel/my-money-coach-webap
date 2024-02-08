@@ -9,6 +9,8 @@ import { ExpenseFilters } from 'src/app/models/ExpenseFilters';
 import { VariableExpense } from 'src/app/models/variable-expense';
 import { KPIType, KPIv2 } from 'src/app/models/kpiV2';
 import { VariableExpensesEventhubService } from 'src/app/services/variable-expenses-eventhub.service';
+import { AgChartOptions } from 'ag-charts-community';
+import { ExpensesChartService } from 'src/app/services/expenses-chart.service';
 
 @Component({
   selector: 'app-expenses',
@@ -36,10 +38,13 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
   sbGridHasUIFilters: Subscription;
 
+  expensesByCategoryDataChart: AgChartOptions;
+
   constructor(
     private modalService: BsModalService,
     private expenseService: ExpensesService,
     private commonService: CommonService,
+    private chartService: ExpensesChartService,
     private veEventHub: VariableExpensesEventhubService
     ) {
       this.currentDate = new Date();
@@ -52,7 +57,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       this.sbGridHasUIFilters = this.veEventHub.$gridHasUIFilters.subscribe(value => {
         this.gridHasUIFilters = value;
       });
-    }
+  }
 
   ngOnInit() {
     this.filterBy(this.activeFilter);
@@ -67,6 +72,8 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.sbExpenses = this.expenseService.getExpenses(filters.year, filters.month).subscribe(data => {
       this.expenses = data;
       this.loadKPIs(this.expenses);
+
+      this.buildChartByCategory(this.expenses);
     });
   }
 
@@ -81,10 +88,10 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterByDate(date: Date) {
+  filterByDate(date: Date, byPeriod: 'month' | 'year') {
     const period = new ExpenseFilters();
     period.year = date.getFullYear();
-    period.month = date.getMonth();
+    period.month = byPeriod == 'month' ? date.getMonth() : null;
     this.getExpenses(period);
   }
 
@@ -131,13 +138,11 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       } else {
         this.currentDate.setMonth(this.currentDate.getMonth() - 1);
       }
-      
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
-      this.filterByDate(this.currentDate);
     } else if (this.activeFilter == 'year') {
       this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
-      this.filterByDate(this.currentDate);
     }
+    this.filterByDate(this.currentDate, this.activeFilter as 'month' | 'year');
   }
 
   onNextPeriod() {
@@ -148,15 +153,44 @@ export class ExpensesComponent implements OnInit, OnDestroy {
         this.currentDate.setMonth(0);
       } else {
         this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-      }
-      
+      } 
       this.currentMonth = this.commonService.getMonthName(this.currentDate.getMonth());
-      this.filterByDate(this.currentDate);
     } else if (this.activeFilter == 'year') {
       if (this.currentDate.getFullYear() == new Date().getFullYear()) return;
       this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
-      this.filterByDate(this.currentDate);
     }
+    this.filterByDate(this.currentDate, this.activeFilter as 'month' | 'year');
+  }
+
+  buildChartByCategory(data: IExpenses[]) {
+    const options: AgChartOptions = {
+      title: {
+        text: "Expenses by Category",
+      },
+      subtitle: {
+        text: 'Variable Expenses in MXN',
+      },
+      data: data,
+      series: [
+        {
+          type: 'bar',
+          xKey: 'category',
+          yKey: 'total',
+          yName: 'Total Expenses',
+          tooltip: {
+            renderer: (params: any) => {
+              return {
+                content: params.yValue != null 
+                  ? `${params.yKey} : ${CommonService.formatAsCurrency(params.yValue)}` 
+                  : `${params.yKey}: 0`
+              };
+            }
+          }
+        }
+      ],
+    };
+    
+    this.expensesByCategoryDataChart = this.chartService.byCategory(data, options);
   }
 
   private getTotalExpenses(data: IExpenses[]) {

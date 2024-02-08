@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './home/sidebar/sidebar.component';
 import { FooterComponent } from './home/footer/footer.component';
 import { HeaderComponent } from './home/header/header.component';
-import { NgChartsModule } from 'ng2-charts';
 import { KpiComponent } from './components/kpi/kpi.component';
 import localeMX from '@angular/common/locales/es-MX';
 import { CommonModule, registerLocaleData } from '@angular/common';
@@ -34,6 +33,8 @@ import { CellRendererDateComponent } from './components/cell-renderer-date/cell-
 import { AnnualExpensesComponent } from './components/annual-expenses/annual-expenses.component';
 import { AnnualExpensesGridComponent } from './components/annual-expenses-grid/annual-expenses-grid.component';
 import { AnnualExpensesGridBtnsComponent } from './components/annual-expenses-grid-btns/annual-expenses-grid-btns.component';
+import { ExpensesBarChartComponent } from './components/expenses-bar-chart/expenses-bar-chart.component';
+import { AgChartsAngularModule } from 'ag-charts-angular';
 
 registerLocaleData(localeMX);
 
@@ -59,13 +60,13 @@ registerLocaleData(localeMX);
     AnnualExpensesComponent,
     AnnualExpensesGridComponent,
     AnnualExpensesGridBtnsComponent,
+    ExpensesBarChartComponent,
   ],
   imports: [
     BrowserModule,
     CommonModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgChartsModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
@@ -73,6 +74,7 @@ registerLocaleData(localeMX);
     ModalModule.forRoot(),
     FontAwesomeModule,
     AgGridModule,
+    AgChartsAngularModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
