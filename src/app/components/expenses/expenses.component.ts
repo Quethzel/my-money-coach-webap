@@ -39,6 +39,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   sbGridHasUIFilters: Subscription;
 
   expensesByCategoryDataChart: AgChartOptions;
+  expensesByCityDataChart: AgChartOptions;
 
   constructor(
     private modalService: BsModalService,
@@ -74,6 +75,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       this.loadKPIs(this.expenses);
 
       this.buildChartByCategory(this.expenses);
+      this.buildChartByCity(this.expenses);
     });
   }
 
@@ -191,6 +193,36 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     };
     
     this.expensesByCategoryDataChart = this.chartService.byCategory(data, options);
+  }
+
+  buildChartByCity(data: IExpenses[]) {
+    const options: AgChartOptions = {
+      title: {
+        text: "Expenses by City",
+      },
+      subtitle: {
+        text: 'Variable Expenses in MXN',
+      },
+      data: data,
+      series: [
+        {
+          type: 'pie',
+          angleKey: 'Total',
+          calloutLabelKey: 'City',
+          sectorLabelKey: 'Total',
+          sectorLabel: {
+            color: 'white',
+            fontWeight: 'bold',
+            formatter: ({ value }: { value: number }) => `$${(value / 1000).toFixed(0)}K`,
+          },
+          title: {
+            enabled: true,
+            text: 'Total Expenses',
+          },
+        },
+      ],
+    };
+    this.expensesByCityDataChart = this.chartService.byCity(data, options);
   }
 
   private getTotalExpenses(data: IExpenses[]) {

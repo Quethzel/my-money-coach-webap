@@ -12,3 +12,8 @@ export interface IChartByCategory {
     category: string;
     total: number;
 }
+
+export interface IChartByCity {
+    City: string;
+    Total: number;
+}

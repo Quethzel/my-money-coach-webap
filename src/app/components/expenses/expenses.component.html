@@ -46,10 +46,14 @@
 
     <!-- chart -->
     <div class="col-12 mb-3">
-        <app-expenses-bar-chart [options]="expensesByCategoryDataChart"></app-expenses-bar-chart>
-
+        <div class="flex-parent">
+            <app-expenses-bar-chart [options]="expensesByCategoryDataChart"></app-expenses-bar-chart>
+            <app-pie-chart-expenses [options]="expensesByCityDataChart"></app-pie-chart-expenses>
+        </div>
+    </div>
+        
     <!-- grid -->
-    <div>
+    <div class="mt-3">
         <app-editable-expense-grid 
             [expenses]="expenses" 
             (saveItem)="saveItem($event)" 

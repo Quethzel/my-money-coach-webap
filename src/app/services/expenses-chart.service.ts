@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
-import { IExpenses, IExpensesByCity, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
-import { IUserSettings } from '../models/interfaces/IUser';
-import { IChartByCategory } from '../models/interfaces/IChart';
+import { IExpenses, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
+import { IChartByCategory, IChartByCity } from '../models/interfaces/IChart';
 import { AgChartOptions } from 'ag-charts-community';
 import { CommonService } from '../services/common.service';
 
@@ -13,6 +12,7 @@ export class ExpensesChartService {
 
   constructor(private commonService: CommonService) { }
 
+  //TODO: this is not used
   byMonth(data: IExpensesByMonth[]) {
     const options = new ChartConfig();
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -39,15 +39,8 @@ export class ExpensesChartService {
     return new CustomDataChart<number>(months, datasets, options);
   }
 
-  byCity(data: IExpensesByCity[]) {
-    const options = new ChartConfig();
-    const lables = data.map(e => e.city);
-    const totals = data.map(e => e.total);
-    const datasets = [ { data: totals, label: 'Expenses By City'} ]
 
-    return new CustomDataChart(lables, datasets, options);
-  }
-
+  //TODO: this is not used
   bySubcategory(data: IExpensesBySubcategory[]) {
         const options = new ChartConfig('y');
         const labels = data.map(e => e.subcategory);
@@ -65,6 +58,29 @@ export class ExpensesChartService {
     options.data = dataChart;
     return this.buildCategorySeries(options);
   }
+
+  byCity(data: IExpenses[], options: AgChartOptions) {
+    const dataChart = this.transformDataByCity(data);
+    options.data = dataChart;
+    return options;
+  }
+
+  private transformDataByCity(data: IExpenses[]) {
+    const dataChart: IChartByCity[] = [];
+
+    data.forEach((item) => {
+      const city = item.cityCode ? item.cityCode : 'Unknown City';
+      const index = dataChart.findIndex((x) => x.City === city);
+      if (index > -1) {
+        dataChart[index].Total += item.cost;
+      } else {
+        dataChart.push({ City: city, Total: item.cost });
+      }
+    });
+
+    return dataChart;
+  }
+
 
   private transformDataByCategory(data: IExpenses[]) {
     const dataChart: IChartByCategory[] = [];
