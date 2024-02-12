@@ -17,6 +17,7 @@ export class ExpensesBarChartComponent implements OnChanges {
     this.options = changes['options'].currentValue;
   }
 
+  //TODO: check if this still useful if not remove it
   // private transformData(data: IExpenses[]) {
   //   const chartData: IChartExpensesByMonth[] = [];
   //   data.forEach((item) => {

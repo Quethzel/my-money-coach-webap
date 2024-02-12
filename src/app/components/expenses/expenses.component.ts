@@ -40,6 +40,8 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
   expensesByCategoryDataChart: AgChartOptions;
   expensesByCityDataChart: AgChartOptions;
+  expensesByDayAndCategoryDataChart: AgChartOptions;
+  expensesByDayDataChart: AgChartOptions;
 
   constructor(
     private modalService: BsModalService,
@@ -76,6 +78,8 @@ export class ExpensesComponent implements OnInit, OnDestroy {
 
       this.buildChartByCategory(this.expenses);
       this.buildChartByCity(this.expenses);
+      this.buildChartByDay(this.expenses);
+      this.buildChartByDayAndCategory(this.expenses);
     });
   }
 
@@ -223,6 +227,87 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       ],
     };
     this.expensesByCityDataChart = this.chartService.byCity(data, options);
+  }
+
+  buildChartByDayAndCategory(data: IExpenses[]) {
+    const options: AgChartOptions = {
+        title: {
+          text: "Expenses by Day & Category",
+        },
+        subtitle: {
+          text: "Variable Expenses in MXN",
+        },
+        series: [{
+          type: "bubble",
+          title: "Expenses",
+          xKey: "Category",
+          xName: "Category",
+          yKey: "Day",
+          yName: "Day",
+          sizeKey: "Total",
+          sizeName: "Total",
+        }],
+        data: data,
+        axes: [
+          {
+            position: "bottom",
+            type: "category",
+            gridLine: {
+              enabled: true,
+            },
+            line: {
+              enabled: false,
+            },
+          },
+          {
+            position: "left",
+            type: "category",
+            line: {
+              enabled: false,
+            },
+          },
+        ],
+        seriesArea: {
+          padding: {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 30,
+          },
+        }
+    };
+
+    this.expensesByDayAndCategoryDataChart = this.chartService.byDayAndCategory(data, options);
+  }
+
+  buildChartByDay(data: IExpenses[]) {
+    const options: AgChartOptions = {
+      title: {
+        text: "Expenses by Day",
+      },
+      subtitle: {
+        text: "Variable Expenses in MXN",
+      },
+      series: [{
+        type: "line",
+        xKey: "Day",
+        yKey: "Total",
+        yName: "Total Expenses",
+        marker: {
+          enabled: true,
+        },
+        // tooltip: {
+        //   renderer: (params: any) => {
+        //     return {
+        //       content: `${params.yKey} : ${CommonService.formatAsCurrency(params.yValue)}`
+        //     };
+        //   }
+        // }
+      }],
+      data: data
+    };
+
+    this.expensesByDayDataChart = this.chartService.byDay(data, options);
   }
 
   private getTotalExpenses(data: IExpenses[]) {

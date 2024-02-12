@@ -8,5 +8,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    // gap: 1rem;
   }
   
+  .flex-parent > *:not(:last-child) {
+    margin-bottom: 30px; 
+} 

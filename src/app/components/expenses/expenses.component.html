@@ -45,10 +45,16 @@
     </div>
 
     <!-- chart -->
-    <div class="col-12 mb-3">
+    <div class="col-12 mb-3 p-3">
         <div class="flex-parent">
             <app-expenses-bar-chart [options]="expensesByCategoryDataChart"></app-expenses-bar-chart>
             <app-pie-chart-expenses [options]="expensesByCityDataChart"></app-pie-chart-expenses>
+            <div style="height: 400;">
+                <app-bubble-chart [options]="expensesByDayAndCategoryDataChart"></app-bubble-chart>
+            </div>
+            <div style="height: 400;">
+                <app-bubble-chart [options]="expensesByDayDataChart"></app-bubble-chart>
+            </div>
         </div>
     </div>
         

@@ -28,12 +28,22 @@ export class CommonService {
     return Math.ceil(diff/(1000*3600*24));
   }
 
+  /**
+   * Get the name of the month
+  */
   getMonthName(month: number) {
     const monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June', 
       'July', 'August', 'September', 'October', 'November', 'December'];
 
       return monthNames[month];
+  }
+
+  /**
+   * Get days of the week
+   */
+  getDaysOfTheWeek() {
+    return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   }
 
   /**

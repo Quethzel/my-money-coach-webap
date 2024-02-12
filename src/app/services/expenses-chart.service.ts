@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
 import { IExpenses, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
-import { IChartByCategory, IChartByCity } from '../models/interfaces/IChart';
+import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory } from '../models/interfaces/IChart';
 import { AgChartOptions } from 'ag-charts-community';
 import { CommonService } from '../services/common.service';
 
@@ -65,6 +65,55 @@ export class ExpensesChartService {
     return options;
   }
 
+  byDayAndCategory(data: IExpenses[], options: AgChartOptions) {
+    const dataChart = this.transformDataByDayAndCategory(data);
+    // console.log(dataChart);
+    options.data = dataChart;
+    return options;
+  }
+
+  byDay(data: IExpenses[], options: AgChartOptions) {
+    const dataChart = this.transformDataByDay(data);
+    console.log(dataChart);
+    options.data = dataChart;
+    return options;
+
+  }
+
+  private transformDataByDay(data: IExpenses[]) {
+    const dataChart: IChartByDay[] = [];
+    data.forEach((item) => {
+      const day = item.date.getDay();
+      const dayName = this.commonService.getDaysOfTheWeek()[day];
+      const index = dataChart.findIndex((x) => x.Day === dayName);
+      if (index > -1) {
+        dataChart[index].Total += item.cost;
+      } else {
+        dataChart.push({ Day: dayName, Total: item.cost });
+      }
+    });
+
+    return dataChart;
+  }
+
+  private transformDataByDayAndCategory(data: IExpenses[]) {
+    const dataChart: IChartByDayAndCategory[] = [];
+
+    data.forEach((item) => {
+      const day = item.date.getDay();
+      const dayName = this.commonService.getDaysOfTheWeek()[day];
+
+      const index = dataChart.findIndex((x) => x.Category === item.category && x.Day === dayName);
+      if (index > -1) {
+        dataChart[index].Total += item.cost;
+      } else {
+        dataChart.push({ Day: dayName, Category: item.category, Total: item.cost });
+      }
+    });
+
+    return dataChart;
+  }
+
   private transformDataByCity(data: IExpenses[]) {
     const dataChart: IChartByCity[] = [];
 
@@ -80,7 +129,6 @@ export class ExpensesChartService {
 
     return dataChart;
   }
-
 
   private transformDataByCategory(data: IExpenses[]) {
     const dataChart: IChartByCategory[] = [];

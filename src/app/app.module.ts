@@ -36,6 +36,7 @@ import { AnnualExpensesGridBtnsComponent } from './components/annual-expenses-gr
 import { ExpensesBarChartComponent } from './components/expenses-bar-chart/expenses-bar-chart.component';
 import { AgChartsAngularModule } from 'ag-charts-angular';
 import { PieChartExpensesComponent } from './components/charts/pie-chart-expenses/pie-chart-expenses.component';
+import { BubbleChartComponent } from './components/charts/bubble-chart/bubble-chart.component';
 
 registerLocaleData(localeMX);
 
@@ -63,6 +64,7 @@ registerLocaleData(localeMX);
     AnnualExpensesGridBtnsComponent,
     ExpensesBarChartComponent,
     PieChartExpensesComponent,
+    BubbleChartComponent,
   ],
   imports: [
     BrowserModule,
