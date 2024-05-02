@@ -74,8 +74,7 @@ export class ExpensesChartService {
 
   byDay(data: IExpenses[], options: AgChartOptions) {
     const dataChart = this.transformDataByDay(data);
-    console.log(dataChart);
-    options.data = dataChart;
+    options.data = this.sortByDayOfWeek(dataChart);
     return options;
 
   }
@@ -163,6 +162,15 @@ export class ExpensesChartService {
     return options;
   }
 
+  private sortByDayOfWeek(data: IChartByDay[]) {
+    const days = this.commonService.getDaysOfTheWeek();
+
+    const sortedData = data.sort((a, b) => {
+      return days.indexOf(a.Day) - days.indexOf(b.Day);
+    });
+
+    return sortedData;
+  }
   
 
 
