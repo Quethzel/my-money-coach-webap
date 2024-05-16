@@ -25,8 +25,8 @@ export class VariableExpensesComponent implements OnDestroy {
   categoryDataChart: AgChartOptions;
   subcategoryDataChart: AgChartOptions;
 
-  private currentDate: Date;
-  private activeMonth: string;
+  currentDate: Date;
+  activeMonth: string;
   activeFilter: 'month' | 'year';
   gridHasUIFilters: boolean;
 
