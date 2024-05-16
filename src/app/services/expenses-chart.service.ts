@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
 import { IExpenses, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
-import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory } from '../models/interfaces/IChart';
+import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory, IChartBySubcategory } from '../models/interfaces/IChart';
 import { AgChartOptions } from 'ag-charts-community';
 import { CommonService } from '../services/common.service';
 
@@ -53,9 +53,14 @@ export class ExpensesChartService {
   }
 
 
-  byCategory(data: IExpenses[], options: AgChartOptions) {
+  byCategory(data: IExpenses[], options: AgChartOptions, topCategories?: number) {
     const dataChart = this.transformDataByCategory(data);
     options.data = dataChart;
+    if (topCategories) {
+      options.data = options.data.sort((a, b) => b.total - a.total).slice(0, topCategories);
+    } else {
+      options.data = options.data;
+    }
     return this.buildCategorySeries(options);
   }
 
@@ -77,6 +82,16 @@ export class ExpensesChartService {
     options.data = this.sortByDayOfWeek(dataChart);
     return options;
 
+  }
+
+  bySubcategories(data: IExpenses[], options: AgChartOptions, topSubcategories?: number) {
+    const dataChart = this.transformDataBySubcategory(data);
+    if (topSubcategories) {
+      options.data = dataChart.sort((a, b) => b.total - a.total).slice(0, topSubcategories);
+    } else {
+      options.data = dataChart;
+    }
+    return this.buildSubcategorySeries(options);
   }
 
   private transformDataByDay(data: IExpenses[]) {
@@ -143,6 +158,20 @@ export class ExpensesChartService {
     return dataChart;
   }
 
+  private transformDataBySubcategory(data: IExpenses[]) {
+    const dataChart: IChartBySubcategory[] = [];
+
+    data.forEach((item) => {
+      const subcategory = item.subcategory;
+      const index = dataChart.findIndex((x) => x.subcategory === subcategory);
+      index === -1
+        ? dataChart.push({ category: item.category, subcategory: item.subcategory, total: item.cost})
+        : (dataChart[index].total += item.cost);
+    });
+
+    return dataChart;
+  }
+
   private buildCategorySeries(options: AgChartOptions) {
     if (options.data.length > 0) {   
       options.data = options.data.sort((a, b) => b.total - a.total);
@@ -151,6 +180,25 @@ export class ExpensesChartService {
           renderer: (params: any) => {
             return {
               title: params.datum?.category,
+              content: params.datum?.total != null 
+                ? `${this.commonService.capitalize(params.yKey)} : ${CommonService.formatAsCurrency(params.datum.total)}` 
+                : `${this.commonService.capitalize(params.yKey)}: 0`
+            };
+          }
+        }
+      });
+    }
+    return options;
+  }
+
+  private buildSubcategorySeries(options: AgChartOptions) {
+    if (options.data.length > 0) {
+      options.data = options.data.sort((a, b) => b.total - a.total);
+      options.series.forEach((item) => {
+        item.tooltip = {
+          renderer: (params: any) => {
+            return {
+              title: params.datum?.subcategory,
               content: params.datum?.total != null 
                 ? `${this.commonService.capitalize(params.yKey)} : ${CommonService.formatAsCurrency(params.datum.total)}` 
                 : `${this.commonService.capitalize(params.yKey)}: 0`

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class HeaderComponent {
   isAuth!: boolean;
   username!: string;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.authService.userAuth.subscribe(() => {
       this.isAuth = this.authService.isAuthenticated;
       if (this.isAuth) {
@@ -24,4 +25,9 @@ export class HeaderComponent {
   logout() {
     this.authService.logout(); 
   }
+
+  navigateToVariableExpensesList() {
+    this.router.navigate(['/variable-expenses', new Date().getFullYear(), new Date().getMonth() + 1]);
+  }
+
 }

@@ -2,11 +2,11 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AgChartOptions } from 'ag-charts-community';
 
 @Component({
-  selector: 'app-expenses-bar-chart',
-  templateUrl: './expenses-bar-chart.component.html',
-  styleUrls: ['./expenses-bar-chart.component.scss']
+  selector: 'app-bar-chart',
+  templateUrl: './bar-chart.component.html',
+  styleUrls: ['./bar-chart.component.scss']
 })
-export class ExpensesBarChartComponent implements OnChanges {
+export class BarChartComponent implements OnChanges {
   @Input() options: AgChartOptions;
 
   constructor() {
@@ -16,5 +16,4 @@ export class ExpensesBarChartComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.options = changes['options'].currentValue;
   }
-
 }

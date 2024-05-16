@@ -19,7 +19,6 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthInterceptorService } from './authInterceptor';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
-import { ExpensesListComponent } from './components/expenses-list/expenses-list.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash, faPenToSquare, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -37,6 +36,8 @@ import { ExpensesBarChartComponent } from './components/expenses-bar-chart/expen
 import { AgChartsAngularModule } from 'ag-charts-angular';
 import { PieChartExpensesComponent } from './components/charts/pie-chart-expenses/pie-chart-expenses.component';
 import { BubbleChartComponent } from './components/charts/bubble-chart/bubble-chart.component';
+import { VariableExpensesComponent } from './variable-expenses/variable-expenses.component';
+import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
 
 registerLocaleData(localeMX);
 
@@ -52,7 +53,7 @@ registerLocaleData(localeMX);
     LoginComponent,
     RegisterComponent,
     ForgotPassComponent,
-    ExpensesListComponent,
+    VariableExpensesComponent,
     ExpensesComponent,
     UserProfileComponent,
     EditableExpenseGridComponent,
@@ -65,6 +66,7 @@ registerLocaleData(localeMX);
     ExpensesBarChartComponent,
     PieChartExpensesComponent,
     BubbleChartComponent,
+    BarChartComponent,
   ],
   imports: [
     BrowserModule,

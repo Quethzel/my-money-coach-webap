@@ -8,6 +8,8 @@ import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { AnnualExpensesComponent } from './components/annual-expenses/annual-expenses.component';
+import { VariableExpensesComponent } from './variable-expenses/variable-expenses.component';
+
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, pathMatch: "full" },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'dashboard', redirectTo: '/expenses', pathMatch: "full" },
   { path: 'home', redirectTo: '/expenses', pathMatch: "full" },
   { path: 'expenses', component: ExpensesComponent, pathMatch: "full", canActivate: [AuthGuard] },
+  { path: 'variable-expenses/:year', component: VariableExpensesComponent, pathMatch: "full", canActivate: [AuthGuard] },
+  { path: 'variable-expenses/:year/:month', component: VariableExpensesComponent, pathMatch: "full", canActivate: [AuthGuard] },
   { path: 'annual-expenses', component: AnnualExpensesComponent, pathMatch: "full", canActivate: [AuthGuard] },
   { path: 'profile', component: UserProfileComponent, pathMatch: "full", canActivate: [AuthGuard] },
   { path: '', redirectTo: '/expenses', pathMatch: "full" },

@@ -42,6 +42,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   expensesByCityDataChart: AgChartOptions;
   expensesByDayAndCategoryDataChart: AgChartOptions;
   expensesByDayDataChart: AgChartOptions;
+  expensesBySubcategoryDataChart: AgChartOptions;
 
   constructor(
     private modalService: BsModalService,
@@ -80,6 +81,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       this.buildChartByCity(this.expenses);
       this.buildChartByDay(this.expenses);
       this.buildChartByDayAndCategory(this.expenses);
+      this.buildChartBySubcategory(this.expenses);
     });
   }
 
@@ -169,9 +171,11 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   }
 
   buildChartByCategory(data: IExpenses[]) {
+    const dataTop = 7;
+    const titleChart = "Expenses by Category" + (dataTop < data.length ? ` (Top ${dataTop})` : '');
     const options: AgChartOptions = {
       title: {
-        text: "Expenses by Category",
+        text: titleChart,
       },
       subtitle: {
         text: 'Variable Expenses in MXN',
@@ -196,7 +200,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
       ],
     };
     
-    this.expensesByCategoryDataChart = this.chartService.byCategory(data, options);
+    this.expensesByCategoryDataChart = this.chartService.byCategory(data, options, dataTop);
   }
 
   buildChartByCity(data: IExpenses[]) {
@@ -280,10 +284,39 @@ export class ExpensesComponent implements OnInit, OnDestroy {
     this.expensesByDayAndCategoryDataChart = this.chartService.byDayAndCategory(data, options);
   }
 
+  buildChartBySubcategory(data: IExpenses[]) {
+    const dataTop = 7;
+    const titleChart = "Expenses by Subcategory" + (dataTop < data.length ? ` (Top ${dataTop})` : '');
+    const options: AgChartOptions = {
+      title: {
+        text: titleChart,
+      },
+      subtitle: {
+        text: "Variable Expenses in MXN",
+      },
+      series: [{
+        type: "bar",
+        xKey: "subcategory",
+        yKey: "total",
+        yName: "Total Expenses",
+        tooltip: {
+          renderer: (params: any) => {
+            return {
+              content: `${params.yKey} : ${CommonService.formatAsCurrency(params.yValue)}`
+            };
+          }
+        }
+      }],
+      data: data
+    };
+
+    this.expensesBySubcategoryDataChart = this.chartService.bySubcategories(data, options, dataTop);
+  }
+
   buildChartByDay(data: IExpenses[]) {
     const options: AgChartOptions = {
       title: {
-        text: "Expenses by Day",
+        text: "Total Expenses by Day of the Week",
       },
       subtitle: {
         text: "Variable Expenses in MXN",

@@ -1,0 +1,47 @@
+<div class="row">
+    
+
+    <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center mb-3">
+        <div class="row">
+            <div class="btn-toolbar align-items-center mb-2 mb-md-0">
+                <button *ngIf="gridHasUIFilters" (click)="onClearGridFilters()" class="btn btn-sm btn-outline-danger">ClearFilters</button>
+                <div>
+                    <a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Previous"
+                        (click)="onPrevPeriod()">
+                        <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
+                    </a>
+                </div>
+                <div class="btn-group btn-group-sm btn-outline ms-2">
+                    <a (click)="onFilter('month')" [class.active]="activeFilter == 'month'"
+                        class="btn btn-outline-secondary" aria-current="page">Month</a>
+                    <a (click)="onFilter('year')" [class.active]="activeFilter == 'year'"
+                        class="btn btn-outline-secondary">Year</a>
+                </div>
+                <div>
+                    <a class="btn btn-link custom-btn-icon" data-toggle="tooltip" data-placement="top" title="Next"
+                        (click)="onNextPeriod()">
+                        <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- chart -->
+    <div class="col-12 mb-3 p-3">
+        <div class="flex-parent">
+            <app-bar-chart [options]="categoryDataChart"></app-bar-chart>
+            <app-bar-chart [options]="subcategoryDataChart"></app-bar-chart>
+        </div>
+    </div>
+
+    <!-- grid -->
+    <div class="mt-3">
+        <app-editable-expense-grid 
+            [expenses]="expenses" 
+            (saveItem)="saveItem($event)" 
+            (deleteItem)="deleteItem($event)">
+        </app-editable-expense-grid>
+    </div>
+
+</div>
