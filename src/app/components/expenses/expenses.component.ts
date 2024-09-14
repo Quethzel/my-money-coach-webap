@@ -129,7 +129,7 @@ export class ExpensesComponent implements OnInit, OnDestroy {
   }
 
   saveItem(item: VariableExpense) {
-    this.expenseService.saveExpense(item).subscribe(() => {
+    this.expenseService.save(item).subscribe(() => {
       this.filterBy(this.activeFilter);
     });
   }

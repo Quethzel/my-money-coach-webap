@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
-import { IExpenses, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
+import { IExpenses } from '../models/interfaces/IExpenses';
 import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory, IChartBySubcategory, IChartExpensesByMonth } from '../models/interfaces/IChart';
 import { AgChartOptions } from 'ag-charts-community';
 import { CommonService } from '../services/common.service';
@@ -11,47 +11,6 @@ import { CommonService } from '../services/common.service';
 export class ExpensesChartService {
 
   constructor(private commonService: CommonService) { }
-
-  //TODO: this is not used
-  byMonth(data: IExpensesByMonth[]) {
-    const options = new ChartConfig();
-    const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const months = data.map((item: any) => labels[item.month - 1] );
-    const totals = data.map((item: any) => Number(item.total));
-    
-    const datasets = [
-      { 
-        data: totals,
-        label: 'Expenses By Month', type: 'bar'
-      },
-    ];
-
-    const settingsObject = localStorage.getItem('settings');
-    if (settingsObject != null) {
-      const settings = JSON.parse(settingsObject);
-      const budget = settings.monthlyExpenseBudget;
-      if (budget) {
-        const budgetData = Array(11).fill(budget);
-        datasets.push({ data: budgetData, label: 'Budget', type: 'line' });
-      }
-    }
-
-    return new CustomDataChart<number>(months, datasets, options);
-  }
-
-
-  //TODO: this is not used
-  bySubcategory(data: IExpensesBySubcategory[]) {
-        const options = new ChartConfig('y');
-        const labels = data.map(e => e.subcategory);
-        const totals = data.map(e => e.total);
-        const datasets = [
-          { data: totals, label: 'Expenses By Subcategory' },
-        ];
-    
-        return new CustomDataChart(labels, datasets, options);
-  }
-
 
   byCategory(data: IExpenses[], options: AgChartOptions, topCategories?: number) {
     const dataChart = this.transformDataByCategory(data);
@@ -72,7 +31,6 @@ export class ExpensesChartService {
 
   byDayAndCategory(data: IExpenses[], options: AgChartOptions) {
     const dataChart = this.transformDataByDayAndCategory(data);
-    // console.log(dataChart);
     options.data = dataChart;
     return options;
   }

@@ -123,7 +123,7 @@ export class VariableExpensesComponent implements OnDestroy {
   }
 
   saveItem(item: VariableExpense) {
-    this.expenseService.saveExpense(item).subscribe(() => {
+    this.expenseService.save(item).subscribe(() => {
       this.onFilter(this.activeFilter);
     });
   }

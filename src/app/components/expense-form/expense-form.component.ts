@@ -110,7 +110,7 @@ export class ExpenseFormComponent implements OnInit, AfterViewInit {
     if (this.expenseForm.valid) {
       this.expense = this.mapToExpense(this.expenseForm.getRawValue());
       
-      this.expService.saveExpense(this.expense).subscribe({
+      this.expService.save(this.expense).subscribe({
         next: (expense) => {
           this.bsModalRef.hide();
         },
