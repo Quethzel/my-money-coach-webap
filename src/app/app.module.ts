@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './home/sidebar/sidebar.component';
 import { FooterComponent } from './home/footer/footer.component';
 import { HeaderComponent } from './home/header/header.component';
-import { KpiComponent } from './components/kpi/kpi.component';
 import localeMX from '@angular/common/locales/es-MX';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -48,7 +47,6 @@ registerLocaleData(localeMX);
     SidebarComponent,
     FooterComponent,
     HeaderComponent,
-    KpiComponent,
     ExpenseFormComponent,
     LoginComponent,
     RegisterComponent,

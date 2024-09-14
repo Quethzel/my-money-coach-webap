@@ -1,85 +1,35 @@
 <main class="mt-5 pt-3">
   <div class="container-fluid">
+
     <!-- <div class="row">
       <app-expense-form></app-expense-form>
     </div> -->
+
     <div class="row">
       <div class="col-md-12">
-        <h4>Dashboard</h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <app-kpi [kpi]="totalVariableExpensesByYear"></app-kpi>
-      </div>
-      <div class="col-md-3 mb-3">
-        <app-kpi [kpi]="kpiMontlyExpenses"></app-kpi>
-      </div>
-      <div class="col-md-3 mb-3">
-        <app-kpi [kpi]="kpiAverageDailyExpenses"></app-kpi>
-      </div>
-      <div class="col-md-3 mb-3">
-        <app-kpi [kpi]="kpiRemainingMontlyBudget"></app-kpi>
+        <h4>Expenses Dashboard - {{currentDate.getFullYear()}}</h4>
       </div>
     </div>
 
-    <!-- TODO: Remove all charts related to this library and the package also -->
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <div class="card h-100">
-          <div class="card-header">
-            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Expenses By Month
-          </div>
-          <div *ngIf="annualChart" class="card-body">
-            <!-- <canvas baseChart class="chart" [data]="annualChart.data" [options]="annualChart.options" [type]="'bar'"></canvas> -->
-          </div>
-        </div>
+    <div class="col-12 mb-3">
+      <div *ngIf="expenses.length > 0" class="kpi-bar">
+        <app-kpi-v2 [kpi]="kpiMonthlyExpenses"></app-kpi-v2>
+        <app-kpi-v2 [kpi]="kpiAverageDailyExpenses"></app-kpi-v2>
+        <app-kpi-v2 [kpi]="kpiRemainingDaysMonth"></app-kpi-v2>
       </div>
-
-      <!-- <div class="col-md-6 mb-3">
-        <div class="card h-100">
-          <div class="card-header">
-            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Expenses By City
-          </div>
-          <div *ngIf="cityChart" class="card-body">
-            <canvas baseChart class="chart" [data]="cityChart.data" [options]="cityChart.options" [type]="'bar'"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-      </div> -->
-      
     </div>
+
+    <div class="col-12 mb-3 p-3">
+      <div class="flex-parent">
+          <app-expenses-bar-chart [options]="expensesPerYearDataChart" class="w-100"></app-expenses-bar-chart>
+          <app-pie-chart-expenses [options]="expensesByCityDataChart"></app-pie-chart-expenses>
+          <app-expenses-bar-chart [options]="expensesByCategoryDataChart"></app-expenses-bar-chart>
+      </div>
+    </div>
+
 
     <div class="row">
       <div class="col-md-6 mb-3">
-        <div class="card h-100">
-          <div class="card-header">
-            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Expenses By Category
-          </div>
-          <div *ngIf="categoryChart" class="card-body">
-            <!-- <canvas baseChart class="chart" [data]="categoryChart.data" [options]="categoryChart.options" [type]="'bar'"></canvas> -->
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 mb-3">
-        <div class="card h-100">
-          <div class="card-header">
-            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-            Expenses By Subcategory
-          </div>
-          <div *ngIf="subcategoryChart" class="card-body">
-            <!-- <canvas baseChart class="chart" [data]="subcategoryChart.data" [options]="subcategoryChart.options"
-              [type]="'bar'"></canvas> -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <!-- <div class="col-md-6 mb-3">
         <div class="card h-100">
           <div class="card-header">
             <span><i class="bi bi-table me-2"></i></span> Annual Cost per Day per City
@@ -126,7 +76,6 @@
           </div>
         </div>
       </div>
-       -->
     </div>
 
   </div>

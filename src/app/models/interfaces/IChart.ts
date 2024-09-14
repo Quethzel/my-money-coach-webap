@@ -1,5 +1,6 @@
 export interface IChartExpensesByMonth {
-    month: string;
+    monthName: string;
+    month: number;
     total: number;
 }
 

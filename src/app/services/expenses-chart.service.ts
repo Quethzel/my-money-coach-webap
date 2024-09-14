@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
 import { IExpenses, IExpensesByMonth, IExpensesBySubcategory } from '../models/interfaces/IExpenses';
-import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory, IChartBySubcategory } from '../models/interfaces/IChart';
+import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory, IChartBySubcategory, IChartExpensesByMonth } from '../models/interfaces/IChart';
 import { AgChartOptions } from 'ag-charts-community';
 import { CommonService } from '../services/common.service';
 
@@ -94,6 +94,12 @@ export class ExpensesChartService {
     return this.buildSubcategorySeries(options);
   }
 
+  byYear(data: IExpenses[], options: AgChartOptions) {
+    const dataChart = this.transformDataByTotalByMonth(data);
+    options.data = this.sortByMonth(dataChart);
+    return options;
+  }
+
   private transformDataByDay(data: IExpenses[]) {
     const dataChart: IChartByDay[] = [];
     data.forEach((item) => {
@@ -158,6 +164,21 @@ export class ExpensesChartService {
     return dataChart;
   }
 
+  private transformDataByTotalByMonth(data: IExpenses[]) {
+    const dataChart: IChartExpensesByMonth[] = [];
+
+    data.forEach((item) => {
+      const month = item.date.getMonth();
+      const monthName = this.commonService.getMonthName(month);
+      const index = dataChart.findIndex((x) => x.month === month);
+      index === -1
+        ? dataChart.push({ month: month, monthName, total: item.cost})
+        : (dataChart[index].total += item.cost);
+    });
+
+    return dataChart;
+  }
+
   private transformDataBySubcategory(data: IExpenses[]) {
     const dataChart: IChartBySubcategory[] = [];
 
@@ -187,6 +208,14 @@ export class ExpensesChartService {
           }
         }
       });
+
+      if (options.title == null) {
+        options.title = { text: `Expenses by Category (${options.data.length})` };
+      }
+      if (options.subtitle == null) {
+        options.subtitle = { text: 'Variable Expenses in MXN' };
+      }
+      
     }
     return options;
   }
@@ -220,6 +249,9 @@ export class ExpensesChartService {
     return sortedData;
   }
   
+  private sortByMonth(data: IChartExpensesByMonth[]) {
+    return data.sort((a, b) => a.month - b.month);
+  }
 
 
 }

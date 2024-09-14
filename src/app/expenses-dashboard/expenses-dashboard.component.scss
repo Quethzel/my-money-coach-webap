@@ -1,0 +1,32 @@
+.kpi-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.main-chart-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chart-div {
+    flex: 1;
+}
+.full-width {
+    flex: 0 0 100%;
+}
+
+.flex-parent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    // gap: 1rem;
+  }
+  
+  .flex-parent > *:not(:last-child) {
+    margin-bottom: 30px; 
+} 
+
+.w-100 {
+    width: 100%;
+}

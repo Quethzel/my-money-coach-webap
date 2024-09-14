@@ -39,6 +39,12 @@ export class CommonService {
       return monthNames[month];
   }
 
+  getMonthNames() {
+    return [
+      'January', 'February', 'March', 'April', 'May', 'June', 
+      'July', 'August', 'September', 'October', 'November', 'December'];
+  }
+
   /**
    * Get days of the week
    */
