@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ChartConfig, CustomDataChart } from '../models/custom-data-chart';
 import { IExpenses } from '../models/interfaces/IExpenses';
 import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory, IChartBySubcategory, IChartExpensesByMonth } from '../models/interfaces/IChart';
 import { AgChartOptions } from 'ag-charts-community';
@@ -115,7 +114,7 @@ export class ExpensesChartService {
       const category = item.category;
       const index = dataChart.findIndex((x) => x.category === category);
       index === -1
-        ? dataChart.push({ category: item.category, total: item.cost})
+        ? dataChart.push({ category: item.category, total: item.cost })
         : (dataChart[index].total += item.cost);
     });
 
@@ -130,7 +129,7 @@ export class ExpensesChartService {
       const monthName = this.commonService.getMonthName(month);
       const index = dataChart.findIndex((x) => x.month === month);
       index === -1
-        ? dataChart.push({ month: month, monthName, total: item.cost})
+        ? dataChart.push({ month: month, monthName, total: item.cost })
         : (dataChart[index].total += item.cost);
     });
 
@@ -144,7 +143,7 @@ export class ExpensesChartService {
       const subcategory = item.subcategory;
       const index = dataChart.findIndex((x) => x.subcategory === subcategory);
       index === -1
-        ? dataChart.push({ category: item.category, subcategory: item.subcategory, total: item.cost})
+        ? dataChart.push({ category: item.category, subcategory: item.subcategory, total: item.cost })
         : (dataChart[index].total += item.cost);
     });
 
@@ -152,15 +151,15 @@ export class ExpensesChartService {
   }
 
   private buildCategorySeries(options: AgChartOptions) {
-    if (options.data.length > 0) {   
+    if (options.data.length > 0) {
       options.data = options.data.sort((a, b) => b.total - a.total);
       options.series.forEach((item) => {
         item.tooltip = {
           renderer: (params: any) => {
             return {
               title: params.datum?.category,
-              content: params.datum?.total != null 
-                ? `${this.commonService.capitalize(params.yKey)} : ${CommonService.formatAsCurrency(params.datum.total)}` 
+              content: params.datum?.total != null
+                ? `${this.commonService.capitalize(params.yKey)} : ${CommonService.formatAsCurrency(params.datum.total)}`
                 : `${this.commonService.capitalize(params.yKey)}: 0`
             };
           }
@@ -173,7 +172,7 @@ export class ExpensesChartService {
       if (options.subtitle == null) {
         options.subtitle = { text: 'Variable Expenses in MXN' };
       }
-      
+
     }
     return options;
   }
@@ -186,13 +185,21 @@ export class ExpensesChartService {
           renderer: (params: any) => {
             return {
               title: params.datum?.subcategory,
-              content: params.datum?.total != null 
-                ? `${this.commonService.capitalize(params.yKey)} : ${CommonService.formatAsCurrency(params.datum.total)}` 
+              content: params.datum?.total != null
+                ? `${this.commonService.capitalize(params.yKey)} : ${CommonService.formatAsCurrency(params.datum.total)}`
                 : `${this.commonService.capitalize(params.yKey)}: 0`
             };
           }
         }
       });
+
+      if (options.title == null) {
+        options.title = { text: `Expenses by Subcategory (${options.data.length})` };
+      }
+      if (options.subtitle == null) {
+        options.subtitle = { text: 'Variable Expenses in MXN' };
+      }
+
     }
     return options;
   }
@@ -206,7 +213,7 @@ export class ExpensesChartService {
 
     return sortedData;
   }
-  
+
   private sortByMonth(data: IChartExpensesByMonth[]) {
     return data.sort((a, b) => a.month - b.month);
   }

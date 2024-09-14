@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ChartEvent } from 'chart.js';
 import { ExpensesService } from '../services/expenses.service';
 import { Subscription } from 'rxjs';
 import { CustomDataChart } from '../models/custom-data-chart';
@@ -46,7 +45,9 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   expensesPerYearDataChart: AgChartOptions;
   expensesByCityDataChart: AgChartOptions;
   expensesByCategoryDataChart: AgChartOptions;
-
+  expensesBySubcategoryDataChart: AgChartOptions;
+  expensesByDayAndCategoryDataChart: AgChartOptions;
+  expensesByDayDataChart: AgChartOptions;
 
   constructor(
     private expenseService: ExpensesService,
@@ -70,7 +71,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     if (this.sbExpensesByCity) this.sbExpensesByCity.unsubscribe();
   }
 
-  getExpenses() {
+  private getExpenses() {
     this.sbExpenses = this.expenseService.getExpenses(this.currentYear).subscribe(result => {
       this.expenses = result;
       this.loadKPIs(this.expenses);
@@ -78,10 +79,13 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
       this.buildChartExpensesByYear(this.expenses);
       this.buildChartByCity(this.expenses);
       this.buildChartByCategory(this.expenses);
+      this.buildChartBySubcategory(this.expenses);
+      this.buildChartByDayAndCategory(this.expenses);
+      this.buildChartByDay(this.expenses);
     });
   }
 
-  loadKPIs(data: IExpenses[]) {
+  private loadKPIs(data: IExpenses[]) {
     const totalExpenses = this.getTotalExpenses(data);
     const title = "Total Expenses in " + this.currentYear;
     this.kpiMonthlyExpenses = new KPIv2(title, totalExpenses, KPIType.Currency);
@@ -159,7 +163,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.expensesPerYearDataChart = this.chartService.byYear(data, options);
   }
 
-  buildChartByCity(data: IExpenses[]) {
+  private buildChartByCity(data: IExpenses[]) {
     const options: AgChartOptions = {
       title: {
         text: "Expenses by City",
@@ -189,7 +193,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.expensesByCityDataChart = this.chartService.byCity(data, options);
   }
 
-  buildChartByCategory(data: IExpenses[]) {
+  private buildChartByCategory(data: IExpenses[]) {
     const options: AgChartOptions = {
       data: data,
       series: [
@@ -214,20 +218,111 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     this.expensesByCategoryDataChart = this.chartService.byCategory(data, options);
   }
 
+  private buildChartBySubcategory(data: IExpenses[]) {
+    const options: AgChartOptions = {
+      series: [{
+        type: "bar",
+        xKey: "subcategory",
+        yKey: "total",
+        yName: "Total Expenses",
+        tooltip: {
+          renderer: (params: any) => {
+            return {
+              content: `${params.yKey} : ${CommonService.formatAsCurrency(params.yValue)}`
+            };
+          }
+        }
+      }],
+      data: data
+    };
 
+    this.expensesBySubcategoryDataChart = this.chartService.bySubcategories(data, options, 10);
+  }
 
+  private buildChartByDayAndCategory(data: IExpenses[]) {
+    const options: AgChartOptions = {
+        title: {
+          text: "Expenses by Day & Category",
+        },
+        subtitle: {
+          text: "Variable Expenses in MXN",
+        },
+        series: [{
+          type: "bubble",
+          title: "Expenses",
+          xKey: "Category",
+          xName: "Category",
+          yKey: "Day",
+          yName: "Day",
+          sizeKey: "Total",
+          sizeName: "Total",
+        }],
+        data: data,
+        axes: [
+          {
+            position: "bottom",
+            type: "category",
+            gridLine: {
+              enabled: true,
+            },
+            line: {
+              enabled: false,
+            },
+          },
+          {
+            position: "left",
+            type: "category",
+            line: {
+              enabled: false,
+            },
+          },
+        ],
+        seriesArea: {
+          padding: {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 30,
+          },
+        }
+    };
+
+    this.expensesByDayAndCategoryDataChart = this.chartService.byDayAndCategory(data, options);
+  }
+
+  private buildChartByDay(data: IExpenses[]) {
+    const options: AgChartOptions = {
+      title: {
+        text: "Total Expenses by Day of the Week",
+      },
+      subtitle: {
+        text: "Variable Expenses in MXN",
+      },
+      series: [{
+        type: "line",
+        xKey: "Day",
+        yKey: "Total",
+        yName: "Total Expenses",
+        marker: {
+          enabled: true,
+        },
+        // tooltip: {
+        //   renderer: (params: any) => {
+        //     return {
+        //       content: `${params.yKey} : ${CommonService.formatAsCurrency(params.yValue)}`
+        //     };
+        //   }
+        // }
+      }],
+      data: data
+    };
+
+    this.expensesByDayDataChart = this.chartService.byDay(data, options);
+  }
+
+  //TODO: this method is not used (is part of the create new expense from modal feature)
   newExpense() {
     this.bsModalRef = this.modalService.show(ExpenseFormComponent);
   }
-
-  // events
-  chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-    console.log(event, active);
-  }
-
-  chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-    // console.log(event, active);
-  }
-
 
 }
