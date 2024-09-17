@@ -48,6 +48,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   expensesBySubcategoryDataChart: AgChartOptions;
   expensesByDayAndCategoryDataChart: AgChartOptions;
   expensesByDayDataChart: AgChartOptions;
+  expensesByMonthStackedByCategory: AgChartOptions;
 
   constructor(
     private expenseService: ExpensesService,
@@ -82,6 +83,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
       this.buildChartBySubcategory(this.expenses);
       this.buildChartByDayAndCategory(this.expenses);
       this.buildChartByDay(this.expenses);
+      this.buildStackChartByMonthCategory(this.expenses);
     });
   }
 
@@ -318,6 +320,32 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     };
 
     this.expensesByDayDataChart = this.chartService.byDay(data, options);
+  }
+
+  private buildStackChartByMonthCategory(data: IExpenses[]) {
+    const options: AgChartOptions = {
+      data: data,
+      series: [
+        {
+          type: "bar",
+          xKey: "month",
+          yKey: "total",
+          yName: "Total Expenses",
+          stacked: true,
+          tooltip: {
+            renderer: (params: any) => {
+              return {
+                content: params.yValue != null 
+                  ? `${params.yKey} : ${CommonService.formatAsCurrency(params.yValue)}` 
+                  : `${params.yKey}: 0`
+              };
+            }
+          }
+        }
+      ]
+    };
+
+    this.expensesByMonthStackedByCategory = this.chartService.dataByCategoryByMonth(data, options);
   }
 
   //TODO: this method is not used (is part of the create new expense from modal feature)
