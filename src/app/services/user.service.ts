@@ -39,6 +39,7 @@ export class UserService {
       { code: 'OAX', name: 'Oaxaca', default: false },
       { code: 'HOU', name: 'Houston-Texas', default: false },
       { code: 'PBL', name: 'Puebla', default: false },
+      { code: 'LAS', name: 'Las Vegas', default: false },
     ];
 
     return of(this.cities);
