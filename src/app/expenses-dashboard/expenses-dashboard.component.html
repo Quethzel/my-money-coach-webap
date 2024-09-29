@@ -28,6 +28,31 @@
         <app-expenses-bar-chart [options]="expensesByCategoryDataChart"></app-expenses-bar-chart>
         <app-expenses-bar-chart [options]="expensesBySubcategoryDataChart"></app-expenses-bar-chart>
         <app-pie-chart-expenses [options]="expensesByCityDataChart"></app-pie-chart-expenses>
+
+        <div class="col-md-6 col-sm-12 mb-3">
+          <div class="table-responsive">
+            <table class="table table-hover caption-top">
+              <caption>Annual Cost Per City</caption>
+              <thead>
+                <tr>
+                  <th scope="col">City</th>
+                  <th scope="col">Residence Time</th>
+                  <th scope="col">Cost per Day</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr *ngFor="let city of expensesByCity">
+                  <td>{{city.city}}</td>
+                  <td>{{city.residenceTime}} days</td>
+                  <td class="text-end">{{city.costPerDay | currency}}</td>
+                  <td class="text-end">{{city.total | currency}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         <div style="height: 400;">
           <app-bubble-chart [options]="expensesByDayAndCategoryDataChart"></app-bubble-chart>
         </div>
@@ -37,31 +62,7 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-6 col-sm-12 mb-3">
-        <div class="table-responsive">
-          <table class="table table-hover caption-top">
-            <caption>Annual Cost Per City</caption>
-            <thead>
-              <tr>
-                <th scope="col">City</th>
-                <th scope="col">Residence Time</th>
-                <th scope="col">Cost per Day</th>
-                <th scope="col">Total</th>
-              </tr>
-            </thead>
-            <tbody class="table-group-divider">
-              <tr *ngFor="let city of expensesByCity">
-                <td>{{city.city}}</td>
-                <td>{{city.residenceTime}} days</td>
-                <td class="text-end">{{city.costPerDay | currency}}</td>
-                <td class="text-end">{{city.total | currency}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+
 
   </div>
 </main>
