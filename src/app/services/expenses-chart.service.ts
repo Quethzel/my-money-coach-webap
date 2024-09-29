@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IExpenses } from '../models/interfaces/IExpenses';
-import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory, IChartBySubcategory, IChartExpensesByMonth } from '../models/interfaces/IChart';
+import { IChartByCategory, IChartByCity, IChartByDay, IChartByDayAndCategory, IChartByMonthCategory, IChartBySubcategory, IChartExpensesByMonth } from '../models/interfaces/IChart';
 import { AgChartOptions } from 'ag-charts-community';
 import { CommonService } from '../services/common.service';
 
-//TODO: move this interface to a separate file
-export interface IChartByMonthCategory {
-  month: string;
-  [key: string]: any;
-}
 @Injectable({
   providedIn: 'root'
 })
@@ -63,6 +58,7 @@ export class ExpensesChartService {
     return options;
   }
 
+  
   private transformDataByDay(data: IExpenses[]) {
     const dataChart: IChartByDay[] = [];
     data.forEach((item) => {
@@ -175,7 +171,7 @@ export class ExpensesChartService {
       const month = item.date.getMonth();
       const monthName = this.commonService.getMonthName(month);
       const category = item.category;
-      const index = chartData.findIndex((x) => x.month === monthName);
+      const index = chartData.findIndex((x) => x.month === month);
       if (index > -1) {
         const categoryIndex = Object.keys(chartData[index]).findIndex((x) => x === category);
         if (categoryIndex > -1) {
@@ -184,7 +180,7 @@ export class ExpensesChartService {
           chartData[index][category] = item.cost;
         }
       } else {
-        chartData.push({ month: monthName, [item.category]: item.cost });
+        chartData.push({ monthName, month, [item.category]: item.cost });
       }
     });
 
@@ -201,7 +197,7 @@ export class ExpensesChartService {
       });
     }
 
-    options.data = chartData;
+    options.data = this.sortByMonth(chartData);
     return options;
 
   }
@@ -212,7 +208,7 @@ export class ExpensesChartService {
     categories.forEach((category) => {
       series.push({
         type: 'bar',
-        xKey: 'month',
+        xKey: 'monthName',
         yKey: category,
         yName: category,
         stacked: true,
@@ -319,7 +315,7 @@ export class ExpensesChartService {
     return sortedData;
   }
 
-  private sortByMonth(data: IChartExpensesByMonth[]) {
+  private sortByMonth(data: IChartExpensesByMonth[] | IChartByMonthCategory[]) {
     return data.sort((a, b) => a.month - b.month);
   }
 

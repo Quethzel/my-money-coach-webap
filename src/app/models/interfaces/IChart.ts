@@ -5,7 +5,8 @@ export interface IChartExpensesByMonth {
 }
 
 export interface IChartByMonthCategory {
-    month: string;
+    monthName: string;
+    month: number;
     [key: string]: any;
 }
 

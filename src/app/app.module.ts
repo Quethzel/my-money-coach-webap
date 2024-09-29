@@ -37,6 +37,7 @@ import { PieChartExpensesComponent } from './components/charts/pie-chart-expense
 import { BubbleChartComponent } from './components/charts/bubble-chart/bubble-chart.component';
 import { VariableExpensesComponent } from './variable-expenses/variable-expenses.component';
 import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
+import { AnnualCostPerCityGridComponent } from './components/annual-cost-per-city-grid/annual-cost-per-city-grid.component';
 
 registerLocaleData(localeMX);
 
@@ -65,6 +66,7 @@ registerLocaleData(localeMX);
     PieChartExpensesComponent,
     BubbleChartComponent,
     BarChartComponent,
+    AnnualCostPerCityGridComponent,
   ],
   imports: [
     BrowserModule,
