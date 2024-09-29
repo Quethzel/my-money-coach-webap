@@ -48,12 +48,13 @@ export class ExpensesChartService {
 
   bySubcategories(data: IExpenses[], options: AgChartOptions, topSubcategories?: number) {
     const dataChart = this.transformDataBySubcategory(data);
+    const subcategoriesTotalCount = dataChart.length;
     if (topSubcategories) {
       options.data = dataChart.sort((a, b) => b.total - a.total).slice(0, topSubcategories);
     } else {
       options.data = dataChart;
     }
-    return this.buildSubcategorySeries(options);
+    return this.buildSubcategorySeries(options, subcategoriesTotalCount);
   }
 
   byYear(data: IExpenses[], options: AgChartOptions) {
@@ -172,7 +173,7 @@ export class ExpensesChartService {
 
     data.forEach((item) => {
       const month = item.date.getMonth();
-      const monthName = this.commonService?.getMonthName(month);
+      const monthName = this.commonService.getMonthName(month);
       const category = item.category;
       const index = chartData.findIndex((x) => x.month === monthName);
       if (index > -1) {
@@ -278,7 +279,7 @@ export class ExpensesChartService {
     return options;
   }
 
-  private buildSubcategorySeries(options: AgChartOptions) {
+  private buildSubcategorySeries(options: AgChartOptions, subcategoriesTotalCount: number) {
     if (options.data.length > 0) {
       options.data = options.data.sort((a, b) => b.total - a.total);
       options.series.forEach((item) => {
@@ -295,7 +296,10 @@ export class ExpensesChartService {
       });
 
       if (options.title == null) {
-        options.title = { text: `Expenses by Subcategory (${options.data.length})` };
+        const count = subcategoriesTotalCount > options.data.length 
+          ? `${options.data.length} of ${subcategoriesTotalCount}` 
+          : options.data.length;
+        options.title = { text: `Expenses by Subcategory (${count})` };
       }
       if (options.subtitle == null) {
         options.subtitle = { text: 'Variable Expenses in MXN' };
