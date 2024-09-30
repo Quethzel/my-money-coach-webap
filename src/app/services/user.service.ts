@@ -40,6 +40,8 @@ export class UserService {
       { code: 'HOU', name: 'Houston-Texas', default: false },
       { code: 'PBL', name: 'Puebla', default: false },
       { code: 'LAS', name: 'Las Vegas', default: false },
+      { code: 'NYC', name: 'Nueva York', default: false },
+      { code: 'SCLC', name: 'San Cristobal de las Casas', default: false },
     ];
 
     return of(this.cities);
