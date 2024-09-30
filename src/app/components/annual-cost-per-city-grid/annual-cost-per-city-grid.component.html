@@ -1,1 +1,6 @@
-<p>annual-cost-per-city-grid works!</p>
+<div [ngStyle]="gridContainerStyle">
+    <ag-grid-angular class="ag-theme-alpine" [context]="context" [rowData]="data" [gridOptions]="gridOptions"
+        [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" style="width: 100%; height: 100%;" #agGrid
+        (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+</div>

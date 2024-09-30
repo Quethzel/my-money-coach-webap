@@ -9,6 +9,7 @@ import { IExpenses } from '../models/interfaces/IExpenses';
 import { KPIType, KPIv2 } from '../models/kpiV2';
 import { CommonService } from '../services/common.service';
 import { AgChartOptions } from 'ag-charts-community';
+import { IAnnualCostPerCity } from '../models/interfaces/IAnnualCostPerCity';
 
 @Component({
   selector: 'app-expenses-dashboard',
@@ -50,13 +51,13 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
   expensesByDayDataChart: AgChartOptions;
   expensesByMonthStackedByCategory: AgChartOptions;
 
-  expensesByCity: { city: string, residenceTime: number, costPerDay: number, total: number }[] = [];
+  expensesByCity: IAnnualCostPerCity[] = [];
 
   constructor(
     private expenseService: ExpensesService,
     private chartService: ExpensesChartService, private modalService: BsModalService, private commonService: CommonService) { 
       this.expenses = [];
-    }
+  }
   
   ngOnInit(): void {
     this.getExpenses();
@@ -88,7 +89,6 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
       this.buildStackChartByMonthCategory(this.expenses);
 
       this.expensesByCity = this.expenseService.transformExpensesByCity(this.expenses);
-
     });
   }
 
@@ -351,16 +351,6 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
     };
 
     this.expensesByMonthStackedByCategory = this.chartService.dataByCategoryByMonth(data, options);
-  }
-
-  private buildTableAnnualCostPerCity(data: IExpenses[]) {
-    const expensesByCity = this.expenseService.transformExpensesByCity(data);
-    // const totalExpenses = expensesByCity.reduce((acc, v) => acc + v.total, 0);
-    // const totalDays = expensesByCity.reduce((acc, v) => acc + v.residenceTime, 0);
-    // const totalCostPerDay = totalDays > 0 ? totalExpenses / totalDays : 0;
-
-    console.log(expensesByCity);
-    
   }
 
   //TODO: this method is not used (is part of the create new expense from modal feature)

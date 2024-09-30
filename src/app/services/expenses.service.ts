@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { IExpenses } from '../models/interfaces/IExpenses';
 import { CommonService } from './common.service';
 import { VariableExpense } from '../models/variable-expense';
+import { IAnnualCostPerCity } from '../models/interfaces/IAnnualCostPerCity';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +40,9 @@ export class ExpensesService {
   }
 
 
-  transformExpensesByCity(expenses: IExpenses[]): { city: string, residenceTime: number, costPerDay: number, total: number }[] {
+  transformExpensesByCity(expenses: IExpenses[]): IAnnualCostPerCity[] {
     const expensesByCity = expenses.reduce((acc, expense) => {
-      const cityCode = expense.cityCode || 'Unknown'; // Asegurarse de que siempre haya una ciudad (puedes ajustar 'Unknown' según tu necesidad)
+      const cityCode = expense.cityCode || 'Unknown';
       const expenseDate = this.formatDateToYMD(expense.date)
 
       if (!acc[cityCode]) {
@@ -63,11 +64,11 @@ export class ExpensesService {
       const costPerDay = residenceTime > 0 ? data.total / residenceTime : 0;
 
       return {
-        city: cityCode,
+        cityCode,
         residenceTime,
         costPerDay: parseFloat(costPerDay.toFixed(2)),
         total: parseFloat(data.total.toFixed(2)),
-      };
+      } as IAnnualCostPerCity;
     });
 
     return result;
