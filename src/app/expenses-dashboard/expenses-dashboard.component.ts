@@ -222,7 +222,7 @@ export class ExpensesDashboardComponent implements OnInit, OnDestroy {
       ],
     };
     
-    this.expensesByCategoryDataChart = this.chartService.byCategory(data, options);
+    this.expensesByCategoryDataChart = this.chartService.byCategory(data, options, 10);
   }
 
   private buildChartBySubcategory(data: IExpenses[]) {

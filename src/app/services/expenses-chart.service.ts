@@ -13,13 +13,14 @@ export class ExpensesChartService {
 
   byCategory(data: IExpenses[], options: AgChartOptions, topCategories?: number) {
     const dataChart = this.transformDataByCategory(data);
+    const countCategories = dataChart.length;
     options.data = dataChart;
     if (topCategories) {
       options.data = options.data.sort((a, b) => b.total - a.total).slice(0, topCategories);
     } else {
       options.data = options.data;
     }
-    return this.buildCategorySeries(options);
+    return this.buildCategorySeries(options, countCategories);
   }
 
   byCity(data: IExpenses[], options: AgChartOptions) {
@@ -248,7 +249,7 @@ export class ExpensesChartService {
     return dataChart;
   }
 
-  private buildCategorySeries(options: AgChartOptions) {
+  private buildCategorySeries(options: AgChartOptions, countCategories: number) {
     if (options.data.length > 0) {
       options.data = options.data.sort((a, b) => b.total - a.total);
       options.series.forEach((item) => {
@@ -265,7 +266,10 @@ export class ExpensesChartService {
       });
 
       if (options.title == null) {
-        options.title = { text: `Expenses by Category (${options.data.length})` };
+        const count = countCategories > options.data.length
+          ? `${options.data.length} of ${countCategories}`
+          : options.data.length;
+        options.title = { text: `Expenses by Category (${count})` };
       }
       if (options.subtitle == null) {
         options.subtitle = { text: 'Variable Expenses in MXN' };
@@ -275,7 +279,7 @@ export class ExpensesChartService {
     return options;
   }
 
-  private buildSubcategorySeries(options: AgChartOptions, subcategoriesTotalCount: number) {
+  private buildSubcategorySeries(options: AgChartOptions, countSubcategories: number) {
     if (options.data.length > 0) {
       options.data = options.data.sort((a, b) => b.total - a.total);
       options.series.forEach((item) => {
@@ -292,8 +296,8 @@ export class ExpensesChartService {
       });
 
       if (options.title == null) {
-        const count = subcategoriesTotalCount > options.data.length 
-          ? `${options.data.length} of ${subcategoriesTotalCount}` 
+        const count = countSubcategories > options.data.length 
+          ? `${options.data.length} of ${countSubcategories}` 
           : options.data.length;
         options.title = { text: `Expenses by Subcategory (${count})` };
       }
