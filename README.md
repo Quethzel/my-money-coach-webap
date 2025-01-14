@@ -23,7 +23,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 ## Production Hosting
 
 - [MongoDB](https://cloud.mongodb.com/) as database
-- [Cyclic](https://app.cyclic.sh/#/) as Back-End host
+- [Render](https://dashboard.render.com/) as Back-End host
 - [Github pages](https://github.com/Quethzel/my-money-coach-webap) as Front-End host
 
 ## Further help
