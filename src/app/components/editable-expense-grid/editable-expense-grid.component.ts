@@ -63,8 +63,8 @@ export class EditableExpenseGridComponent implements OnDestroy {
     {
       field: 'cost', headerName: 'Cost', filter: 'agNumberColumnFilter', width: 70, maxWidth: 120,
       valueFormatter: (params: any) => {
-        const options = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
-        const currencyString = Intl.NumberFormat('es-MX', options);
+        const options: Intl.NumberFormatOptions = { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 };
+        const currencyString = new Intl.NumberFormat('es-MX', options);
         return currencyString.format(params.value);
       }
     },
@@ -230,5 +230,14 @@ export class EditableExpenseGridComponent implements OnDestroy {
     }
   }
 
+  exportToExcel() {
+    const params = {
+      fileName: 'Gastos.csv', // Nombre del archivo
+      sheetName: 'Gastos', // Nombre de la hoja
+    };
+    // (document.querySelector('ag-grid-angular') as any).api.exportDataAsExcel(params);
+    // export grid to excel file
+    this.agGrid.api.exportDataAsExcel(params);
+  }
 
 }

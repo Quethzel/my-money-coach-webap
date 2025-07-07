@@ -10,7 +10,7 @@
     "dev-net": "ng serve --host 0.0.0.0",
     "build-prod": "ng build --base-href 'https://Quethzel.github.io/my-money-coach-webap/'",
     "deploy": "npx angular-cli-ghpages --dir=dist/money-coach-pwa",
-    "bad": "ng build --configuration production --aot --base-href 'https://Quethzel.github.io/my-money-coach-webap/' && npx angular-cli-ghpages --dir=dist/money-coach-pwa"
+    "bad": "ng build --configuration production --base-href 'https://Quethzel.github.io/my-money-coach-webap/' && npx angular-cli-ghpages --dir=dist/money-coach-pwa"
   },
   "private": true,
   "dependencies": {
